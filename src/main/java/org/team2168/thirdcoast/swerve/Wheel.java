@@ -2,10 +2,10 @@
  * This code was written primarily as a part of FRC Team 2767's Third Coast Library
  * It has been adapted to be used by 2168
  */
-package org.team2168.subsystems;
+package org.team2168.thirdcoast.swerve;
 
 import static com.ctre.phoenix.motorcontrol.ControlMode.*;
-import static org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode.TELEOP;
+import static org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode.TELEOP;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.can.BaseTalon;
@@ -15,8 +15,8 @@ import java.util.Objects;
 import java.util.function.DoubleConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.strykeforce.thirdcoast.swerve.SwerveDrive.DriveMode;
-import org.strykeforce.thirdcoast.talon.Errors;
+import org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode;
+import org.team2168.thirdcoast.talon.Errors;
 
 /**
  * Controls a swerve drive wheel azimuth and drive motors.

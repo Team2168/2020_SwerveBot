@@ -1,10 +1,10 @@
-package org.strykeforce.thirdcoast.swerve;
+package org.team2168.thirdcoast.swerve;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.strykeforce.thirdcoast.talon.Errors;
+import org.team2168.thirdcoast.talon.Errors;
 
 /**
  * Control a Third Coast swerve drive.
