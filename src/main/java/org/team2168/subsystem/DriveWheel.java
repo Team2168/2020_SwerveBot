@@ -1,6 +1,8 @@
 package org.team2168.subsystem;
 
- import edu.wpi.first.wpilibj.command.Subsystem;
+import org.team2168.thirdcoast.swerve.Wheel;
+
+import edu.wpi.first.wpilibj.command.Subsystem;
 
  public class DriveWheel extends Subsystem{
     private TalonFX azimuthTalon;
@@ -9,6 +11,8 @@ package org.team2168.subsystem;
     private DriveWheel {
 
     }
+  
+      }
 
 public void set(double azimuth, double drive) {
     if (drive == 0){ 
@@ -44,7 +48,13 @@ driveConfig.peakCurrentLimit = 0;
 
 
     return;         
-     }
+     
+@Override
+protected void initDefaultCommand() {
+	// TODO Auto-generated method stub
+	
+}
+}
     }
 
 }
