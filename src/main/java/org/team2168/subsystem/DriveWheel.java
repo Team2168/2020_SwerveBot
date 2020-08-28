@@ -1,5 +1,7 @@
 package org.team2168.subsystem;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import org.team2168.thirdcoast.swerve.Wheel;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -8,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
     private TalonFX azimuthTalon;
     private TalonFX driveTalon;
     Wheel wheel = new Wheel(azimuthTalon, driveTalon, 1.0);
-    private DriveWheel {
+    private DriveWheel() {
 
     }
   
@@ -54,7 +56,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 	// TODO Auto-generated method stub
 	
     }
-    }
+    
     }
 
 }
