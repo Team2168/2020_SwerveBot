@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
     }
   
-      }
+      } 
 
     public void set(double azimuth, double drive) {
     if (drive == 0){ 
