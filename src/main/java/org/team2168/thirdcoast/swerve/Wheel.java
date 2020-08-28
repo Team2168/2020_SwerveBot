@@ -56,7 +56,7 @@ public class Wheel {
    * @param drive the configured drive TalonFX
    * @param driveSetpointMax scales closed-loop drive output to this value when drive setpoint = 1.0
    */
-  public Wheel(TalonSRX azimuth, BaseTalon drive, double driveSetpointMax) {
+  public Wheel(TalonFX azimuth, BaseTalon drive, double driveSetpointMax) {
     this.driveSetpointMax = driveSetpointMax;
     azimuthTalon = Objects.requireNonNull(azimuth);
     driveTalon = Objects.requireNonNull(drive);
@@ -182,7 +182,7 @@ public class Wheel {
    *
    * @return azimuth Talon instance used by wheel
    */
-  public TalonSRX getAzimuthTalon() {
+  public TalonFX getAzimuthTalon() {
     return azimuthTalon;
   }
 
