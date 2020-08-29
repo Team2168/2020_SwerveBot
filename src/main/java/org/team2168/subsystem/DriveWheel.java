@@ -7,13 +7,12 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 
+import org.team2168.commands.drivewheel.DriveWithJoystick;
 import org.team2168.thirdcoast.swerve.Wheel;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DriveWheel extends Subsystem {
-    private TalonFX azimuthTalon;
-    private TalonFX driveTalon;
     private CANifier _canifier = new CANifier(00);
     Wheel wheel;
     private final boolean ENABLE_CURRENT_LIMIT = true;
@@ -51,8 +50,7 @@ public class DriveWheel extends Subsystem {
  
             TalonFX driveTalon = new TalonFX(10);
             driveTalon.configAllSettings(driveConfig);
-            driveTalon.configSupplyCurrentLimit(talonCurrentLimit);
-        // return;         
+            driveTalon.configSupplyCurrentLimit(talonCurrentLimit); 
         // }
 
         wheel = new Wheel(azimuthTalon, driveTalon, 1.0);
