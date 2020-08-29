@@ -174,7 +174,9 @@ public class Wheel {
    * @return 0 - 4095, corresponding to one full revolution.
    */
   public int getAzimuthAbsolutePosition() {
-    return azimuthTalon.getSensorCollection().getPulseWidthPosition() & 0xFFF;
+    // return azimuthTalon.getSensorCollection().getPulseWidthPosition() & 0xFFF;
+    // TODO: return the azimuth encoder position
+    return 0; 
   }
 
   /**
