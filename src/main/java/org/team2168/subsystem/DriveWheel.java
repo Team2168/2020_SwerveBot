@@ -57,10 +57,12 @@ public class DriveWheel extends Subsystem {
 
         // for (int i = 0; i < 4; i++) {
             TalonFX azimuthTalon = new TalonFX(11);
+            azimuthTalon.configFactoryDefault();
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
  
             TalonFX driveTalon = new TalonFX(01);
+            driveTalon.configFactoryDefault();
             driveTalon.configAllSettings(driveConfig);
             driveTalon.configSupplyCurrentLimit(talonCurrentLimit); 
         // }
