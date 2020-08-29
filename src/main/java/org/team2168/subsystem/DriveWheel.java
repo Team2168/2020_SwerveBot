@@ -21,6 +21,8 @@ public class DriveWheel extends Subsystem {
     private final double TRIGGER_THRESHOLD_LIMIT = 60; //amp
     private final double TRIGGER_THRESHOLD_TIME = 0.2; //s
 
+    private static DriveWheel instance = null;
+
     private DriveWheel() {
         TalonFXConfiguration azimuthConfig = new TalonFXConfiguration();
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
@@ -57,12 +59,26 @@ public class DriveWheel extends Subsystem {
     }
 
     
-    public void set(Wheel wheel, double azimuth, double drive) {
+  /**
+   * @returns An instance of the DriveWheel subsystem
+   */
+    public static DriveWheel getInstance() {
+        if (instance == null)
+          instance = new DriveWheel();
+    
+        return instance;
+      }
+    
+    public void set(double azimuth, double drive) {
         wheel.set(azimuth, drive);
     }
 
-    public void setAzimuth(Wheel wheel, int position) {
+    public void setAzimuth(int position) {
         wheel.setAzimuthPosition(position);
+    }
+
+    public void stop() {
+        wheel.stop();
     }
 
     //Allows for the Azimuth and Speed to be changed

@@ -7,6 +7,8 @@
 
 package org.team2168;
 
+import org.team2168.commands.drivewheel.DriveWithJoystick;
+import org.team2168.subsystem.DriveWheel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -24,6 +26,8 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  private static DriveWheel drivewheel;
+  private static DriveWithJoystick drivewithjoystick;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -33,6 +37,8 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    DriveWheel.getInstance();
   }
 
   /**
@@ -86,6 +92,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
+    drivewithjoystick.initialize();
   }
 
   /**
@@ -93,6 +100,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    drivewithjoystick.execute();
   }
 
   /**
@@ -107,6 +115,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledPeriodic() {
+    drivewithjoystick.end(true);
   }
 
   /**
