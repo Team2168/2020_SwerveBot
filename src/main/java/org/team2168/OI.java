@@ -49,17 +49,11 @@ public class OI
 	// public F310 testJoystick = new F310(RobotMap.COMMANDS_TEST_JOYSTICK);
 	//public F310 pidTestJoystick = new F310(RobotMap.PID_TEST_JOYSTICK);
 
-	private double[][] gunStyleYArray = {
-		{-1.0, -1.00}, //can limit speed by changing second number
-		{-0.15, 0.00},
-		{+0.15, 0.00},
-		{+1.00, +1.00}
-	};
 	private double[][] gunStyleXArray = {
-		{-1.0, -0.70},  //scale down turning to max 70%
+		{-1.0, -0.50},  //scale down turning to max 70%
 		{-0.05, 0.00},  //set neutral deadband to 5%
 		{+0.05, 0.00},
-		{+1.00,+0.70}  
+		{+1.00,+0.50}  
 	};
 
 	/**
@@ -87,10 +81,10 @@ public class OI
 	 * Drivetrain *
 	 *************************************************************************/
 
-	// public double getGunStyleXValue()
-	// {
-	// 	return gunStyleXInterpolator.interpolate(driverJoystick.getLeftStickRaw_X());
-	// }
+	public double getGunStyleXValue()
+	{
+		return gunStyleXInterpolator.interpolate(driverJoystick.getLeftStickRaw_X());
+	}
 
 	// public double getGunStyleYValue()
 	// {
