@@ -56,10 +56,10 @@ public class OI
 		{+1.00,+1.00}
 	};
 	private double[][] gunStyleXArray = {
-		{-1.0, -0.20},  //scale down turning to max 50%
-		{-0.3, 0.00},  //set neutral deadband to 5%
-		{+0.3, 0.00},
-		{+1.00,+0.20}  
+		{-1.0, -0.50},  //scale down turning to max 50%
+		{-0.05, 0.00},  //set neutral deadband to 5%
+		{+0.05, 0.00},
+		{+1.00,+0.50}  
 	};
 
 
