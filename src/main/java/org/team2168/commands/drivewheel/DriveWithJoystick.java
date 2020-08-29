@@ -7,12 +7,12 @@
 
 package org.team2168.commands.drivewheel;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj.command.Command;
 import org.team2168.subsystem.DriveWheel;
 import org.team2168.OI;
 import java.lang.Math;
 
-public class DriveWithJoystick extends CommandBase {
+public class DriveWithJoystick extends Command {
   /**
    * Creates a new DriveWithJoystick.
    */
@@ -38,10 +38,15 @@ public class DriveWithJoystick extends CommandBase {
     dw.set(oi.getGunStyleXValue(), Math.abs(oi.getDriverLeftJoystick_Y())); // abs for testing purposes; set doesn't take negative values
   }
 
-  // Called once the command ends or is interrupted.
+  // Called once the command ends
   @Override
-  public void end(boolean interrupted) {
+  public void end() {
     dw.stop();
+  }
+
+  @Override
+  public void interrupted() {
+    end();
   }
 
   // Returns true when the command should end.
