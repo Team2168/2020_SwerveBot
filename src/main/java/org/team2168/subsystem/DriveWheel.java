@@ -35,7 +35,7 @@ public class DriveWheel extends Subsystem {
 
 
         azimuthConfig.remoteFilter0.remoteSensorDeviceID = _canifier.getDeviceID();
-        azimuthConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANifier_PWMInput0;
+        azimuthConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANifier_PWMInput1;
         azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
         azimuthConfig.slot0.kP = 10.0;
         azimuthConfig.slot0.kI = 0.0;
