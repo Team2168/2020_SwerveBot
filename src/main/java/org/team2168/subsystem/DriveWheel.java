@@ -46,6 +46,9 @@ public class DriveWheel extends Subsystem {
         azimuthConfig.motionAcceleration = 10_000;
         azimuthConfig.motionCruiseVelocity = 800;
         driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+
+        // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
+
         // for (int i = 0; i < 4; i++) {
             TalonFX azimuthTalon = new TalonFX(1);
             azimuthTalon.configAllSettings(azimuthConfig);
