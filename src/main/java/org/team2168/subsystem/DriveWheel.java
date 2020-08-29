@@ -1,6 +1,7 @@
 package org.team2168.subsystem;
 
 import com.ctre.phoenix.CANifier;
+import com.ctre.phoenix.CANifierStatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -23,6 +24,11 @@ public class DriveWheel extends Subsystem {
     private static DriveWheel instance = null;
 
     private DriveWheel() {
+        _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_3_PwmInputs0, 10);
+        _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_4_PwmInputs1, 10);
+        _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_5_PwmInputs2, 10);
+        _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_6_PwmInputs3, 10);
+        
         TalonFXConfiguration azimuthConfig = new TalonFXConfiguration();
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
         SupplyCurrentLimitConfiguration talonCurrentLimit;
