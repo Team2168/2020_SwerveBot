@@ -32,7 +32,7 @@ public class DriveWheel extends Subsystem {
 
         azimuthConfig.remoteFilter0.remoteSensorDeviceID = _canifier.getDeviceID();
         azimuthConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANifier_PWMInput0;
-        azimuthConfig.primaryPID.selectedFeedbackSensor = RemoteSensorSource.remoteSensor0;
+        azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
         azimuthConfig.slot0.kP = 10.0;
         azimuthConfig.slot0.kI = 0.0;
         azimuthConfig.slot0.kD = 100.0;
@@ -47,7 +47,7 @@ public class DriveWheel extends Subsystem {
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
  
-            TalonFX drivttalon = new TalonFX(10);
+            TalonFX driveTalon = new TalonFX(10);
             driveTalon.configAllSettings(driveConfig);
             driveTalon.configSupplyCurrentLimit(talonCurrentLimit);
         // return;         
