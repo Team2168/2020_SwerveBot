@@ -7,7 +7,7 @@
 
 package org.team2168;
 
-import org.team2168.commands.drivewheel.DriveWithJoystick;
+// import org.team2168.commands.drivewheel.DriveWithJoystick;
 import org.team2168.subsystem.DriveWheel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -28,7 +28,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private static DriveWheel drivewheel;
-  private static DriveWithJoystick drivewithjoystick;
+  // private static DriveWithJoystick drivewithjoystick;
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -93,7 +93,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
-    drivewithjoystick.initialize();
+    // drivewithjoystick.initialize();
   }
 
   /**
