@@ -30,6 +30,9 @@ public class DriveWheel extends Subsystem {
         talonCurrentLimit = new SupplyCurrentLimitConfiguration(ENABLE_CURRENT_LIMIT,
         CONTINUOUS_CURRENT_LIMIT, TRIGGER_THRESHOLD_LIMIT, TRIGGER_THRESHOLD_TIME);
         
+        // TODO: Set up gear ratios, at least for the driveTalon
+        // TODO: Check if we need to set/configure any canifier settings
+
 
         azimuthConfig.remoteFilter0.remoteSensorDeviceID = _canifier.getDeviceID();
         azimuthConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANifier_PWMInput0;
@@ -42,13 +45,13 @@ public class DriveWheel extends Subsystem {
         azimuthConfig.slot0.allowableClosedloopError = 0;
         azimuthConfig.motionAcceleration = 10_000;
         azimuthConfig.motionCruiseVelocity = 800;
-        driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Relative;
+        driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
         // for (int i = 0; i < 4; i++) {
-            TalonFX azimuthTalon = new TalonFX(0);
+            TalonFX azimuthTalon = new TalonFX(1);
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
  
-            TalonFX driveTalon = new TalonFX(10);
+            TalonFX driveTalon = new TalonFX(11);
             driveTalon.configAllSettings(driveConfig);
             driveTalon.configSupplyCurrentLimit(talonCurrentLimit); 
         // }
