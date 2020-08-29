@@ -50,11 +50,11 @@ public class DriveWheel extends Subsystem {
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
 
         // for (int i = 0; i < 4; i++) {
-            TalonFX azimuthTalon = new TalonFX(1);
+            TalonFX azimuthTalon = new TalonFX(11);
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
  
-            TalonFX driveTalon = new TalonFX(11);
+            TalonFX driveTalon = new TalonFX(01);
             driveTalon.configAllSettings(driveConfig);
             driveTalon.configSupplyCurrentLimit(talonCurrentLimit); 
         // }
