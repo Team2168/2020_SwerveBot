@@ -10,6 +10,7 @@ package org.team2168.commands.drivewheel;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import org.team2168.subsystem.DriveWheel;
 import org.team2168.OI;
+import java.lang.Math;
 
 public class DriveWithJoystick extends CommandBase {
   /**
@@ -34,7 +35,7 @@ public class DriveWithJoystick extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    dw.set(oi.value1, oi.value2);
+    dw.set(oi.getGunStyleXValue(), Math.abs(oi.getDriveTrainLeftJoystick())); // abs for testing purposes; set doesn't take negative values
   }
 
   // Called once the command ends or is interrupted.

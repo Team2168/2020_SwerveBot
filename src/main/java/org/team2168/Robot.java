@@ -12,6 +12,7 @@ import org.team2168.subsystem.DriveWheel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -38,7 +39,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    DriveWheel.getInstance();
+    drivewheel = DriveWheel.getInstance();
   }
 
   /**
@@ -100,7 +101,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    drivewithjoystick.execute();
+    Scheduler.getInstance().run();
   }
 
   /**
@@ -115,7 +116,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledPeriodic() {
-    drivewithjoystick.end(true);
+    Scheduler.getInstance().run();
   }
 
   /**
