@@ -2,9 +2,7 @@
 package org.team2168;
 
 import org.team2168.utils.F310;
-import org.team2168.utils.RobotMap;
 import org.team2168.utils.LinearInterpolator;
-
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -49,19 +47,20 @@ public class OI
 	// public F310 testJoystick = new F310(RobotMap.COMMANDS_TEST_JOYSTICK);
 	//public F310 pidTestJoystick = new F310(RobotMap.PID_TEST_JOYSTICK);
 
+	private LinearInterpolator gunStyleXInterpolator;
 	private double[][] gunStyleXArray = {
-		{-1.0, -0.50},  //scale down turning to max 70%
+		{-1.0, -0.50},  //scale down turning to max 50%
 		{-0.05, 0.00},  //set neutral deadband to 5%
 		{+0.05, 0.00},
 		{+1.00,+0.50}  
 	};
 
+
 	/**
 	 * Private constructor for singleton class which instantiates the OI object
 	 */
 	private OI() {
-
-		
+		gunStyleXInterpolator = new LinearInterpolator(gunStyleXArray);
 	}
 	
 	/**
