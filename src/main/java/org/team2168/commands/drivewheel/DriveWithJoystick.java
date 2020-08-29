@@ -35,7 +35,7 @@ public class DriveWithJoystick extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    dw.set(oi.getGunStyleXValue(), Math.abs(oi.getDriverLeftJoystick_Y())); // abs for testing purposes; set doesn't take negative values
+    dw.set(oi.getGunStyleXValue(), Math.abs(oi.getGunStyleYValue())); // abs for testing purposes; set doesn't take negative values
   }
 
   // Called once the command ends
