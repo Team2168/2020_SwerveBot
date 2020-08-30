@@ -43,21 +43,25 @@ public class DriveWheel extends Subsystem {
         azimuthConfig.remoteFilter0.remoteSensorDeviceID = _canifier.getDeviceID();
         azimuthConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANifier_PWMInput1;
         azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
-        azimuthConfig.slot0.kP = 0.05;
+        azimuthConfig.slot0.kP = 2.4;
         azimuthConfig.slot0.kI = 0.0;
-        azimuthConfig.slot0.kD = 0.0;
+        azimuthConfig.slot0.kD = 168.0;
         azimuthConfig.slot0.kF = 0.0;
         azimuthConfig.slot0.integralZone = 0;
         azimuthConfig.slot0.allowableClosedloopError = 0;
         azimuthConfig.motionAcceleration = 10_000;
         azimuthConfig.motionCruiseVelocity = 800;
         driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+        driveConfig.motionAcceleration = 500;
+        driveConfig.motionCruiseVelocity = 100;
 
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
 
         // for (int i = 0; i < 4; i++) {
             TalonFX azimuthTalon = new TalonFX(11);
             azimuthTalon.configFactoryDefault();
+            azimuthTalon.setInverted(true);
+            azimuthTalon.setSensorPhase(true);
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
  
