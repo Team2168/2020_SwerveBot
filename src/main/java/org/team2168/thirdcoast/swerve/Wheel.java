@@ -79,9 +79,8 @@ public class Wheel {
     // don't reset wheel azimuth direction to zero when returning to neutral
     if (drive == 0) {
       driver.accept(0d);
-      return;
+      //return;  commented for testing purposes
     }
-
     azimuth *= -TICKS; // flip azimuth, hardware configuration dependent
 
     double azimuthPosition = azimuthTalon.getSelectedSensorPosition(0);
