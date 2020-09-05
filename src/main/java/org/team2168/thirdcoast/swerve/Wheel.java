@@ -37,12 +37,16 @@ public class Wheel {
   private static final int TICKS = 4096;
 
   private static final Logger logger = LoggerFactory.getLogger(Wheel.class);
+  private static final double GEAR_RATIO = 1.0/1.0; // defined as module input/motor output; placeholder
   private final double driveSetpointMax;
   private final BaseTalon driveTalon;
   private final TalonFX azimuthTalon;
   // private final TalonSRX azimuthTalon; 
   protected DoubleConsumer driver;
   private boolean isInverted = false;
+  private int primaryPID = 0;
+  private int auxPID = 1; //specifies the auxiliary pid loop for any method that takes in a pididx
+
 
   /**
    * This constructs a wheel with supplied azimuth and drive talons.
@@ -173,11 +177,16 @@ public class Wheel {
    * @return 0 - 4095, corresponding to one full revolution.
    */
   public int getAzimuthAbsolutePosition() {
-    // return azimuthTalon.getSensorCollection().getPulseWidthPosition() & 0xFFF;
-    // TODO: return the azimuth encoder position
-    return 0; 
+     return 0;
   }
-
+/**
+ * Returns the azimuth's position, taking into account the gear ratio.
+ * 
+ * @return position in motor ticks
+ */
+  public double getAzimuthPosition() {
+    return azimuthTalon.getSelectedSensorPosition(primaryPID) * GEAR_RATIO;
+  }
   /**
    * Get the azimuth Talon controller.
    *
@@ -198,6 +207,10 @@ public class Wheel {
 
   public double getDriveSetpointMax() {
     return driveSetpointMax;
+  }
+
+  public int getExternalEncoderPos() {
+    return azimuthTalon.getSelectedSensorPosition(auxPID);
   }
 
   public boolean isInverted() {
