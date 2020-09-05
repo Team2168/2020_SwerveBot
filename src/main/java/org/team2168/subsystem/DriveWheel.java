@@ -109,7 +109,6 @@ public class DriveWheel extends Subsystem {
     public void initializeAzimuthPosition() {
         int position = wheel.getExternalEncoderPos();
         wheel.setAzimuthInternalEncoderPosition(position);
-        System.out.println("it worked " + position);
     }
 
     //Allows for the Azimuth and Speed to be changed

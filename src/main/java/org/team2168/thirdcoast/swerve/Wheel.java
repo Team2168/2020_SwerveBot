@@ -37,7 +37,9 @@ public class Wheel {
   private static final int TICKS = 4096;
 
   private static final Logger logger = LoggerFactory.getLogger(Wheel.class);
-  private static final double GEAR_RATIO = 1.0/1.0; // defined as module input/motor output; placeholder
+  private static final double GEAR_RATIO = 9.02/1.0; // defined as module input/motor output; placeholder
+  private static final double INTERNAL_ENCODER_TICKS = 2048;
+  private static final double EXTERNAL_ENCODER_TICKS = 4096;
   private final double driveSetpointMax;
   private final BaseTalon driveTalon;
   private final TalonFX azimuthTalon;
@@ -183,10 +185,10 @@ public class Wheel {
   /**
    * Sets the azimuth's internal encoder to the given position
    * 
-   * @param position position in encoder ticks
+   * @param position position in absolute encoder ticks
    */
   public void setAzimuthInternalEncoderPosition(int position) {
-    azimuthTalon.setSelectedSensorPosition(position, primaryPID, 0);
+    azimuthTalon.setSelectedSensorPosition((position * (INTERNAL_ENCODER_TICKS/EXTERNAL_ENCODER_TICKS)), primaryPID, 0);
   }
 
   /**
