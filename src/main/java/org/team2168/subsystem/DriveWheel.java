@@ -106,9 +106,10 @@ public class DriveWheel extends Subsystem {
         wheel.stop();
     }
 
-    private void initializeAzimuthPosition() {
+    public void initializeAzimuthPosition() {
         int position = wheel.getExternalEncoderPos();
         wheel.setAzimuthInternalEncoderPosition(position);
+        System.out.println("it worked " + position);
     }
 
     //Allows for the Azimuth and Speed to be changed
@@ -118,7 +119,7 @@ public class DriveWheel extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new DriveWithJoystick());
+        //setDefaultCommand(new DriveWithJoystick());
     }
 
 }
