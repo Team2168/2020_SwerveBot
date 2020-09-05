@@ -75,6 +75,7 @@ public class DriveWheel extends Subsystem {
         // }
 
         wheel = new Wheel(azimuthTalon, driveTalon, 1.0);
+        initializeAzimuthPosition();
     }
 
     
@@ -92,12 +93,22 @@ public class DriveWheel extends Subsystem {
         wheel.set(azimuth, drive);
     }
 
+    /**
+     * Set the absolute module heading in terms of the module
+     * 
+     * @param position position in motor ticks
+     */
     public void setAzimuth(int position) {
         wheel.setAzimuthPosition(position);
     }
 
     public void stop() {
         wheel.stop();
+    }
+
+    private void initializeAzimuthPosition() {
+        int position = wheel.getExternalEncoderPos();
+        wheel.setAzimuthInternalEncoderPosition(position);
     }
 
     //Allows for the Azimuth and Speed to be changed

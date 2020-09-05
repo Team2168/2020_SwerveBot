@@ -102,12 +102,21 @@ public class Wheel {
   }
 
   /**
-   * Set azimuth to encoder position.
+   * Set azimuth motor to encoder position.
    *
    * @param position position in encoder ticks.
    */
-  public void setAzimuthPosition(int position) {
+  public void setAzimuthMotorPosition(int position) {
     azimuthTalon.set(MotionMagic, position);
+  }
+
+  /**
+   * Set module heading
+   * 
+   * @param position position in motor ticks
+   */
+  public void setAzimuthPosition(int position) {
+    setAzimuthMotorPosition((int)(position / GEAR_RATIO));
   }
 
   public void disableAzimuth() {
@@ -172,6 +181,15 @@ public class Wheel {
   }
 
   /**
+   * Sets the azimuth's internal encoder to the given position
+   * 
+   * @param position position in encoder ticks
+   */
+  public setAzimuthInternalEncoderPosition(int position) {
+    azimuthTalon.setSelectedSensorPosition(primaryPID, position);
+  }
+
+  /**
    * Returns the wheel's azimuth absolute position in encoder ticks.
    *
    * @return 0 - 4095, corresponding to one full revolution.
@@ -179,14 +197,16 @@ public class Wheel {
   public int getAzimuthAbsolutePosition() {
      return 0;
   }
+
 /**
- * Returns the azimuth's position, taking into account the gear ratio.
+ * Returns the module heading, taking into account the gear ratio.
  * 
  * @return position in motor ticks
  */
   public double getAzimuthPosition() {
     return azimuthTalon.getSelectedSensorPosition(primaryPID) * GEAR_RATIO;
   }
+
   /**
    * Get the azimuth Talon controller.
    *
@@ -209,6 +229,11 @@ public class Wheel {
     return driveSetpointMax;
   }
 
+  /**
+   * Get the position of the azimuth's external encoder
+   * 
+   * @return position in encoder ticks
+   */
   public int getExternalEncoderPos() {
     return azimuthTalon.getSelectedSensorPosition(auxPID);
   }
