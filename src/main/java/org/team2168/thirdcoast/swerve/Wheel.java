@@ -37,7 +37,8 @@ public class Wheel {
   private static final int TICKS = 4096;
 
   private static final Logger logger = LoggerFactory.getLogger(Wheel.class);
-  private static final double GEAR_RATIO = 9.02/1.0; // defined as module input/motor output; placeholder
+  private static final double AZIMUTH_GEAR_RATIO = (60.0/10.0) * (45.0/15.0); // defined as module input/motor output; placeholder
+  private static final double DRIVE_GEAR_RATIO = (60.0/15.0) * (20.0/24.0) * (38.0/18.0);
   private static final double INTERNAL_ENCODER_TICKS = 2048;
   private static final double EXTERNAL_ENCODER_TICKS = 4096;
   private final double driveSetpointMax;
@@ -118,7 +119,7 @@ public class Wheel {
    * @param position position in motor ticks
    */
   public void setAzimuthPosition(int position) {
-    setAzimuthMotorPosition((int)(position / GEAR_RATIO));
+    setAzimuthMotorPosition((int)(position / AZIMUTH_GEAR_RATIO));
   }
 
   public void disableAzimuth() {
@@ -206,7 +207,7 @@ public class Wheel {
  * @return position in motor ticks
  */
   public double getAzimuthPosition() {
-    return azimuthTalon.getSelectedSensorPosition(primaryPID) * GEAR_RATIO;
+    return azimuthTalon.getSelectedSensorPosition(primaryPID) * AZIMUTH_GEAR_RATIO;
   }
 
   /**
