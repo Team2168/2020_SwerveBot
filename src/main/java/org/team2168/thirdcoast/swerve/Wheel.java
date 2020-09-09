@@ -39,8 +39,8 @@ public class Wheel {
   private static final Logger logger = LoggerFactory.getLogger(Wheel.class);
   private static final double AZIMUTH_GEAR_RATIO = (60.0/10.0) * (45.0/15.0); // defined as module input/motor output; placeholder
   private static final double DRIVE_GEAR_RATIO = (60.0/15.0) * (20.0/24.0) * (38.0/18.0);
-  private static final double INTERNAL_ENCODER_TICKS = 2048;
-  private static final double EXTERNAL_ENCODER_TICKS = 4096;
+  private static final int INTERNAL_ENCODER_TICKS = 2048;
+  private static final int EXTERNAL_ENCODER_TICKS = 4096;
   private final double driveSetpointMax;
   private final BaseTalon driveTalon;
   private final TalonFX azimuthTalon;
@@ -178,11 +178,20 @@ public class Wheel {
    */
   public void setAzimuthZero(int zero) {
     int azimuthSetpoint = getAzimuthAbsolutePosition() - zero;
-    ErrorCode err = azimuthTalon.setSelectedSensorPosition(azimuthSetpoint, 0, 10);
+    ErrorCode err = azimuthTalon.setSelectedSensorPosition(externalToInternalTicks(azimuthSetpoint), primaryPID, 10);
     Errors.check(err, logger);
     azimuthTalon.set(MotionMagic, azimuthSetpoint);
   }
 
+  /**
+   * Takes in a number of ticks from the external encoder of a module, and estamates a number of internal
+   * ticks based off the number
+   * @param externalTicks a number of ticks from the external encoder
+   * @return a proportional number of estamated internal ticks
+   */
+  public int externalToInternalTicks(int externalTicks) {
+    return (int) Math.round(externalTicks*(INTERNAL_ENCODER_TICKS/EXTERNAL_ENCODER_TICKS)*AZIMUTH_GEAR_RATIO);
+  }
   /**
    * Sets the azimuth's internal encoder to the given position
    * 
@@ -194,11 +203,12 @@ public class Wheel {
 
   /**
    * Returns the wheel's azimuth absolute position in encoder ticks.
+   * This method is primarily used for zeroing the
    *
    * @return 0 - 4095, corresponding to one full revolution.
    */
   public int getAzimuthAbsolutePosition() {
-     return 0;
+    return azimuthTalon.getSelectedSensorPosition(auxPID);
   }
 
 /**
