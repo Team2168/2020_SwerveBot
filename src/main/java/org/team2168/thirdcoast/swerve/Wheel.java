@@ -41,6 +41,7 @@ public class Wheel {
   private static final double DRIVE_GEAR_RATIO = (60.0/15.0) * (20.0/24.0) * (38.0/18.0);
   private static final int INTERNAL_ENCODER_TICKS = 2048;
   private static final int EXTERNAL_ENCODER_TICKS = 4096;
+  private static final double TICKS_PER_DEGREE = ((double)(1/360) * EXTERNAL_ENCODER_TICKS * AZIMUTH_GEAR_RATIO * (INTERNAL_ENCODER_TICKS / EXTERNAL_ENCODER_TICKS));
   private final double driveSetpointMax;
   private final BaseTalon driveTalon;
   private final TalonFX azimuthTalon;
@@ -192,6 +193,27 @@ public class Wheel {
   public int externalToInternalTicks(int externalTicks) {
     return (int) Math.round(externalTicks*(INTERNAL_ENCODER_TICKS/EXTERNAL_ENCODER_TICKS)*AZIMUTH_GEAR_RATIO);
   }
+  /**
+  * Takes in a number of degrees that we want to rotate the azimuth motor by and converts it to the number of ticks
+  * the external encoder should move by
+  * 
+  * @param degrees number of degrees the wheel needs to move
+  * @return the number of ticks the external encoder should rotate in order to rotate the azimuth motor
+  */
+  public double degreesToTicks(double degrees) {
+    return (degrees * TICKS_PER_DEGREE);
+  }
+  /**
+  * Takes in a number of ticks the External encoder has moved and calculates the number of degrees
+  * the wheel rotated
+  * 
+  * @param ticks number of ticks the external encoder has rotated
+  * @return number of degrees the wheel moved
+  */
+  public double ticksToDegrees(double ticks) {
+    return (ticks / TICKS_PER_DEGREE);
+  }
+
   /**
    * Sets the azimuth's internal encoder to the given position
    * 

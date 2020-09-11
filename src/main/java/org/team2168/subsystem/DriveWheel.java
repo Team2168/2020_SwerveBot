@@ -52,11 +52,11 @@ public class DriveWheel extends Subsystem {
         azimuthConfig.slot0.kF = 0.0;
         azimuthConfig.slot0.integralZone = 0;
         azimuthConfig.slot0.allowableClosedloopError = 0;
-        azimuthConfig.motionAcceleration = 10_000;
-        azimuthConfig.motionCruiseVelocity = 800;
+        azimuthConfig.motionAcceleration = (int) wheel.degreesToTicks(180); //10_000;
+        azimuthConfig.motionCruiseVelocity = (int) wheel.degreesToTicks(30); //800;
         driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
-        driveConfig.motionAcceleration = 500;
-        driveConfig.motionCruiseVelocity = 100;
+        driveConfig.motionAcceleration = (int) wheel.degreesToTicks(20); //500;
+        driveConfig.motionCruiseVelocity = (int) wheel.degreesToTicks(5); //100;
 
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
 
