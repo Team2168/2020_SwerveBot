@@ -41,7 +41,8 @@ public class Wheel {
   private static final double DRIVE_GEAR_RATIO = (60.0/15.0) * (20.0/24.0) * (38.0/18.0);
   private static final int INTERNAL_ENCODER_TICKS = 2048;
   private static final int EXTERNAL_ENCODER_TICKS = 4096;
-  private static final double TICKS_PER_DEGREE = ((double)(1/360) * EXTERNAL_ENCODER_TICKS * AZIMUTH_GEAR_RATIO * (INTERNAL_ENCODER_TICKS / EXTERNAL_ENCODER_TICKS));
+  private static final double TICKS_PER_DEGREE_AZIMUTH = ((1.0/360.0) * AZIMUTH_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
+  private static final double TICKS_PER_DEGREE_DW = ((1.0/360.0) * DRIVE_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
   private final double driveSetpointMax;
   private final BaseTalon driveTalon;
   private final TalonFX azimuthTalon;
@@ -193,26 +194,74 @@ public class Wheel {
   public int externalToInternalTicks(int externalTicks) {
     return (int) Math.round(externalTicks*(INTERNAL_ENCODER_TICKS/EXTERNAL_ENCODER_TICKS)*AZIMUTH_GEAR_RATIO);
   }
+
   /**
-  * Takes in a number of degrees that we want to rotate the azimuth motor by and converts it to the number of ticks
-  * the external encoder should move by
-  * 
-  * @param degrees number of degrees the wheel needs to move
-  * @return the number of ticks the external encoder should rotate in order to rotate the azimuth motor
-  */
-  public double degreesToTicks(double degrees) {
-    return (degrees * TICKS_PER_DEGREE);
+   * Takes in a number of degrees that we want to rotate the azimuth motor by and converts it to the number of ticks
+   * the internal encoder should move by
+   * 
+   * @param degrees number of degrees the wheel needs to rotate
+   * @return the number of ticks the internal encoder should rotate in order to rotate the azimuth motor
+   */
+  public int degreesToTicksAzimuth(double degrees) {
+    return (int) (degrees * TICKS_PER_DEGREE_AZIMUTH);
   }
+
   /**
-  * Takes in a number of ticks the External encoder has moved and calculates the number of degrees
-  * the wheel rotated
-  * 
-  * @param ticks number of ticks the external encoder has rotated
-  * @return number of degrees the wheel moved
-  */
-  public double ticksToDegrees(double ticks) {
-    return (ticks / TICKS_PER_DEGREE);
+   * Takes in a number of ticks the internal encoder has moved and calculates the number of degrees
+   * the azimuth wheel rotated
+   * 
+   * @param ticks number of ticks the internal encoder has rotated
+   * @return number of degrees the wheel moved
+   */
+  public double ticksToDegreesAzimuth(double ticks) {
+    return (ticks / TICKS_PER_DEGREE_AZIMUTH);
   }
+
+  /**
+   * Takes in the number of degrees the wheel has/needs to rotate and calculates the 
+   * the number of internal encoder ticks the movement equals
+   * 
+   * @param degrees number of degrees the drive wheel has/needs to rotate
+   * @return number of ticks for the drive wheel's internal encoder
+   */
+  public int degreesToTicksDW(double degrees) {
+    return (int) (degrees * TICKS_PER_DEGREE_DW);
+  }
+
+  /**
+   * Takes in the number of ticks the internal encoder has moved and calculates the number of degrees 
+   * the drive wheel has/needs to rotate
+   * 
+   * @param ticks number of ticks the drive wheel has/needs to rotate
+   * @return number of degrees for the movement of the drivewheel
+   */
+  public double ticksToDegreesDW(double ticks) {
+    return (ticks / TICKS_PER_DEGREE_DW);
+  }
+
+  /**
+   * Takes in the desired degrees per second (DPS) for the drive wheel and calculates the number of ticks
+   * per 100 ms (units ctre wants for rate limits)
+   * 
+   * @param degrees number of degrees per second 
+   * @return number of ticks per 100 ms
+   */
+  public int DPSToTicksPer100msDW(double degrees) {
+    return (int) (degrees * TICKS_PER_DEGREE_DW / 10.0);
+  }
+
+  
+  /**
+   * Takes in the desired degrees per second (DPS) for the module azimuth and calculates the number of ticks
+   * per 100 ms (units ctre wants for rate limits)
+   * 
+   * @param degrees number of degrees per second
+   * @return number of ticks per 100 ms
+   */
+  public int DPSToTIcksPer100msAzimuth(double degrees) {
+    return (int) (degrees * TICKS_PER_DEGREE_AZIMUTH / 10.0);
+  }
+
 
   /**
    * Sets the azimuth's internal encoder to the given position
