@@ -46,12 +46,12 @@ public class DriveWheel extends Subsystem {
         azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
         // a possible workaround to get the remote sensor value?
         azimuthConfig.auxiliaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
-        azimuthConfig.slot0.kP = 2.4;
+        azimuthConfig.slot0.kP = 0.075;
         azimuthConfig.slot0.kI = 0.0;
-        azimuthConfig.slot0.kD = 168.0;
+        azimuthConfig.slot0.kD = 0.0;
         azimuthConfig.slot0.kF = 0.0;
         azimuthConfig.slot0.integralZone = 0;
-        azimuthConfig.slot0.allowableClosedloopError = 0;
+        azimuthConfig.slot0.allowableClosedloopError = Wheel.degreesToTicksAzimuth(0.1);
         azimuthConfig.motionAcceleration = Wheel.DPSToTicksPer100msAzimuth(180); //10_000;
         azimuthConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msAzimuth(30); //800;
         driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
@@ -118,7 +118,7 @@ public class DriveWheel extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        //setDefaultCommand(new DriveWithJoystick());
+        setDefaultCommand(new DriveWithJoystick());
     }
 
 }
