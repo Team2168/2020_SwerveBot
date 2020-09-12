@@ -34,8 +34,6 @@ import org.team2168.thirdcoast.talon.Errors;
  * drive Talon IDs in the range 10-13.
  */
 public class Wheel {
-  private static final int TICKS = 4096;
-
   private static final Logger logger = LoggerFactory.getLogger(Wheel.class);
   private static final double AZIMUTH_GEAR_RATIO = (60.0/10.0) * (45.0/15.0); // defined as module input/motor output; placeholder
   private static final double DRIVE_GEAR_RATIO = (60.0/15.0) * (20.0/24.0) * (38.0/18.0);
@@ -43,6 +41,7 @@ public class Wheel {
   private static final int EXTERNAL_ENCODER_TICKS = 4096;
   private static final double TICKS_PER_DEGREE_AZIMUTH = ((1.0/360.0) * AZIMUTH_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
   private static final double TICKS_PER_DEGREE_DW = ((1.0/360.0) * DRIVE_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
+  private static final double INTERNAL_ENCODER_TICKS_PER_REV = 360 * TICKS_PER_DEGREE_AZIMUTH;
   private final double driveSetpointMax;
   private final BaseTalon driveTalon;
   private final TalonFX azimuthTalon;
@@ -90,15 +89,15 @@ public class Wheel {
       driver.accept(0d);
       //return;  commented for testing purposes
     }
-    azimuth *= -TICKS; // flip azimuth, hardware configuration dependent
+    azimuth *= -INTERNAL_ENCODER_TICKS_PER_REV; // flip azimuth, hardware configuration dependent
 
     double azimuthPosition = azimuthTalon.getSelectedSensorPosition(0);
-    double azimuthError = Math.IEEEremainder(azimuth - azimuthPosition, TICKS);
+    double azimuthError = Math.IEEEremainder(azimuth - azimuthPosition, INTERNAL_ENCODER_TICKS_PER_REV);
 
     // minimize azimuth rotation, reversing drive if necessary
-    isInverted = Math.abs(azimuthError) > 0.25 * TICKS;
+    isInverted = Math.abs(azimuthError) > 0.25 * INTERNAL_ENCODER_TICKS_PER_REV;
     if (isInverted) {
-      azimuthError -= Math.copySign(0.5 * TICKS, azimuthError);
+      azimuthError -= Math.copySign(0.5 * INTERNAL_ENCODER_TICKS_PER_REV, azimuthError);
       drive = -drive;
     }
     //@TODO WHERE DID MotionMagic COME FROM???
