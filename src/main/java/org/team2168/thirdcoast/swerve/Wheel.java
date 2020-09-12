@@ -269,7 +269,7 @@ public class Wheel {
    * @param position position in absolute encoder ticks
    */
   public void setAzimuthInternalEncoderPosition(int position) {
-    azimuthTalon.setSelectedSensorPosition((int)(position * (INTERNAL_ENCODER_TICKS/EXTERNAL_ENCODER_TICKS)), primaryPID, 0);
+    azimuthTalon.setSelectedSensorPosition((int)((position * ((double)INTERNAL_ENCODER_TICKS/(double)EXTERNAL_ENCODER_TICKS)) * AZIMUTH_GEAR_RATIO), primaryPID, 0);
   }
 
   /**
