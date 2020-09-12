@@ -262,8 +262,8 @@ public class Wheel {
 
 
   /**
-   * Sets the azimuth's internal encoder to the given position
-   * 
+   * Sets the azimuth internal encoder's current position to the given absolute encoder position,
+   * taking difference in resolution and gear ratio into account
    * @param position position in absolute encoder ticks
    */
   public void setAzimuthInternalEncoderPosition(int position) {
@@ -280,11 +280,11 @@ public class Wheel {
     return azimuthTalon.getSelectedSensorPosition(auxPID);
   }
 
-/**
- * Returns the module heading, taking into account the gear ratio.
- * 
- * @return position in motor ticks
- */
+  /**
+   * Returns the module heading, taking into account the gear ratio.
+   * 
+   * @return position in motor ticks
+   */
   public double getAzimuthPosition() {
     return azimuthTalon.getSelectedSensorPosition(primaryPID) * AZIMUTH_GEAR_RATIO;
   }

@@ -90,6 +90,12 @@ public class DriveWheel extends Subsystem {
         return instance;
       }
     
+    /**
+     * Sets the azimuth and drive for the given module
+     * @param azimuth -0.5 to 0.5 rotations, measured clockwise with zero being the wheel's zeroed
+   *     position
+     * @param drive 0 to 1.0 in the direction of the wheel azimuth
+     */
     public void set(double azimuth, double drive) {
         wheel.set(azimuth, drive);
     }
@@ -103,10 +109,17 @@ public class DriveWheel extends Subsystem {
         wheel.setAzimuthPosition(position);
     }
 
+    /**
+     * Stop azimuth and drive movement
+     */
     public void stop() {
         wheel.stop();
     }
 
+    /**
+     * Sets the azimuth internal encoder's current position to that of the external encoder,
+     * taking difference in resolution and gear ratio into account
+     */
     public void initializeAzimuthPosition() {
         int position = wheel.getExternalEncoderPos();
         wheel.setAzimuthInternalEncoderPosition(position);
