@@ -52,8 +52,8 @@ public class DriveWheel extends Subsystem {
         azimuthConfig.slot0.kF = 0.0;
         azimuthConfig.slot0.integralZone = 0;
         azimuthConfig.slot0.allowableClosedloopError = Wheel.degreesToTicksAzimuth(0.1);
-        azimuthConfig.motionAcceleration = Wheel.DPSToTicksPer100msAzimuth(180); //10_000;
-        azimuthConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msAzimuth(30); //800;
+        azimuthConfig.motionAcceleration = Wheel.DPSToTicksPer100msAzimuth(7000); //10_000;
+        azimuthConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msAzimuth(700); //800;
         driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
         driveConfig.motionAcceleration = Wheel.DPSToTicksPer100msDW(180); //500;
         driveConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msDW(30); //100;
