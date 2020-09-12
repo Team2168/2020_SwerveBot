@@ -28,6 +28,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private static DriveWheel drivewheel;
+  private static OI oi;
   // private static DriveWithJoystick drivewithjoystick;
   /**
    * This function is run when the robot is first started up and should be
@@ -40,6 +41,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto choices", m_chooser);
 
     drivewheel = DriveWheel.getInstance();
+    oi = OI.getInstance();
   }
 
   /**

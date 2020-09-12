@@ -3,6 +3,7 @@ package org.team2168;
 
 import org.team2168.utils.F310;
 import org.team2168.utils.LinearInterpolator;
+import org.team2168.commands.drivewheel.InitializeInternalAzimuthEncoder;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -69,6 +70,8 @@ public class OI
 	private OI() {
 		gunStyleYInterpolator = new LinearInterpolator(gunStyleYArray);
 		gunStyleXInterpolator = new LinearInterpolator(gunStyleXArray);
+
+		driverJoystick.ButtonBack().whenPressed(new InitializeInternalAzimuthEncoder());
 	}
 	
 	/**

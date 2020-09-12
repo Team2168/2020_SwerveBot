@@ -42,18 +42,21 @@ public class DriveWheel extends Subsystem {
 
         azimuthConfig.remoteFilter0.remoteSensorDeviceID = _canifier.getDeviceID();
         azimuthConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANifier_PWMInput1;
-        azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
-        azimuthConfig.slot0.kP = 2.4;
+        // azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
+        azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+        // a possible workaround to get the remote sensor value?
+        azimuthConfig.auxiliaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
+        azimuthConfig.slot0.kP = 0.075;
         azimuthConfig.slot0.kI = 0.0;
-        azimuthConfig.slot0.kD = 168.0;
+        azimuthConfig.slot0.kD = 0.0;
         azimuthConfig.slot0.kF = 0.0;
         azimuthConfig.slot0.integralZone = 0;
-        azimuthConfig.slot0.allowableClosedloopError = 0;
-        azimuthConfig.motionAcceleration = 10_000;
-        azimuthConfig.motionCruiseVelocity = 800;
+        azimuthConfig.slot0.allowableClosedloopError = Wheel.degreesToTicksAzimuth(0.1);
+        azimuthConfig.motionAcceleration = Wheel.DPSToTicksPer100msAzimuth(7000); //10_000;
+        azimuthConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msAzimuth(700); //800;
         driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
-        driveConfig.motionAcceleration = 500;
-        driveConfig.motionCruiseVelocity = 100;
+        driveConfig.motionAcceleration = Wheel.DPSToTicksPer100msDW(180); //500;
+        driveConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msDW(30); //100;
 
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
 
@@ -72,6 +75,7 @@ public class DriveWheel extends Subsystem {
         // }
 
         wheel = new Wheel(azimuthTalon, driveTalon, 1.0);
+        initializeAzimuthPosition();
     }
 
     
@@ -89,12 +93,22 @@ public class DriveWheel extends Subsystem {
         wheel.set(azimuth, drive);
     }
 
+    /**
+     * Set the absolute module heading in terms of the module
+     * 
+     * @param position position in motor ticks
+     */
     public void setAzimuth(int position) {
         wheel.setAzimuthPosition(position);
     }
 
     public void stop() {
         wheel.stop();
+    }
+
+    public void initializeAzimuthPosition() {
+        int position = wheel.getExternalEncoderPos();
+        wheel.setAzimuthInternalEncoderPosition(position);
     }
 
     //Allows for the Azimuth and Speed to be changed
