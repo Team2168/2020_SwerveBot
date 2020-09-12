@@ -9,13 +9,13 @@ import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 
 import org.team2168.commands.drivewheel.DriveWithJoystick;
-import org.team2168.thirdcoast.swerve.Wheel;
+import org.team2168.thirdcoast.swerve.*;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class DriveWheel extends Subsystem {
     private CANifier _canifier = new CANifier(00);
-    Wheel wheel;
+    Wheel[] wheels = new Wheel[4];
     private final boolean ENABLE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_CURRENT_LIMIT = 40; //amps
     private final double TRIGGER_THRESHOLD_LIMIT = 60; //amp
@@ -60,21 +60,22 @@ public class DriveWheel extends Subsystem {
 
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
 
-        // for (int i = 0; i < 4; i++) {
-            TalonFX azimuthTalon = new TalonFX(11);
+        for (int i = 0; i < 4; i++) {
+            TalonFX azimuthTalon = new TalonFX(11 + i);
             azimuthTalon.configFactoryDefault();
             azimuthTalon.setInverted(true);
             azimuthTalon.setSensorPhase(true);
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
  
-            TalonFX driveTalon = new TalonFX(01);
+            TalonFX driveTalon = new TalonFX(1 + i);
             driveTalon.configFactoryDefault();
             driveTalon.configAllSettings(driveConfig);
-            driveTalon.configSupplyCurrentLimit(talonCurrentLimit); 
-        // }
+            driveTalon.configSupplyCurrentLimit(talonCurrentLimit);
 
-        wheel = new Wheel(azimuthTalon, driveTalon, 1.0);
+            wheel = new Wheel(azimuthTalon, driveTalon, 1.0);
+            wheels[i] = wheel;
+        }
         initializeAzimuthPosition();
     }
 
