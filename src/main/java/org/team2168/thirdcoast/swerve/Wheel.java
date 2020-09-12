@@ -191,7 +191,7 @@ public class Wheel {
    * @param externalTicks a number of ticks from the external encoder
    * @return a proportional number of estamated internal ticks
    */
-  public int externalToInternalTicks(int externalTicks) {
+  public static int externalToInternalTicks(int externalTicks) {
     return (int) Math.round(externalTicks*(INTERNAL_ENCODER_TICKS/EXTERNAL_ENCODER_TICKS)*AZIMUTH_GEAR_RATIO);
   }
 
@@ -202,7 +202,7 @@ public class Wheel {
    * @param degrees number of degrees the wheel needs to rotate
    * @return the number of ticks the internal encoder should rotate in order to rotate the azimuth motor
    */
-  public int degreesToTicksAzimuth(double degrees) {
+  public static int degreesToTicksAzimuth(double degrees) {
     return (int) (degrees * TICKS_PER_DEGREE_AZIMUTH);
   }
 
@@ -213,7 +213,7 @@ public class Wheel {
    * @param ticks number of ticks the internal encoder has rotated
    * @return number of degrees the wheel moved
    */
-  public double ticksToDegreesAzimuth(double ticks) {
+  public static double ticksToDegreesAzimuth(double ticks) {
     return (ticks / TICKS_PER_DEGREE_AZIMUTH);
   }
 
@@ -224,7 +224,7 @@ public class Wheel {
    * @param degrees number of degrees the drive wheel has/needs to rotate
    * @return number of ticks for the drive wheel's internal encoder
    */
-  public int degreesToTicksDW(double degrees) {
+  public static int degreesToTicksDW(double degrees) {
     return (int) (degrees * TICKS_PER_DEGREE_DW);
   }
 
@@ -235,7 +235,7 @@ public class Wheel {
    * @param ticks number of ticks the drive wheel has/needs to rotate
    * @return number of degrees for the movement of the drivewheel
    */
-  public double ticksToDegreesDW(double ticks) {
+  public static double ticksToDegreesDW(double ticks) {
     return (ticks / TICKS_PER_DEGREE_DW);
   }
 
@@ -246,7 +246,7 @@ public class Wheel {
    * @param degrees number of degrees per second 
    * @return number of ticks per 100 ms
    */
-  public int DPSToTicksPer100msDW(double degrees) {
+  public static int DPSToTicksPer100msDW(double degrees) {
     return (int) (degrees * TICKS_PER_DEGREE_DW / 10.0);
   }
 
@@ -258,7 +258,7 @@ public class Wheel {
    * @param degrees number of degrees per second
    * @return number of ticks per 100 ms
    */
-  public int DPSToTIcksPer100msAzimuth(double degrees) {
+  public static int DPSToTicksPer100msAzimuth(double degrees) {
     return (int) (degrees * TICKS_PER_DEGREE_AZIMUTH / 10.0);
   }
 
