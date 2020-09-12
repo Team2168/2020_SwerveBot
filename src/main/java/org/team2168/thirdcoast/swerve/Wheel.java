@@ -247,7 +247,7 @@ public class Wheel {
    * @return number of ticks per 100 ms
    */
   public static int DPSToTicksPer100msDW(double degrees) {
-    return (int) (degrees * TICKS_PER_DEGREE_DW / 10.0);
+    return (int) (degreesToTicksDW(degrees) / 10.0);
   }
 
   
@@ -259,7 +259,7 @@ public class Wheel {
    * @return number of ticks per 100 ms
    */
   public static int DPSToTicksPer100msAzimuth(double degrees) {
-    return (int) (degrees * TICKS_PER_DEGREE_AZIMUTH / 10.0);
+    return (int) (degreesToTicksAzimuth(degrees) / 10.0);
   }
 
 
