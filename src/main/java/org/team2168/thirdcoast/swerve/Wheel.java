@@ -10,7 +10,6 @@ import static org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode.TELEOP;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.can.BaseTalon;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import java.util.Objects;
 import java.util.function.DoubleConsumer;
 import org.slf4j.Logger;
@@ -100,7 +99,7 @@ public class Wheel {
       azimuthError -= Math.copySign(0.5 * INTERNAL_ENCODER_TICKS_PER_REV, azimuthError);
       drive = -drive;
     }
-    //@TODO WHERE DID MotionMagic COME FROM???
+
     azimuthTalon.set(MotionMagic, azimuthPosition + azimuthError);
     driver.accept(drive);
   }
