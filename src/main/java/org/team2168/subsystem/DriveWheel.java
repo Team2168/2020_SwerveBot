@@ -13,6 +13,7 @@ import org.team2168.thirdcoast.swerve.*;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+//TODO: rename to drivetrain
 public class DriveWheel extends Subsystem {
     private CANifier _canifier = new CANifier(00);
     Wheel[] wheels = new Wheel[4];
@@ -73,7 +74,7 @@ public class DriveWheel extends Subsystem {
             driveTalon.configAllSettings(driveConfig);
             driveTalon.configSupplyCurrentLimit(talonCurrentLimit);
 
-            wheel = new Wheel(azimuthTalon, driveTalon, 1.0);
+            Wheel wheel = new Wheel(azimuthTalon, driveTalon, 1.0);
             wheels[i] = wheel;
             initializeAzimuthPosition(wheel);
         }
@@ -97,6 +98,7 @@ public class DriveWheel extends Subsystem {
      * @param drive 0 to 1.0 in the direction of the wheel azimuth
      */
     public void set(Wheel wheel, double azimuth, double drive) {
+        //TODO: call from SwerveDrive rather than Wheel
         wheel.set(azimuth, drive);
     }
 
