@@ -75,8 +75,8 @@ public class DriveWheel extends Subsystem {
 
             wheel = new Wheel(azimuthTalon, driveTalon, 1.0);
             wheels[i] = wheel;
+            initializeAzimuthPosition(wheel);
         }
-        initializeAzimuthPosition();
     }
 
     
@@ -96,7 +96,7 @@ public class DriveWheel extends Subsystem {
    *     position
      * @param drive 0 to 1.0 in the direction of the wheel azimuth
      */
-    public void set(double azimuth, double drive) {
+    public void set(Wheel wheel, double azimuth, double drive) {
         wheel.set(azimuth, drive);
     }
 
@@ -105,14 +105,14 @@ public class DriveWheel extends Subsystem {
      * 
      * @param position position in motor ticks
      */
-    public void setAzimuth(int position) {
+    public void setAzimuth(Wheel wheel, int position) {
         wheel.setAzimuthPosition(position);
     }
 
     /**
      * Stop azimuth and drive movement
      */
-    public void stop() {
+    public void stop(Wheel wheel) {
         wheel.stop();
     }
 
@@ -120,7 +120,7 @@ public class DriveWheel extends Subsystem {
      * Sets the azimuth internal encoder's current position to that of the external encoder,
      * taking difference in resolution and gear ratio into account
      */
-    public void initializeAzimuthPosition() {
+    public void initializeAzimuthPosition(Wheel wheel) {
         int position = wheel.getExternalEncoderPos();
         wheel.setAzimuthInternalEncoderPosition(position);
     }
