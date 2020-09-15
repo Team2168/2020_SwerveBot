@@ -76,8 +76,8 @@ public class Drivetrain extends Subsystem {
 
             Wheel wheel = new Wheel(azimuthTalon, driveTalon, 1.0);
             wheels[i] = wheel;
-            initializeAzimuthPosition(wheel);
         }
+        initializeAzimuthPosition();
 
         SwerveDriveConfig config = new SwerveDriveConfig();
         config.wheels = wheels;
@@ -122,17 +122,6 @@ public class Drivetrain extends Subsystem {
      */
     public void stop() {
         sd.stop();
-    }
-
-    /**
-     * Sets the given azimuth internal encoder's current position to that of the corresponding external encoder,
-     * taking difference in resolution and gear ratio into account
-     * 
-     * @param wheel wheel to initialize
-     */
-    public void initializeAzimuthPosition(Wheel wheel) {
-        int position = wheel.getExternalEncoderPos();
-        wheel.setAzimuthInternalEncoderPosition(position);
     }
 
     /**
