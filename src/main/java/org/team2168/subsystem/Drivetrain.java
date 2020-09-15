@@ -121,12 +121,29 @@ public class Drivetrain extends Subsystem {
     }
 
     /**
-     * Sets the azimuth internal encoder's current position to that of the external encoder,
+     * Sets the given azimuth internal encoder's current position to that of the corresponding external encoder,
      * taking difference in resolution and gear ratio into account
+     * 
+     * @param wheel wheel to initialize
      */
     public void initializeAzimuthPosition(Wheel wheel) {
         int position = wheel.getExternalEncoderPos();
         wheel.setAzimuthInternalEncoderPosition(position);
+    }
+
+    /**
+     * Sets all azimuth internal encoders' current positions to those of the corresponding external encoders,
+     * taking difference in resolution and gear ratio into account
+     */
+    public void initializeAzimuthPosition() {
+        int position = wheels[0].getExternalEncoderPos();
+        wheels[0].setAzimuthInternalEncoderPosition(position);
+        position = wheels[1].getExternalEncoderPos();
+        wheels[1].setAzimuthInternalEncoderPosition(position);
+        position = wheels[2].getExternalEncoderPos();
+        wheels[2].setAzimuthInternalEncoderPosition(position);
+        position = wheels[3].getExternalEncoderPos();
+        wheels[3].setAzimuthInternalEncoderPosition(position);
     }
 
     //Allows for the Azimuth and Speed to be changed
