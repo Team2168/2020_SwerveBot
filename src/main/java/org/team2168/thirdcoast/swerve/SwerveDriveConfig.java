@@ -11,7 +11,8 @@ public class SwerveDriveConfig {
    */
   public AHRS gyro;
 
-  /** Initialize with four initialized wheels, incrementing clockwise in order from wheel 0 to wheel 3. 
+  /** Initialize with four initialized wheels, in order from wheel 0 to wheel 3.
+   *  0 is front left, 1 is front right, 2 is back left, and 3 is back right
    */
   public Wheel[] wheels;
 
