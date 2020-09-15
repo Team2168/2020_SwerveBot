@@ -223,6 +223,10 @@ public class SwerveDrive {
     return wheels;
   }
 
+  public static int getWheelCount() {
+    return WHEEL_COUNT;
+  }
+
   /**
    * Get the gyro instance being used by the drive.
    *

@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Drivetrain extends Subsystem {
     private CANifier _canifier = new CANifier(00);
-    private Wheel[] wheels = new Wheel[4];
+    private Wheel[] wheels = new Wheel[SwerveDrive.getWheelCount()];
     private SwerveDrive sd;
     private final boolean ENABLE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_CURRENT_LIMIT = 40; //amps
@@ -61,7 +61,7 @@ public class Drivetrain extends Subsystem {
 
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
             TalonFX azimuthTalon = new TalonFX(11 + i);
             azimuthTalon.configFactoryDefault();
             azimuthTalon.setInverted(true);
