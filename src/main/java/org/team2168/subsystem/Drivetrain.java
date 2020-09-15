@@ -116,11 +116,12 @@ public class Drivetrain extends Subsystem {
     }
 
     /**
-     * Stop azimuth and drive movement
+     * Stops all wheels' azimuth and drive movement. Calling this in the robots {@code teleopInit} and
+     * {@code autonomousInit} will reset wheel azimuth relative encoders to the current position and
+     * thereby prevent wheel rotation if the wheels were moved manually while the robot was disabled.
      */
     public void stop() {
-        for(Wheel wheel : wheels)
-            wheel.stop();
+        sd.stop();
     }
 
     /**
