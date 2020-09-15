@@ -94,16 +94,16 @@ public class Drivetrain extends Subsystem {
     
         return instance;
       }
-    
+
     /**
-     * Sets the azimuth and drive for the given module
-     * @param azimuth -0.5 to 0.5 rotations, measured clockwise with zero being the wheel's zeroed
-   *     position
-     * @param drive 0 to 1.0 in the direction of the wheel azimuth
+     * Drive the robot in given field-relative direction and with given rotation.
+     *
+     * @param forward Y-axis movement, from -1.0 (reverse) to 1.0 (forward)
+     * @param strafe X-axis movement, from -1.0 (left) to 1.0 (right)
+     * @param azimuth robot rotation, from -1.0 (CCW) to 1.0 (CW)
      */
-    public void set(Wheel wheel, double azimuth, double drive) {
-        //TODO: call from SwerveDrive rather than Wheel
-        wheel.set(azimuth, drive);
+    public void drive(double forward, double strafe, double azimuth) {
+        sd.drive(forward, strafe, azimuth);
     }
 
     /**
