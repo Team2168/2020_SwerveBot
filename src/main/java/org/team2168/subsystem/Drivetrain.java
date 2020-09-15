@@ -119,8 +119,8 @@ public class Drivetrain extends Subsystem {
      * Stop azimuth and drive movement
      */
     public void stop() {
-        for(int i = 0; i < 4; i++)
-            wheels[i].stop();
+        for(Wheel wheel : wheels)
+            wheel.stop();
     }
 
     /**
@@ -140,9 +140,9 @@ public class Drivetrain extends Subsystem {
      */
     public void initializeAzimuthPosition() {
         int position;
-        for(int i = 0; i < 4; i++) {
-            position = wheels[i].getExternalEncoderPos();
-            wheels[i].setAzimuthInternalEncoderPosition(position);
+        for(Wheel wheel : wheels) {
+            position = wheel.getExternalEncoderPos();
+            wheel.setAzimuthInternalEncoderPosition(position);
         }
     }
 
