@@ -48,19 +48,26 @@ public class OI
 	// public F310 testJoystick = new F310(RobotMap.COMMANDS_TEST_JOYSTICK);
 	//public F310 pidTestJoystick = new F310(RobotMap.PID_TEST_JOYSTICK);
 
-	private LinearInterpolator gunStyleYInterpolator;
-	private LinearInterpolator gunStyleXInterpolator;
-	private double[][] gunStyleYArray = {
+	private LinearInterpolator driverJoystickYInterpolator;
+	private LinearInterpolator driverJoystickXInterpolator;
+	private LinearInterpolator driverJoystickZInterpolator;
+	private double[][] driverJoystickYArray = {
 		{-1.0, -1.0},  //don't scale turning max
 		{-0.15, 0.00}, //set neutral deadband to 15%
 		{+0.15, 0.00},
 		{+1.00,+1.00}
 	};
-	private double[][] gunStyleXArray = {
+	private double[][] driverJoystickXArray = {
+		{-1.0, -1.0},  //don't scale turning max
+		{-0.15, 0.00}, //set neutral deadband to 15%
+		{+0.15, 0.00},
+		{+1.00,+1.00}
+	};
+	private double[][] driverJoystickZArray = {
 		{-1.0, -0.50},  //scale down turning to max 50%
 		{-0.05, 0.00},  //set neutral deadband to 5%
 		{+0.05, 0.00},
-		{+1.00,+0.50}  
+		{+1.00,+0.50}
 	};
 
 
@@ -68,8 +75,9 @@ public class OI
 	 * Private constructor for singleton class which instantiates the OI object
 	 */
 	private OI() {
-		gunStyleYInterpolator = new LinearInterpolator(gunStyleYArray);
-		gunStyleXInterpolator = new LinearInterpolator(gunStyleXArray);
+		driverJoystickYInterpolator = new LinearInterpolator(driverJoystickYArray);
+		driverJoystickXInterpolator = new LinearInterpolator(driverJoystickXArray);
+		driverJoystickZInterpolator = new LinearInterpolator(driverJoystickZArray);
 
 		driverJoystick.ButtonBack().whenPressed(new InitializeInternalAzimuthEncoder());
 	}
@@ -91,29 +99,19 @@ public class OI
 	 * Drivetrain *
 	 *************************************************************************/
 
-	public double getGunStyleXValue()
+	public double getDriverJoystickXValue()
 	{
-		return gunStyleXInterpolator.interpolate(driverJoystick.getLeftStickRaw_X());
+		return driverJoystickXInterpolator.interpolate(driverJoystick.getLeftStickRaw_X());
 	}
 
-	public double getGunStyleYValue()
+	public double getDriverJoystickYValue()
 	{
-		return gunStyleYInterpolator.interpolate(driverJoystick.getLeftStickRaw_Y());
+		return driverJoystickYInterpolator.interpolate(driverJoystick.getLeftStickRaw_Y());
 	}
 
-	/**
-	 * Method that sets that Left side of the drive train so that it drives with
-	 * LeftStick Y
-	 * 
-	 */
-	public double getDriverLeftJoystick_Y()
+	public double getDriverJoystickZValue()
 	{
-		return driverJoystick.getLeftStickRaw_Y();
-	}
-
-	public double getDriverLeftJoystick_X()
-	{
-		return driverJoystick.getLeftStickRaw_X();
+		return driverJoystickZInterpolator.interpolate(driverJoystick.getRightStickRaw_X());
 	}
 
 }
