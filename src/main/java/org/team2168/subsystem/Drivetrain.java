@@ -113,8 +113,11 @@ public class Drivetrain extends Subsystem {
     /**
      * Stop azimuth and drive movement
      */
-    public void stop(Wheel wheel) {
-        wheel.stop();
+    public void stop() {
+        wheels[0].stop();
+        wheels[1].stop();
+        wheels[2].stop();
+        wheels[3].stop();
     }
 
     /**
