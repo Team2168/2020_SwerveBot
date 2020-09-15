@@ -5,10 +5,10 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.team2168.commands.drivewheel;
+package org.team2168.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.team2168.subsystem.DriveWheel;
+import org.team2168.subsystem.Drivetrain;
 import org.team2168.OI;
 import java.lang.Math;
 
@@ -17,13 +17,13 @@ public class DriveWithJoystick extends Command {
    * Creates a new DriveWithJoystick.
    */
   private OI oi;
-  private DriveWheel dw;
+  private Drivetrain dt;
   public DriveWithJoystick() {
     // Use addRequirements() here to declare subsystem dependencies.
     
-    dw = DriveWheel.getInstance();
+    dt = Drivetrain.getInstance();
     
-    requires(dw);
+    requires(dt);
   }
 
   // Called when the command is initially scheduled.

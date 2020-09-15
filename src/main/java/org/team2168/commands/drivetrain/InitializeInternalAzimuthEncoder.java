@@ -5,17 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.team2168.commands.drivewheel;
-import org.team2168.subsystem.DriveWheel;
+package org.team2168.commands.drivetrain;
+import org.team2168.subsystem.Drivetrain;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class InitializeInternalAzimuthEncoder extends Command {
-  private DriveWheel dw;
+  private Drivetrain dt;
 
   public InitializeInternalAzimuthEncoder() {
-    dw = DriveWheel.getInstance();
+    dt = Drivetrain.getInstance();
 
-    requires(dw);
+    requires(dt);
   }
 
   // Called just before this Command runs the first time
@@ -26,7 +26,7 @@ public class InitializeInternalAzimuthEncoder extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // dw.initializeAzimuthPosition();
+    // dt.initializeAzimuthPosition();
   }
 
   // Make this return true when this Command no longer needs to run execute()

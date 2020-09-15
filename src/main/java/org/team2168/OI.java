@@ -3,7 +3,7 @@ package org.team2168;
 
 import org.team2168.utils.F310;
 import org.team2168.utils.LinearInterpolator;
-import org.team2168.commands.drivewheel.InitializeInternalAzimuthEncoder;
+import org.team2168.commands.drivetrain.InitializeInternalAzimuthEncoder;
 
 /**
  * This class is the glue that binds the controls on the physical operator

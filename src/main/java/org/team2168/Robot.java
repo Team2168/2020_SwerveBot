@@ -7,8 +7,7 @@
 
 package org.team2168;
 
-// import org.team2168.commands.drivewheel.DriveWithJoystick;
-import org.team2168.subsystem.DriveWheel;
+import org.team2168.subsystem.Drivetrain;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,7 +26,7 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
-  private static DriveWheel drivewheel;
+  private static Drivetrain dt;
   private static OI oi;
   // private static DriveWithJoystick drivewithjoystick;
   /**
@@ -40,7 +39,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    drivewheel = DriveWheel.getInstance();
+    dt = Drivetrain.getInstance();
     oi = OI.getInstance();
   }
 
