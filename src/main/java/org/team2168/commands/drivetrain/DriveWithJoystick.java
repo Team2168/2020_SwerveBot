@@ -36,12 +36,13 @@ public class DriveWithJoystick extends Command {
   @Override
   public void execute() {
     //dw.set(oi.getGunStyleXValue(), Math.abs(oi.getGunStyleYValue())); // abs for testing purposes; set doesn't take negative values
+    dt.drive(0.0, 0.0, 0.0); // dummy values
   }
 
   // Called once the command ends
   @Override
   public void end() {
-    //dw.stop();
+    dt.stop();
   }
 
   @Override
