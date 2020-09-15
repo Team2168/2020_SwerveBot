@@ -114,10 +114,8 @@ public class Drivetrain extends Subsystem {
      * Stop azimuth and drive movement
      */
     public void stop() {
-        wheels[0].stop();
-        wheels[1].stop();
-        wheels[2].stop();
-        wheels[3].stop();
+        for(int i = 0; i < 4; i++)
+            wheels[i].stop();
     }
 
     /**
@@ -136,14 +134,11 @@ public class Drivetrain extends Subsystem {
      * taking difference in resolution and gear ratio into account
      */
     public void initializeAzimuthPosition() {
-        int position = wheels[0].getExternalEncoderPos();
-        wheels[0].setAzimuthInternalEncoderPosition(position);
-        position = wheels[1].getExternalEncoderPos();
-        wheels[1].setAzimuthInternalEncoderPosition(position);
-        position = wheels[2].getExternalEncoderPos();
-        wheels[2].setAzimuthInternalEncoderPosition(position);
-        position = wheels[3].getExternalEncoderPos();
-        wheels[3].setAzimuthInternalEncoderPosition(position);
+        int position;
+        for(int i = 0; i < 4; i++) {
+            position = wheels[i].getExternalEncoderPos();
+            wheels[i].setAzimuthInternalEncoderPosition(position);
+        }
     }
 
     //Allows for the Azimuth and Speed to be changed
