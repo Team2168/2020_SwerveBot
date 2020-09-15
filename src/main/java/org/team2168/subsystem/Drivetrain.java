@@ -15,7 +15,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Drivetrain extends Subsystem {
     private CANifier _canifier = new CANifier(00);
-    Wheel[] wheels = new Wheel[4];
+    private Wheel[] wheels = new Wheel[4];
+    private SwerveDrive sd;
     private final boolean ENABLE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_CURRENT_LIMIT = 40; //amps
     private final double TRIGGER_THRESHOLD_LIMIT = 60; //amp
@@ -77,6 +78,10 @@ public class Drivetrain extends Subsystem {
             wheels[i] = wheel;
             initializeAzimuthPosition(wheel);
         }
+
+        SwerveDriveConfig config = new SwerveDriveConfig();
+        config.wheels = wheels;
+        sd = new SwerveDrive(config);
     }
 
     

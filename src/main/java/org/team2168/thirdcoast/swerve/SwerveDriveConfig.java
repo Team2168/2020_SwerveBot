@@ -20,6 +20,8 @@ public class SwerveDriveConfig {
   /** Wheel base width from left to right of robot. */
   public double width = 1.0;
 
+  //TODO: set length and width
+
   /**
    * Robot period is the {@code TimedRobot} period in seconds, defaults to {@code
    * TimedRobot.kDefaultPeriod}.
