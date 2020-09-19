@@ -72,6 +72,7 @@ public class Drivetrain extends Subsystem {
  
             TalonFX driveTalon = new TalonFX(RobotMap.DRIVE_TALON_ID[i]);
             driveTalon.configFactoryDefault();
+            driveTalon.setInverted(true);
             driveTalon.configAllSettings(driveConfig);
             driveTalon.configSupplyCurrentLimit(talonCurrentLimit);
 
