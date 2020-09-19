@@ -188,7 +188,8 @@ public class SwerveDrive {
     for (int i = 0; i < WHEEL_COUNT; i++) {
       int position = wheels[i].getAzimuthAbsolutePosition();
       prefs.putInt(getPreferenceKeyForWheel(i), position);
-      logger.info("azimuth {}: saved zero = {}", i, position);
+      // logger.info("azimuth {}: saved zero = {}", i, position);
+      System.out.println("azimuth " + i + ": saved zero = " + position);
     }
   }
 
@@ -208,7 +209,8 @@ public class SwerveDrive {
     for (int i = 0; i < WHEEL_COUNT; i++) {
       int position = prefs.getInt(getPreferenceKeyForWheel(i), DEFAULT_ABSOLUTE_AZIMUTH_OFFSET);
       wheels[i].setAzimuthZero(position);
-      logger.info("azimuth {}: loaded zero = {}", i, position);
+      // logger.info("azimuth {}: loaded zero = {}", i, position);
+      System.out.println("azimuth " + i + ": loaded zero = " + position);
     }
     int errorCount = Errors.getCount();
     if (errorCount > 0) logger.error("TalonSRX set azimuth zero error count = {}", errorCount);

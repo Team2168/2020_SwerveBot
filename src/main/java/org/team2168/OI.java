@@ -4,6 +4,7 @@ package org.team2168;
 import org.team2168.utils.F310;
 import org.team2168.utils.LinearInterpolator;
 import org.team2168.commands.drivetrain.InitializeInternalAzimuthEncoder;
+import org.team2168.commands.drivetrain.ZeroEncoders;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -80,6 +81,7 @@ public class OI
 		driverJoystickZInterpolator = new LinearInterpolator(driverJoystickZArray);
 
 		driverJoystick.ButtonBack().whenPressed(new InitializeInternalAzimuthEncoder());
+		driverJoystick.ButtonStart().whenPressed(new ZeroEncoders());
 	}
 	
 	/**

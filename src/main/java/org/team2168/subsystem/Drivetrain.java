@@ -84,6 +84,7 @@ public class Drivetrain extends Subsystem {
         SwerveDriveConfig config = new SwerveDriveConfig();
         config.wheels = wheels;
         sd = new SwerveDrive(config);
+        sd.zeroAzimuthEncoders();
     }
 
     
@@ -115,6 +116,20 @@ public class Drivetrain extends Subsystem {
      */
     public void setAzimuth(Wheel wheel, int position) {
         wheel.setAzimuthPosition(position);
+    }
+
+    /**
+     * Save the wheels' azimuth current position as read by absolute encoder. These values are saved
+     * persistently on the roboRIO and are normally used to calculate the relative encoder offset
+     * during wheel initialization.
+     *
+     * <p>The wheel alignment data is saved in the WPI preferences data store and may be viewed using
+     * a network tables viewer.
+     *
+     * @see #zeroAzimuthEncoders()
+     */
+    public void saveAzimuthPositions() {
+        sd.saveAzimuthPositions();
     }
 
     /**
