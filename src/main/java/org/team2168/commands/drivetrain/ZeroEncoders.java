@@ -8,6 +8,7 @@
 package org.team2168.commands.drivetrain;
 
 import org.team2168.subsystem.Drivetrain;
+import org.team2168.thirdcoast.swerve.Wheel;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -27,7 +28,8 @@ public class ZeroEncoders extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    dt.saveAzimuthPositions();
+   // dt.saveAzimuthPositions();
+    dt.setOffset();
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -119,6 +119,16 @@ public class Drivetrain extends Subsystem {
     }
 
     /**
+     * Sets offset to the current value
+     */
+    public void setOffset() {
+      
+        for(int i = 0; i < SwerveDrive.getWheelCount(); i++) {
+            wheels[i].setAzimuthZeroOffset(wheels[i].getAzimuthAbsolutePosition());
+        }
+    }
+
+    /**
      * Save the wheels' azimuth current position as read by absolute encoder. These values are saved
      * persistently on the roboRIO and are normally used to calculate the relative encoder offset
      * during wheel initialization.
