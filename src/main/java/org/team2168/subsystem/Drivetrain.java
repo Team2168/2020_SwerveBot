@@ -4,6 +4,7 @@ import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.CANifierStatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.kauailabs.navx.frc.AHRS;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -12,12 +13,13 @@ import org.team2168.RobotMap;
 import org.team2168.commands.drivetrain.DriveWithJoystick;
 import org.team2168.thirdcoast.swerve.*;
 
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Drivetrain extends Subsystem {
     private CANifier _canifier = new CANifier(00);
     private Wheel[] wheels = new Wheel[SwerveDrive.getWheelCount()];
-    private SwerveDrive sd;
+    private SwerveDrive sd = configSwerve();
     private final boolean ENABLE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_CURRENT_LIMIT = 40; //amps
     private final double TRIGGER_THRESHOLD_LIMIT = 60; //amp
@@ -30,7 +32,24 @@ public class Drivetrain extends Subsystem {
         _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_4_PwmInputs1, 10);
         _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_5_PwmInputs2, 10);
         _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_6_PwmInputs3, 10);
-        
+    
+        //sd.zeroAzimuthEncoders();
+    }
+    
+    /**
+     * @return An instance of the DriveWheel subsystem
+     */
+    public static Drivetrain getInstance() {
+        if (instance == null)
+          instance = new Drivetrain();
+    
+        return instance;
+    }
+
+    /**
+     * @return a configured SwerveDrive
+     */
+    private SwerveDrive configSwerve() {
         TalonFXConfiguration azimuthConfig = new TalonFXConfiguration();
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
         SupplyCurrentLimitConfiguration talonCurrentLimit;
@@ -60,6 +79,7 @@ public class Drivetrain extends Subsystem {
         driveConfig.motionAcceleration = Wheel.DPSToTicksPer100msDW(180); //500;
         driveConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msDW(30); //100;
 
+
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
 
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
@@ -83,20 +103,11 @@ public class Drivetrain extends Subsystem {
 
         SwerveDriveConfig config = new SwerveDriveConfig();
         config.wheels = wheels;
-        sd = new SwerveDrive(config);
-        sd.zeroAzimuthEncoders();
+        config.gyro = new AHRS(SPI.Port.kMXP);
+        config.gyro.setAngleAdjustment(0);
+        System.out.println("AAAAAAAAAAAAAAAAAAAaconnected " + config.gyro.isConnected());
+        return new SwerveDrive(config);
     }
-
-    
-  /**
-   * @returns An instance of the DriveWheel subsystem
-   */
-    public static Drivetrain getInstance() {
-        if (instance == null)
-          instance = new Drivetrain();
-    
-        return instance;
-      }
 
     /**
      * Drive the robot in given field-relative direction and with given rotation.
