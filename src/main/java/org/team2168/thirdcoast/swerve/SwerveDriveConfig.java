@@ -14,7 +14,6 @@ public class SwerveDriveConfig {
   /** Initialize with four initialized wheels, in order from wheel 0 to wheel 3.
    *  0 is front left, 1 is front right, 2 is back left, and 3 is back right
    */
-  // TODO: set them to the correct IDs for their positions (the current 0 should be 1 etc.)
   public Wheel[] wheels;
 
   /** Wheel base length from front to rear of robot. */
