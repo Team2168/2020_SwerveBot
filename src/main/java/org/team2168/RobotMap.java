@@ -43,8 +43,8 @@ public class RobotMap {
 	/*************************************************************************
 	*                         PDP/CAN DEVICES                                 *
 	*************************************************************************/
-	public static final int[] AZIMUTH_TALON_ID = {11, 12, 13, 14};
-	public static final int[] DRIVE_TALON_ID = {1,2,3,4};
+	public static final int[] AZIMUTH_TALON_ID = {12, 2, 14, 0};
+	public static final int[] DRIVE_TALON_ID = {13, 3, 15, 1};
 
 
 	// Relay Channels///////////////////////////////////////////////////////////
