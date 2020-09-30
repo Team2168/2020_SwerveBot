@@ -13,6 +13,7 @@ import org.team2168.RobotMap;
 import org.team2168.commands.drivetrain.DriveWithJoystick;
 import org.team2168.thirdcoast.swerve.*;
 
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -99,7 +100,8 @@ public class Drivetrain extends Subsystem {
             Wheel wheel = new Wheel(azimuthTalon, driveTalon, 1.0);
             wheels[i] = wheel;
         }
-        initializeAzimuthPosition();
+        setOffset();
+       // initializeAzimuthPosition();
 
         SwerveDriveConfig config = new SwerveDriveConfig();
         config.wheels = wheels;
@@ -130,12 +132,13 @@ public class Drivetrain extends Subsystem {
     }
 
     /**
-     * Sets offset to the current value
+     * Using the preferences list, the offset of each wheel is set individually
      */
     public void setOffset() {
-      
+        Preferences prefs = Preferences.getInstance();
         for(int i = 0; i < SwerveDrive.getWheelCount(); i++) {
-            wheels[i].setAzimuthZeroOffset(wheels[i].getAzimuthAbsolutePosition());
+            wheels[i].setAzimuthZeroOffset(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
+        
         }
     }
 
