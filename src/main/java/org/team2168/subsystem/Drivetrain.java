@@ -63,7 +63,6 @@ public class Drivetrain extends Subsystem {
 
 
         azimuthConfig.remoteFilter0.remoteSensorDeviceID = _canifier.getDeviceID();
-        azimuthConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANifier_PWMInput1;
         // azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
         azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
         // a possible workaround to get the remote sensor value?
@@ -84,6 +83,7 @@ public class Drivetrain extends Subsystem {
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
 
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
+            azimuthConfig.remoteFilter0.remoteSensorSource = RobotMap.AZIMUTH_SENSOR_CHANNEL[i];
             TalonFX azimuthTalon = new TalonFX(RobotMap.AZIMUTH_TALON_ID[i]);
             azimuthTalon.configFactoryDefault();
             azimuthTalon.setInverted(true);

@@ -1,5 +1,7 @@
 package org.team2168;
 
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -46,6 +48,9 @@ public class RobotMap {
 	public static final int[] AZIMUTH_TALON_ID = {12, 2, 14, 0};
 	public static final int[] DRIVE_TALON_ID = {13, 3, 15, 1};
 
+	// CANifier Azimuth Motor Channels//////////////////////////////////////////
+	public static final RemoteSensorSource[] AZIMUTH_SENSOR_CHANNEL = {RemoteSensorSource.CANifier_PWMInput0, RemoteSensorSource.CANifier_PWMInput1,
+		RemoteSensorSource.CANifier_PWMInput2, RemoteSensorSource.CANifier_PWMInput3};
 
 	// Relay Channels///////////////////////////////////////////////////////////
 
