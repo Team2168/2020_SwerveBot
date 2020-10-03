@@ -100,14 +100,15 @@ public class Drivetrain extends Subsystem {
             Wheel wheel = new Wheel(azimuthTalon, driveTalon, 1.0);
             wheels[i] = wheel;
         }
-        setOffset();
-       // initializeAzimuthPosition();
+        setOffset(); // set the offset instance variable
+        initializeAzimuthPosition(); // set the value of the internal encoder's current position to that of the external encoder,
+                                    // taking into account the gear ratio & difference in resolution
 
         SwerveDriveConfig config = new SwerveDriveConfig();
         config.wheels = wheels;
         config.gyro = new AHRS(SPI.Port.kMXP);
         config.gyro.setAngleAdjustment(0);
-        System.out.println("AAAAAAAAAAAAAAAAAAAaconnected " + config.gyro.isConnected());
+        System.out.println("PLEASE LOOK AT THIS gyro connected " + config.gyro.isConnected());
         return new SwerveDrive(config);
     }
 
