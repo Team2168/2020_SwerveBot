@@ -29,10 +29,10 @@ public class Drivetrain extends Subsystem {
     private static Drivetrain instance = null;
 
     private Drivetrain() {
-        _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_3_PwmInputs0, 10);
-        _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_4_PwmInputs1, 10);
-        _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_5_PwmInputs2, 10);
-        _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_6_PwmInputs3, 10);
+        // _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_3_PwmInputs0, 10);
+        // _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_4_PwmInputs1, 10);
+        // _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_5_PwmInputs2, 10);
+        // _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_6_PwmInputs3, 10);
     
         //sd.zeroAzimuthEncoders();
     }
