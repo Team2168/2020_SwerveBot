@@ -19,8 +19,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Drivetrain extends Subsystem {
     private CANifier _canifier = new CANifier(00);
-    private Wheel[] wheels = new Wheel[SwerveDrive.getWheelCount()];
-    private SwerveDrive sd = configSwerve();
+    private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
+    private SwerveDrive _sd = configSwerve();
     private final boolean ENABLE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_CURRENT_LIMIT = 40; //amps
     private final double TRIGGER_THRESHOLD_LIMIT = 60; //amp
@@ -34,7 +34,7 @@ public class Drivetrain extends Subsystem {
         _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_5_PwmInputs2, 10);
         _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_6_PwmInputs3, 10);
     
-        //sd.zeroAzimuthEncoders();
+        //_sd.zeroAzimuthEncoders();
     }
     
     /**
@@ -98,14 +98,14 @@ public class Drivetrain extends Subsystem {
             driveTalon.configSupplyCurrentLimit(talonCurrentLimit);
 
             Wheel wheel = new Wheel(azimuthTalon, driveTalon, 1.0);
-            wheels[i] = wheel;
+            _wheels[i] = wheel;
         }
         setOffset(); // set the offset instance variable
         initializeAzimuthPosition(); // set the value of the internal encoder's current position to that of the external encoder,
-                                    // taking into account the gear ratio & difference in resolution
+                                     // taking into account the gear ratio & difference in resolution
 
         SwerveDriveConfig config = new SwerveDriveConfig();
-        config.wheels = wheels;
+        config.wheels = _wheels;
         config.gyro = new AHRS(SPI.Port.kMXP);
         config.gyro.setAngleAdjustment(0);
         System.out.println("PLEASE LOOK AT THIS gyro connected " + config.gyro.isConnected());
@@ -120,7 +120,7 @@ public class Drivetrain extends Subsystem {
      * @param azimuth robot rotation, from -1.0 (CCW) to 1.0 (CW)
      */
     public void drive(double forward, double strafe, double azimuth) {
-        sd.drive(forward, strafe, azimuth);
+        _sd.drive(forward, strafe, azimuth);
     }
 
     /**
@@ -138,7 +138,7 @@ public class Drivetrain extends Subsystem {
     public void setOffset() {
         Preferences prefs = Preferences.getInstance();
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
-            wheels[i].setAzimuthZeroOffset(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
+            _wheels[i].setAzimuthZeroOffset(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
         
         }
     }
@@ -154,7 +154,7 @@ public class Drivetrain extends Subsystem {
      * @see #zeroAzimuthEncoders()
      */
     public void saveAzimuthPositions() {
-        sd.saveAzimuthPositions();
+        _sd.saveAzimuthPositions();
     }
 
     /**
@@ -163,7 +163,7 @@ public class Drivetrain extends Subsystem {
      * thereby prevent wheel rotation if the wheels were moved manually while the robot was disabled.
      */
     public void stop() {
-        sd.stop();
+        _sd.stop();
     }
 
     /**
@@ -172,7 +172,7 @@ public class Drivetrain extends Subsystem {
      */
     public void initializeAzimuthPosition() {
         int position;
-        for (Wheel wheel : wheels) {
+        for (Wheel wheel : _wheels) {
             position = wheel.getExternalEncoderPos();
             wheel.setAzimuthInternalEncoderPosition(position);
         }
