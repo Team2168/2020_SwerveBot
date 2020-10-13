@@ -10,8 +10,7 @@ import org.team2168.commands.drivetrain.ZeroEncoders;
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
-public class OI
-{
+public class OI {
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a joystick.
 	// You create one by telling it which joystick it's on and which button
@@ -89,8 +88,7 @@ public class OI
 	 * 
 	 * @return is the current OI object
 	 */
-	public static OI getInstance()
-	{
+	public static OI getInstance() {
 		if (instance == null)
 			instance = new OI();
 
@@ -101,18 +99,15 @@ public class OI
 	 * Drivetrain *
 	 *************************************************************************/
 
-	public double getDriverJoystickXValue()
-	{
+	public double getDriverJoystickXValue() {
 		return driverJoystickXInterpolator.interpolate(driverJoystick.getLeftStickRaw_X());
 	}
 
-	public double getDriverJoystickYValue()
-	{
+	public double getDriverJoystickYValue() {
 		return driverJoystickYInterpolator.interpolate(driverJoystick.getLeftStickRaw_Y());
 	}
 
-	public double getDriverJoystickZValue()
-	{
+	public double getDriverJoystickZValue() {
 		return driverJoystickZInterpolator.interpolate(driverJoystick.getRightStickRaw_X());
 	}
 
