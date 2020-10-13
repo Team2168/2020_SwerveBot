@@ -137,7 +137,7 @@ public class Drivetrain extends Subsystem {
      */
     public void setOffset() {
         Preferences prefs = Preferences.getInstance();
-        for(int i = 0; i < SwerveDrive.getWheelCount(); i++) {
+        for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
             wheels[i].setAzimuthZeroOffset(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
         
         }
@@ -172,7 +172,7 @@ public class Drivetrain extends Subsystem {
      */
     public void initializeAzimuthPosition() {
         int position;
-        for(Wheel wheel : wheels) {
+        for (Wheel wheel : wheels) {
             position = wheel.getExternalEncoderPos();
             wheel.setAzimuthInternalEncoderPosition(position);
         }
