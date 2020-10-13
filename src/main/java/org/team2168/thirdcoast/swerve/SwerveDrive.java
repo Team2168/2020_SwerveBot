@@ -20,7 +20,7 @@ import org.team2168.thirdcoast.talon.Errors;
 @SuppressWarnings("unused")
 public class SwerveDrive {
 
-  public static final int DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 2168;//200
+  public static final int DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 2168; // 200
   private static final Logger logger = LoggerFactory.getLogger(SwerveDrive.class);
   private static final int WHEEL_COUNT = 4;
   private final AHRS gyro;
@@ -59,7 +59,8 @@ public class SwerveDrive {
       double gyroPeriod = 1.0 / rate;
       kGyroRateCorrection = (robotPeriod / gyroPeriod) * gyroRateCoeff;
       logger.debug("gyro frequency = {} Hz", rate);
-    } else {
+    }
+    else {
       logger.warn("gyro is missing or not enabled");
       kGyroRateCorrection = 0;
     }
@@ -217,7 +218,7 @@ public class SwerveDrive {
   }
 
   /**
-   * Returns the four wheels of the swerve drive.
+   * Returns the wheels of the swerve drive.
    *
    * @return the Wheel array.
    */
@@ -225,6 +226,11 @@ public class SwerveDrive {
     return wheels;
   }
 
+  /**
+   * Returns the number of wheels on the swerve drive.
+   * 
+   * @return the number of wheels.
+   */
   public static int getWheelCount() {
     return WHEEL_COUNT;
   }
@@ -232,7 +238,7 @@ public class SwerveDrive {
   /**
    * Get the gyro instance being used by the drive.
    *
-   * @return the gyro instance
+   * @return the gyro instance.
    */
   public AHRS getGyro() {
     return gyro;

@@ -44,7 +44,6 @@ public class Wheel {
   private final double driveSetpointMax;
   private final BaseTalon driveTalon;
   private final TalonFX azimuthTalon;
-  // private final TalonSRX azimuthTalon; 
   protected DoubleConsumer driver;
   private boolean isInverted = false;
   private int primaryPID = 0;
@@ -181,7 +180,6 @@ public class Wheel {
     int azimuthSetpoint = getAzimuthAbsolutePosition() - zero;
     // ErrorCode err = azimuthTalon.setSelectedSensorPosition(externalToInternalTicks(azimuthSetpoint), primaryPID, 10);
     // Errors.check(err, logger);
-    // System.out.print("guvhdficsjoxapz" + err);
     System.out.println("zero: " + zero);
     System.out.println("current pos: " + getAzimuthAbsolutePosition());
     azimuthTalon.setSelectedSensorPosition(externalToInternalTicks(azimuthSetpoint), primaryPID, 10);

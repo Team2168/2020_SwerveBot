@@ -22,9 +22,9 @@ public class Drivetrain extends Subsystem {
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
     private SwerveDrive _sd = configSwerve();
     private final boolean ENABLE_CURRENT_LIMIT = true;
-    private final double CONTINUOUS_CURRENT_LIMIT = 40; //amps
-    private final double TRIGGER_THRESHOLD_LIMIT = 60; //amp
-    private final double TRIGGER_THRESHOLD_TIME = 0.2; //s
+    private final double CONTINUOUS_CURRENT_LIMIT = 40; // amps
+    private final double TRIGGER_THRESHOLD_LIMIT = 60; // amp
+    private final double TRIGGER_THRESHOLD_TIME = 0.2; // s
 
     private static Drivetrain instance = null;
 
@@ -73,11 +73,11 @@ public class Drivetrain extends Subsystem {
         azimuthConfig.slot0.kF = 0.0;
         azimuthConfig.slot0.integralZone = 0;
         azimuthConfig.slot0.allowableClosedloopError = Wheel.degreesToTicksAzimuth(0.1);
-        azimuthConfig.motionAcceleration = Wheel.DPSToTicksPer100msAzimuth(7000); //10_000;
-        azimuthConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msAzimuth(700); //800;
+        azimuthConfig.motionAcceleration = Wheel.DPSToTicksPer100msAzimuth(7000); // 10_000;
+        azimuthConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msAzimuth(700); // 800;
         driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
-        driveConfig.motionAcceleration = Wheel.DPSToTicksPer100msDW(180); //500;
-        driveConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msDW(30); //100;
+        driveConfig.motionAcceleration = Wheel.DPSToTicksPer100msDW(180); // 500;
+        driveConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msDW(30); // 100;
 
 
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
@@ -177,11 +177,6 @@ public class Drivetrain extends Subsystem {
             wheel.setAzimuthInternalEncoderPosition(position);
         }
     }
-
-    //Allows for the Azimuth and Speed to be changed
-    // private Wheel[] getWheels() {
-        // you'll make us proud some day
-    // }
 
     @Override
     protected void initDefaultCommand() {
