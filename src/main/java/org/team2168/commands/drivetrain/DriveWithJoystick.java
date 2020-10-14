@@ -8,16 +8,16 @@
 package org.team2168.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.team2168.subsystem.Drivetrain;
 import org.team2168.OI;
-import java.lang.Math;
+import org.team2168.subsystem.Drivetrain;
 
 public class DriveWithJoystick extends Command {
+  private OI oi;
+  private Drivetrain dt;
+  
   /**
    * Creates a new DriveWithJoystick.
    */
-  private OI oi;
-  private Drivetrain dt;
   public DriveWithJoystick() {
     // Use addRequirements() here to declare subsystem dependencies.
     

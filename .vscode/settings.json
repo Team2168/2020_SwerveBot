@@ -1,5 +1,5 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
-    "java.checkstyle.configuration": "${workspacefolder}\\checkstyle.xml",
+    "java.checkstyle.configuration": "/google_checks.xml",
     "java.checkstyle.version": "8.36",
 }

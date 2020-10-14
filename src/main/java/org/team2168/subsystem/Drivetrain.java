@@ -2,20 +2,18 @@ package org.team2168.subsystem;
 
 import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.CANifierStatusFrame;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.kauailabs.navx.frc.AHRS;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-
-import org.team2168.RobotMap;
-import org.team2168.commands.drivetrain.DriveWithJoystick;
-import org.team2168.thirdcoast.swerve.*;
-
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.team2168.RobotMap;
+import org.team2168.commands.drivetrain.DriveWithJoystick;
+import org.team2168.thirdcoast.swerve.*;
 
 public class Drivetrain extends Subsystem {
     private CANifier _canifier = new CANifier(00);
