@@ -7,14 +7,15 @@
 
 package org.team2168.commands.drivetrain;
 
-import org.team2168.subsystem.Drivetrain;
-import org.team2168.thirdcoast.swerve.Wheel;
-
 import edu.wpi.first.wpilibj.command.Command;
+import org.team2168.subsystem.Drivetrain;
 
 public class ZeroEncoders extends Command {
-
   private Drivetrain dt;
+
+  /**
+   * Creates a new ZeroEncoders.
+   */
   public ZeroEncoders() {
     dt = Drivetrain.getInstance();
     requires(dt);

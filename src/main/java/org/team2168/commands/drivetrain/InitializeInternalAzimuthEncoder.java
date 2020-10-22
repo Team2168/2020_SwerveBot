@@ -6,12 +6,16 @@
 /*----------------------------------------------------------------------------*/
 
 package org.team2168.commands.drivetrain;
-import org.team2168.subsystem.Drivetrain;
+
 import edu.wpi.first.wpilibj.command.Command;
+import org.team2168.subsystem.Drivetrain;
 
 public class InitializeInternalAzimuthEncoder extends Command {
   private Drivetrain dt;
 
+  /**
+   * Creates a new InitializeInternalAzimuthEncoder.
+   */
   public InitializeInternalAzimuthEncoder() {
     dt = Drivetrain.getInstance();
 
