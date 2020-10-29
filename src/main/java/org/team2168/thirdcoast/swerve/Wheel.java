@@ -90,18 +90,24 @@ public class Wheel {
     }
     azimuth *= -INTERNAL_ENCODER_TICKS_PER_REV; // flip azimuth, hardware configuration dependent
 
-    double azimuthPosition = azimuthTalon.getSelectedSensorPosition(0);
-    double azimuthError = Math.IEEEremainder(azimuth - azimuthPosition, INTERNAL_ENCODER_TICKS_PER_REV);
-
+    double azimuthPosition = azimuthTalon.getSelectedSensorPosition(0) - offset; // 36,459
+    double azimuthError = (azimuth - azimuthPosition) % INTERNAL_ENCODER_TICKS_PER_REV;
+    System.out.println("non-inverted error: " + azimuthError);
     // minimize azimuth rotation, reversing drive if necessary
     isInverted = Math.abs(azimuthError) > 0.25 * INTERNAL_ENCODER_TICKS_PER_REV;
     if (isInverted) {
       azimuthError -= Math.copySign(0.5 * INTERNAL_ENCODER_TICKS_PER_REV, azimuthError);
       drive = -drive;
+      System.out.println("inverted error: " + azimuthError);
     }
 
-    azimuthTalon.set(MotionMagic, azimuthPosition + azimuthError + offset);
+    azimuthTalon.set(MotionMagic, azimuthPosition + azimuthError);
     driver.accept(drive);
+    double output = azimuthPosition + azimuthError;
+    System.out.println("commanded output: " + output);
+    System.out.println("position: " + azimuthPosition);
+    System.out.println("offset: " + offset);
+    System.out.println("azimuth" + azimuth);
   }
 
   /**
@@ -192,8 +198,7 @@ public class Wheel {
    * @param oset represents the offset of the azimuths
    */
   public void setAzimuthZeroOffset(int oset) {
-    externalToInternalTicks(oset);
-    offset = oset;
+    offset = externalToInternalTicks(oset);
   }
 
   /**
@@ -211,7 +216,7 @@ public class Wheel {
    * @return a proportional number of estamated internal ticks
    */
   public static int externalToInternalTicks(int externalTicks) {
-    return (int) Math.round(externalTicks*(INTERNAL_ENCODER_TICKS/EXTERNAL_ENCODER_TICKS)*AZIMUTH_GEAR_RATIO);
+    return (int) Math.round((double) externalTicks*((double) INTERNAL_ENCODER_TICKS/(double) EXTERNAL_ENCODER_TICKS)*AZIMUTH_GEAR_RATIO);
   }
 
   /**

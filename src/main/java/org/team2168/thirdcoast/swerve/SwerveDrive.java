@@ -155,6 +155,7 @@ public class SwerveDrive {
 
     // set wheels
     for (int i = 0; i < WHEEL_COUNT; i++) {
+      System.out.println("WHEEL " + i);
       wheels[i].set(wa[i], ws[i]);
     }
   }
