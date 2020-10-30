@@ -90,24 +90,18 @@ public class Wheel {
     }
     azimuth *= -INTERNAL_ENCODER_TICKS_PER_REV; // flip azimuth, hardware configuration dependent
 
-    double azimuthPosition = azimuthTalon.getSelectedSensorPosition(0) - offset; // 36,459
+    double azimuthPosition = azimuthTalon.getSelectedSensorPosition(0);
     double azimuthError = (azimuth - azimuthPosition) % INTERNAL_ENCODER_TICKS_PER_REV;
-    System.out.println("non-inverted error: " + azimuthError);
+
     // minimize azimuth rotation, reversing drive if necessary
     isInverted = Math.abs(azimuthError) > 0.25 * INTERNAL_ENCODER_TICKS_PER_REV;
     if (isInverted) {
       azimuthError -= Math.copySign(0.5 * INTERNAL_ENCODER_TICKS_PER_REV, azimuthError);
       drive = -drive;
-      System.out.println("inverted error: " + azimuthError);
     }
 
     azimuthTalon.set(MotionMagic, azimuthPosition + azimuthError);
     driver.accept(drive);
-    double output = azimuthPosition + azimuthError;
-    System.out.println("commanded output: " + output);
-    System.out.println("position: " + azimuthPosition);
-    System.out.println("offset: " + offset);
-    System.out.println("azimuth" + azimuth);
   }
 
   /**
