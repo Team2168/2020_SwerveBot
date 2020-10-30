@@ -85,7 +85,7 @@ public class Drivetrain extends Subsystem {
             TalonFX azimuthTalon = new TalonFX(RobotMap.AZIMUTH_TALON_ID[i]);
             azimuthTalon.configFactoryDefault();
             azimuthTalon.setInverted(true);
-            azimuthTalon.setSensorPhase(true);
+            azimuthTalon.setSensorPhase(false);
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
  
