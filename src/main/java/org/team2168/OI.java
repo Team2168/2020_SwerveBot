@@ -79,6 +79,7 @@ public class OI {
 		driverJoystickXInterpolator = new LinearInterpolator(driverJoystickXArray);
 		driverJoystickZInterpolator = new LinearInterpolator(driverJoystickZArray);
 
+		// TODO: put these on a test joystick
 		driverJoystick.ButtonBack().whenPressed(new InitializeInternalAzimuthEncoder());
 		driverJoystick.ButtonStart().whenPressed(new ZeroEncoders());
 	}
