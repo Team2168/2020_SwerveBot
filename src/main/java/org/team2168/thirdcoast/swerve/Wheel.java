@@ -48,7 +48,6 @@ public class Wheel {
   private boolean isInverted = false;
   private int primaryPID = 0;
   private int auxPID = 1; //specifies the auxiliary pid loop for any method that takes in a pididx
-  private int offset = 0;
 
 
   /**
@@ -91,7 +90,7 @@ public class Wheel {
     azimuth *= -INTERNAL_ENCODER_TICKS_PER_REV; // flip azimuth, hardware configuration dependent
 
     double azimuthPosition = azimuthTalon.getSelectedSensorPosition(0);
-    double azimuthError = (azimuth - azimuthPosition) % INTERNAL_ENCODER_TICKS_PER_REV;
+    double azimuthError = Math.IEEEremainder((azimuth - azimuthPosition), INTERNAL_ENCODER_TICKS_PER_REV);
 
     // minimize azimuth rotation, reversing drive if necessary
     isInverted = Math.abs(azimuthError) > 0.25 * INTERNAL_ENCODER_TICKS_PER_REV;
@@ -185,22 +184,6 @@ public class Wheel {
     azimuthTalon.setSelectedSensorPosition(externalToInternalTicks(azimuthSetpoint), primaryPID, 10);
     azimuthTalon.set(MotionMagic, azimuthSetpoint);
     System.out.println("SETPOINT: " + azimuthSetpoint);
-  }
-
-  /**
-   * Sets the value of offset
-   * @param oset represents the offset of the azimuths
-   */
-  public void setAzimuthZeroOffset(int oset) {
-    offset = externalToInternalTicks(oset);
-  }
-
-  /**
-   * Gets the value of the offset
-   * @return returns the value of offset
-   */
-  public int getAzimuthZeroOffset() {
-    return offset;
   }
 
   /**
