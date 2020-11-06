@@ -18,6 +18,7 @@ import org.team2168.thirdcoast.swerve.*;
 public class Drivetrain extends Subsystem {
     private CANifier _canifier = new CANifier(00);
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
+    private final boolean[] driveInverted = {true, true, true, false};
     private SwerveDrive _sd = configSwerve();
     private final boolean ENABLE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_CURRENT_LIMIT = 40; // amps
@@ -91,7 +92,7 @@ public class Drivetrain extends Subsystem {
  
             TalonFX driveTalon = new TalonFX(RobotMap.DRIVE_TALON_ID[i]);
             driveTalon.configFactoryDefault();
-            driveTalon.setInverted(true);
+            driveTalon.setInverted(driveInverted[i]);
             driveTalon.configAllSettings(driveConfig);
             driveTalon.configSupplyCurrentLimit(talonCurrentLimit);
 
