@@ -98,9 +98,8 @@ public class Drivetrain extends Subsystem {
             Wheel wheel = new Wheel(azimuthTalon, driveTalon, 1.0);
             _wheels[i] = wheel;
         }
-        setOffset(); // set the offset instance variable
         initializeAzimuthPosition(); // set the value of the internal encoder's current position to that of the external encoder,
-                                     // taking into account the gear ratio & difference in resolution
+                                     // taking into account the gear ratio & difference in resolution, as well as the saved zero
 
         SwerveDriveConfig config = new SwerveDriveConfig();
         config.wheels = _wheels;
@@ -131,17 +130,6 @@ public class Drivetrain extends Subsystem {
     }
 
     /**
-     * Using the preferences list, the offset of each wheel is set individually
-     */
-    public void setOffset() {
-        Preferences prefs = Preferences.getInstance();
-        for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
-            _wheels[i].setAzimuthZeroOffset(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
-        
-        }
-    }
-
-    /**
      * Save the wheels' azimuth current position as read by absolute encoder. These values are saved
      * persistently on the roboRIO and are normally used to calculate the relative encoder offset
      * during wheel initialization.
@@ -166,13 +154,14 @@ public class Drivetrain extends Subsystem {
 
     /**
      * Sets all azimuth internal encoders' current positions to those of the corresponding external encoders,
-     * taking difference in resolution and gear ratio into account
+     * taking difference in resolution and gear ratio into account, and then factors in the saved zero
      */
     public void initializeAzimuthPosition() {
         int position;
-        for (Wheel wheel : _wheels) {
-            position = wheel.getExternalEncoderPos();
-            wheel.setAzimuthInternalEncoderPosition(position);
+        Preferences prefs = Preferences.getInstance();
+        for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
+            position = _wheels[i].getExternalEncoderPos();
+            _wheels[i].setAzimuthInternalEncoderPosition(position - prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
         }
     }
 
