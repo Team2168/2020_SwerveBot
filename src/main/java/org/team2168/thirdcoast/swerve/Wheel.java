@@ -315,12 +315,12 @@ public class Wheel {
   }
 
   /**
-   * Get the position of the azimuth's external encoder
+   * Get the position of the azimuth's internal encoder
    * 
    * @return position in encoder ticks
    */
-  public int getExternalEncoderPos() {
-    return azimuthTalon.getSelectedSensorPosition(auxPID);
+  public int getInternalEncoderPos() {
+    return azimuthTalon.getSelectedSensorPosition(primaryPID);
   }
 
   public boolean isInverted() {
