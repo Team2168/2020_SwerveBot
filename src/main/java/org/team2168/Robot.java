@@ -38,6 +38,9 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    SmartDashboard.putNumber("Drive Forward", 0.0);
+    SmartDashboard.putNumber("Drive Strafe", 0.0);
+    SmartDashboard.putNumber("Drive Azimuth", 0.0);
 
     dt = Drivetrain.getInstance();
     oi = OI.getInstance();

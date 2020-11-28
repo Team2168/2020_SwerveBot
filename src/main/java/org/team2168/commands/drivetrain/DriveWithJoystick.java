@@ -8,6 +8,8 @@
 package org.team2168.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.team2168.OI;
 import org.team2168.subsystem.Drivetrain;
 
@@ -36,6 +38,11 @@ public class DriveWithJoystick extends Command {
   @Override
   public void execute() {
     dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), oi.getDriverJoystickZValue());
+    SmartDashboard.putNumber("Joystick Y", oi.getDriverJoystickYValue());
+    SmartDashboard.putNumber("Joystick X", oi.getDriverJoystickXValue());
+    SmartDashboard.putNumber("Joystick Z", oi.getDriverJoystickZValue());
+
+    //dt.drive(SmartDashboard.getNumber("Drive Forward", 0.0), SmartDashboard.getNumber("Drive Strafe", 0.0), SmartDashboard.getNumber("Drive Azimuth", 0.0));
   }
 
   // Called once the command ends
