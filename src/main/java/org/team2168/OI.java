@@ -105,7 +105,7 @@ public class OI {
 	}
 
 	public double getDriverJoystickYValue() {
-		return -1 * driverJoystickYInterpolator.interpolate(driverJoystick.getLeftStickRaw_Y());
+		return driverJoystickYInterpolator.interpolate(driverJoystick.getLeftStickRaw_Y());
 	}
 
 	public double getDriverJoystickZValue() {
