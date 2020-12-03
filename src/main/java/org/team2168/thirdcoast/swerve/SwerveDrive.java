@@ -2,6 +2,8 @@ package org.team2168.thirdcoast.swerve;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Timer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.team2168.thirdcoast.talon.Errors;
@@ -118,7 +120,7 @@ public class SwerveDrive {
     // Use gyro for field-oriented drive. We use getAngle instead of getYaw to enable arbitrary
     // autonomous starting positions.
     if (isFieldOriented) {
-      double angle = gyro.getAngle();
+      double angle = -gyro.getAngle();
       angle += gyro.getRate() * kGyroRateCorrection;
       angle = Math.IEEEremainder(angle, 360.0);
 
