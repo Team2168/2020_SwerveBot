@@ -87,7 +87,7 @@ public class Wheel {
     // don't reset wheel azimuth direction to zero when returning to neutral
     if (drive == 0) {
       driver.accept(0d);
-      //return;  commented for testing purposes
+      return;
     }
     azimuth *= -INTERNAL_ENCODER_TICKS_PER_REV; // flip azimuth, hardware configuration dependent
 
