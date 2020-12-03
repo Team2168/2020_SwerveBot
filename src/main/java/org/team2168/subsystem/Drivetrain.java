@@ -11,6 +11,8 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.team2168.RobotMap;
 import org.team2168.commands.drivetrain.DriveWithJoystick;
 import org.team2168.thirdcoast.swerve.*;
@@ -18,7 +20,8 @@ import org.team2168.thirdcoast.swerve.*;
 public class Drivetrain extends Subsystem {
     private CANifier _canifier = new CANifier(00);
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
-    private final boolean[] driveInverted = {true, true, true, false};
+    private final boolean[] DRIVE_INVERTED = {true, true, true, true};
+    private final boolean[] ABSOLUTE_ENCODER_INVERTED = {false, true, false, false};
     private SwerveDrive _sd = configSwerve();
     private final boolean ENABLE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_CURRENT_LIMIT = 40; // amps
@@ -92,11 +95,11 @@ public class Drivetrain extends Subsystem {
  
             TalonFX driveTalon = new TalonFX(RobotMap.DRIVE_TALON_ID[i]);
             driveTalon.configFactoryDefault();
-            driveTalon.setInverted(driveInverted[i]);
+            driveTalon.setInverted(DRIVE_INVERTED[i]);
             driveTalon.configAllSettings(driveConfig);
             driveTalon.configSupplyCurrentLimit(talonCurrentLimit);
 
-            Wheel wheel = new Wheel(azimuthTalon, driveTalon, 1.0);
+            Wheel wheel = new Wheel(azimuthTalon, driveTalon, 1.0, ABSOLUTE_ENCODER_INVERTED[i]);
             _wheels[i] = wheel;
         }
         initializeAzimuthPosition(); // set the value of the internal encoder's current position to that of the external encoder,
@@ -106,7 +109,6 @@ public class Drivetrain extends Subsystem {
         config.wheels = _wheels;
         config.gyro = new AHRS(SPI.Port.kMXP);
         config.gyro.setAngleAdjustment(0);
-        System.out.println("PLEASE LOOK AT THIS gyro connected " + config.gyro.isConnected());
         return new SwerveDrive(config);
     }
 
@@ -128,6 +130,28 @@ public class Drivetrain extends Subsystem {
      */
     public void setAzimuth(Wheel wheel, int position) {
         wheel.setAzimuthPosition(position);
+    }
+
+    /**
+     * Puts azimuth positions in degrees to the SmartDashboard
+     */
+    public void putAzimuthPositions() {
+        Wheel[] wheels = _sd.getWheels();
+        for(int i = 0; i < SwerveDrive.getWheelCount(); i++) {
+            SmartDashboard.putNumber("Azimuth angle " + i, Wheel.ticksToDegreesAzimuth(wheels[i].getInternalEncoderPos()));
+        }
+    }
+
+    /**
+     * Puts external and calculated internal encoder positions to the SmartDashboard
+     */
+    public void putEncoderPositions() {
+        Wheel[] wheels = _sd.getWheels();
+        for(int i = 0; i < SwerveDrive.getWheelCount(); i++) {
+            SmartDashboard.putNumber("External encoder pos " + i, wheels[i].getAzimuthAbsolutePosition());
+            SmartDashboard.putNumber("Calculated internal encoder pos " + i, Wheel.externalToInternalTicks(wheels[i].getAzimuthAbsolutePosition()));
+            _wheels[i].setAzimuthInternalEncoderPosition(_wheels[i].getAzimuthAbsolutePosition() - Preferences.getInstance().getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
+        }
     }
 
     /**
@@ -161,7 +185,7 @@ public class Drivetrain extends Subsystem {
         int position;
         Preferences prefs = Preferences.getInstance();
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
-            position = _wheels[i].getExternalEncoderPos();
+            position = _wheels[i].getAzimuthAbsolutePosition();
             _wheels[i].setAzimuthInternalEncoderPosition(position - prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
         }
     }

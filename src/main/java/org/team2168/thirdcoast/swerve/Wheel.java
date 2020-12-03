@@ -46,6 +46,7 @@ public class Wheel {
   private final TalonFX azimuthTalon;
   protected DoubleConsumer driver;
   private boolean isInverted = false;
+  private boolean absoluteEncoderInverted = false;
   private int primaryPID = 0;
   private int auxPID = 1; //specifies the auxiliary pid loop for any method that takes in a pididx
 
@@ -62,10 +63,11 @@ public class Wheel {
    * @param drive the configured drive TalonFX
    * @param driveSetpointMax scales closed-loop drive output to this value when drive setpoint = 1.0
    */
-  public Wheel(TalonFX azimuth, BaseTalon drive, double driveSetpointMax) {
+  public Wheel(TalonFX azimuth, BaseTalon drive, double driveSetpointMax, boolean absoluteEncoderInverted) {
     this.driveSetpointMax = driveSetpointMax;
     azimuthTalon = Objects.requireNonNull(azimuth);
     driveTalon = Objects.requireNonNull(drive);
+    this.absoluteEncoderInverted = absoluteEncoderInverted;
 
     setDriveMode(TELEOP);
 
@@ -280,7 +282,10 @@ public class Wheel {
    * @return 0 - 4095, corresponding to one full revolution.
    */
   public int getAzimuthAbsolutePosition() {
-    return azimuthTalon.getSelectedSensorPosition(auxPID);
+    if (this.absoluteEncoderInverted)
+      return -azimuthTalon.getSelectedSensorPosition(auxPID);
+    else
+      return azimuthTalon.getSelectedSensorPosition(auxPID);
   }
 
   /**
