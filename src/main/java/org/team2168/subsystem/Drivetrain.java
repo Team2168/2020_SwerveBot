@@ -28,6 +28,7 @@ public class Drivetrain extends Subsystem {
     private final double CONTINUOUS_CURRENT_LIMIT = 40; // amps
     private final double TRIGGER_THRESHOLD_LIMIT = 60; // amp
     private final double TRIGGER_THRESHOLD_TIME = 0.2; // s
+    private static final double DRIVE_SETPOINT_MAX = 22_500.0; // ticks/100 ms
 
     private static Drivetrain instance = null;
 
@@ -109,7 +110,7 @@ public class Drivetrain extends Subsystem {
             driveTalon.configSupplyCurrentLimit(talonCurrentLimit);
             driveTalon.setNeutralMode(NeutralMode.Coast);
 
-            Wheel wheel = new Wheel(azimuthTalon, driveTalon, 1.0, ABSOLUTE_ENCODER_INVERTED[i]);
+            Wheel wheel = new Wheel(azimuthTalon, driveTalon, DRIVE_SETPOINT_MAX, ABSOLUTE_ENCODER_INVERTED[i]);
             _wheels[i] = wheel;
         }
         initializeAzimuthPosition(); // set the value of the internal encoder's current position to that of the external encoder,
