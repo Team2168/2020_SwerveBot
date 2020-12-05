@@ -36,10 +36,12 @@ public class Wheel {
   private static final Logger logger = LoggerFactory.getLogger(Wheel.class);
   private static final double AZIMUTH_GEAR_RATIO = (60.0/10.0) * (45.0/15.0); // defined as module input/motor output; placeholder
   private static final double DRIVE_GEAR_RATIO = (60.0/15.0) * (20.0/24.0) * (38.0/18.0);
+  private static final double DRIVE_CIRCUMFERENCE_FT = (Math.PI/3.0);
   private static final int INTERNAL_ENCODER_TICKS = 2048;
   private static final int EXTERNAL_ENCODER_TICKS = 4096;
   private static final double TICKS_PER_DEGREE_AZIMUTH = ((1.0/360.0) * AZIMUTH_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
   private static final double TICKS_PER_DEGREE_DW = ((1.0/360.0) * DRIVE_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
+  private static final double TICKS_PER_FOOT_DW = ((1.0/DRIVE_CIRCUMFERENCE_FT) * DRIVE_GEAR_RATIO *INTERNAL_ENCODER_TICKS); // TODO: check math?
   private static final double INTERNAL_ENCODER_TICKS_PER_REV = 360 * TICKS_PER_DEGREE_AZIMUTH;
   private final double driveSetpointMax;
   private final BaseTalon driveTalon;
@@ -69,7 +71,7 @@ public class Wheel {
     driveTalon = Objects.requireNonNull(drive);
     this.absoluteEncoderInverted = absoluteEncoderInverted;
 
-    setDriveMode(TELEOP);
+    setDriveMode(DriveMode.AZIMUTH);
 
     logger.debug("azimuth = {} drive = {}", azimuthTalon.getDeviceID(), driveTalon.getDeviceID());
     logger.debug("driveSetpointMax = {}", driveSetpointMax);
@@ -263,6 +265,26 @@ public class Wheel {
    */
   public static int DPSToTicksPer100msAzimuth(double degrees) {
     return (int) (degreesToTicksAzimuth(degrees) / 10.0);
+  }
+
+
+  /**
+   * Converts the drive wheel's speed from ticks per 100 ms to feet per second.
+   * @param ticks number of ticks per 100 ms
+   * @return number of feet per second
+   */
+  public static int TicksPer100msToFPSDW(double ticks) {
+    return (int) (ticks * 10.0 / TICKS_PER_FOOT_DW);
+  }
+
+
+  /**
+   * Converts the drive wheel's speed from feet per second to ticks per 100 ms.
+   * @param feet number of feet per second
+   * @return number of ticks per 100 ms
+   */
+  public static int FPSToTicksPer100msDW(double feet) {
+    return (int) (feet / 10.0 * TICKS_PER_FOOT_DW);
   }
 
 
