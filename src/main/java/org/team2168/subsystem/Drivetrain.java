@@ -3,6 +3,7 @@ package org.team2168.subsystem;
 import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.CANifierStatusFrame;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -78,6 +79,13 @@ public class Drivetrain extends Subsystem {
         azimuthConfig.motionAcceleration = Wheel.DPSToTicksPer100msAzimuth(7000); // 10_000;
         azimuthConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msAzimuth(700); // 800;
         driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+        driveConfig.slot0.kP = 0.05;
+        driveConfig.slot0.kI = 0.0005;
+        driveConfig.slot0.kD = 0.0;
+        driveConfig.slot0.kF = 0.032;  // TODO: tune these
+        driveConfig.slot0.integralZone = 1000;
+        driveConfig.slot0.maxIntegralAccumulator = 150_000;
+        driveConfig.slot0.allowableClosedloopError = 0;
         driveConfig.motionAcceleration = Wheel.DPSToTicksPer100msDW(180); // 500;
         driveConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msDW(30); // 100;
 
@@ -92,12 +100,14 @@ public class Drivetrain extends Subsystem {
             azimuthTalon.setSensorPhase(false);
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
+            azimuthTalon.setNeutralMode(NeutralMode.Coast);
  
             TalonFX driveTalon = new TalonFX(RobotMap.DRIVE_TALON_ID[i]);
             driveTalon.configFactoryDefault();
             driveTalon.setInverted(DRIVE_INVERTED[i]);
             driveTalon.configAllSettings(driveConfig);
             driveTalon.configSupplyCurrentLimit(talonCurrentLimit);
+            driveTalon.setNeutralMode(NeutralMode.Coast);
 
             Wheel wheel = new Wheel(azimuthTalon, driveTalon, 1.0, ABSOLUTE_ENCODER_INVERTED[i]);
             _wheels[i] = wheel;
