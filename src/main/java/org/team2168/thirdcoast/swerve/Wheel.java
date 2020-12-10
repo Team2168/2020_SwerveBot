@@ -4,18 +4,19 @@
  */
 package org.team2168.thirdcoast.swerve;
 
-import static com.ctre.phoenix.motorcontrol.ControlMode.*;
-import static org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode.TELEOP;
+import static com.ctre.phoenix.motorcontrol.ControlMode.MotionMagic;
+import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
+import static com.ctre.phoenix.motorcontrol.ControlMode.Velocity;
 
-import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.motorcontrol.can.BaseTalon;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import java.util.Objects;
 import java.util.function.DoubleConsumer;
+
+import com.ctre.phoenix.motorcontrol.can.BaseTalon;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode;
-import org.team2168.thirdcoast.talon.Errors;
 
 /**
  * Controls a swerve drive wheel azimuth and drive motors.
@@ -43,7 +44,7 @@ public class Wheel {
   private static final double TICKS_PER_DEGREE_DW = ((1.0/360.0) * DRIVE_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
   private static final double TICKS_PER_FOOT_DW = ((1.0/DRIVE_CIRCUMFERENCE_FT) * DRIVE_GEAR_RATIO *INTERNAL_ENCODER_TICKS); // TODO: check math?
   private static final double INTERNAL_ENCODER_TICKS_PER_REV = 360 * TICKS_PER_DEGREE_AZIMUTH;
-  private final double driveSetpointMax;
+  private static final double DRIVE_SETPOINT_MAX = 22_500.0; // ticks/100 ms
   private final BaseTalon driveTalon;
   private final TalonFX azimuthTalon;
   protected DoubleConsumer driver;
@@ -56,17 +57,15 @@ public class Wheel {
   /**
    * This constructs a wheel with supplied azimuth and drive talons.
    *
-   * <p>Wheels will scale closed-loop drive output to {@code driveSetpointMax}. For example, if
+   * <p>Wheels will scale closed-loop drive output to {@code DRIVE_SETPOINT_MAX}. For example, if
    * closed-loop drive mode is tuned to have a max usable output of 10,000 ticks per 100ms, set this
    * to 10,000 and the wheel will send a setpoint of 10,000 to the drive talon when wheel is set to
    * max drive output (1.0).
    *
    * @param azimuth the configured azimuth TalonFX
    * @param drive the configured drive TalonFX
-   * @param driveSetpointMax scales closed-loop drive output to this value when drive setpoint = 1.0
    */
-  public Wheel(TalonFX azimuth, BaseTalon drive, double driveSetpointMax, boolean absoluteEncoderInverted) {
-    this.driveSetpointMax = driveSetpointMax;
+  public Wheel(TalonFX azimuth, BaseTalon drive, boolean absoluteEncoderInverted) {
     azimuthTalon = Objects.requireNonNull(azimuth);
     driveTalon = Objects.requireNonNull(drive);
     this.absoluteEncoderInverted = absoluteEncoderInverted;
@@ -74,8 +73,8 @@ public class Wheel {
     setDriveMode(DriveMode.AZIMUTH);
 
     logger.debug("azimuth = {} drive = {}", azimuthTalon.getDeviceID(), driveTalon.getDeviceID());
-    logger.debug("driveSetpointMax = {}", driveSetpointMax);
-    if (driveSetpointMax == 0.0) logger.warn("driveSetpointMax may not have been configured");
+    logger.debug("DRIVE_SETPOINT_MAX = {}", DRIVE_SETPOINT_MAX);
+    if (DRIVE_SETPOINT_MAX == 0.0) logger.warn("DRIVE_SETPOINT_MAX may not have been configured");
   }
 
   /**
@@ -135,7 +134,7 @@ public class Wheel {
    * {@code AZIMUTH} are equivalent.
    *
    * <p>In closed-loop modes, the drive setpoint is scaled by the drive Talon {@code
-   * driveSetpointMax} parameter.
+   * DRIVE_SETPOINT_MAX} parameter.
    *
    * <p>This method is intended to be overridden if the open or closed-loop drive wheel drivers need
    * to be customized.
@@ -151,7 +150,7 @@ public class Wheel {
       case CLOSED_LOOP:
       case TRAJECTORY:
       case AZIMUTH:
-        driver = (setpoint) -> driveTalon.set(Velocity, setpoint * driveSetpointMax);
+        driver = (setpoint) -> driveTalon.set(Velocity, setpoint * DRIVE_SETPOINT_MAX);
         break;
     }
   }
@@ -337,8 +336,8 @@ public class Wheel {
     return driveTalon;
   }
 
-  public double getDriveSetpointMax() {
-    return driveSetpointMax;
+  public static double getDriveSetpointMax() {
+    return DRIVE_SETPOINT_MAX;
   }
 
   /**
@@ -361,8 +360,8 @@ public class Wheel {
         + azimuthTalon
         + ", driveTalon="
         + driveTalon
-        + ", driveSetpointMax="
-        + driveSetpointMax
+        + ", DRIVE_SETPOINT_MAX="
+        + DRIVE_SETPOINT_MAX
         + '}';
   }
 }
