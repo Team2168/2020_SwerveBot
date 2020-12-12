@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.team2168.OI;
 import org.team2168.subsystem.Drivetrain;
+import org.team2168.thirdcoast.swerve.Wheel;
 
 public class DriveWithJoystick extends Command {
   private OI oi;
@@ -37,12 +38,12 @@ public class DriveWithJoystick extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), oi.getDriverJoystickZValue());
-    SmartDashboard.putNumber("Joystick Y", oi.getDriverJoystickYValue());
-    SmartDashboard.putNumber("Joystick X", oi.getDriverJoystickXValue());
-    SmartDashboard.putNumber("Joystick Z", oi.getDriverJoystickZValue());
+    // dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), oi.getDriverJoystickZValue());
+    // SmartDashboard.putNumber("Joystick Y", oi.getDriverJoystickYValue());
+    // SmartDashboard.putNumber("Joystick X", oi.getDriverJoystickXValue());
+    // SmartDashboard.putNumber("Joystick Z", oi.getDriverJoystickZValue());
 
-    //dt.drive(SmartDashboard.getNumber("Drive Forward", 0.0), SmartDashboard.getNumber("Drive Strafe", 0.0), SmartDashboard.getNumber("Drive Azimuth", 0.0));
+    dt.drive(Wheel.FPStoPercentVelocity(SmartDashboard.getNumber("Drive Forward", 0.0)), SmartDashboard.getNumber("Drive Strafe", 0.0), SmartDashboard.getNumber("Drive Azimuth", 0.0));
   }
 
   // Called once the command ends
