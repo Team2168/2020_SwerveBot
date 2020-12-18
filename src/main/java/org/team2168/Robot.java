@@ -7,10 +7,13 @@
 
 package org.team2168;
 
+import org.team2168.commands.drivetrain.DoNothing;
+import org.team2168.commands.drivetrain.SwerveDriveTestsPathCommandGroup;
 import org.team2168.subsystem.Drivetrain;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 /**
@@ -21,13 +24,14 @@ import edu.wpi.first.wpilibj.command.Scheduler;
  * project.
  */
 public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  static Command autonomousCommand;
+  private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   private static Drivetrain dt;
   private static OI oi;
+
+  static boolean autoMode;
+
   // private static DriveWithJoystick drivewithjoystick;
   /**
    * This function is run when the robot is first started up and should be
@@ -35,9 +39,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    autoSelectInit();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+    
     SmartDashboard.putNumber("Drive Forward", 0.0);
     SmartDashboard.putNumber("Drive Strafe", 0.0);
     SmartDashboard.putNumber("Drive Azimuth", 0.0);
@@ -58,6 +62,13 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
   }
 
+  /** Adds autos to the selector
+   */
+  public void autoSelectInit() {
+    autoChooser.setDefaultOption("Default Auto", new DoNothing());
+    autoChooser.addOption("DriveTwoFeetStraight", new SwerveDriveTestsPathCommandGroup());
+  }
+
   /**
    * This autonomous (along with the chooser code above) shows how to select
    * between different autonomous modes using the dashboard. The sendable
@@ -71,9 +82,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    autoMode = true;
+    autonomousCommand = (Command) autoChooser.getSelected();
+
+    if (autonomousCommand != null)
+      autonomousCommand.start();
   }
 
   /**
@@ -81,15 +94,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+    autoMode = true;
+    Scheduler.getInstance().run();
   }
 
   /**
@@ -97,6 +103,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
+    autoMode = false;
     // drivewithjoystick.initialize();
   }
 
@@ -105,6 +112,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    autoMode = false;
     Scheduler.getInstance().run();
   }
 
@@ -113,6 +121,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    autoMode = false;
   }
 
   /**
@@ -120,7 +129,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledPeriodic() {
+    autoMode = false;
     Scheduler.getInstance().run();
+
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+    autonomousCommand = (Command) autoChooser.getSelected();
 
     // TODO: put this on a test joystick
     if (oi.driverJoystick.isPressedButtonStart()) {
@@ -133,6 +146,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testInit() {
+    autoMode = false;
+  }
+
+  public static boolean isAutoMode() {
+    return autoMode;
   }
 
   /**
@@ -140,5 +158,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+    autoMode = false;
   }
 }
