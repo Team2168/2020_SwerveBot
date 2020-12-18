@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     autoSelectInit();
     SmartDashboard.putData("Auto Chooser", autoChooser);
-    
+
     SmartDashboard.putNumber("Drive Forward", 0.0);
     SmartDashboard.putNumber("Drive Strafe", 0.0);
     SmartDashboard.putNumber("Drive Azimuth", 0.0);
@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
    */
   public void autoSelectInit() {
     autoChooser.setDefaultOption("Default Auto", new DoNothing());
-    autoChooser.addOption("DriveTwoFeetStraight", new SwerveDriveTestsPathCommandGroup());
+    autoChooser.addOption("Drive Straight", new SwerveDriveTestsPathCommandGroup());
   }
 
   /**

@@ -14,7 +14,7 @@ public class SwerveDriveTestsPathCommandGroup extends CommandGroup {
    * Add your docs here.
    */
   public SwerveDriveTestsPathCommandGroup() {
-    addSequential(new PathCommand("DriveTwoFeetStraight", 0));
+    addSequential(new PathCommand("straight", 0));
 
     // To run multiple commands at the same time,
     // use addParallel()
