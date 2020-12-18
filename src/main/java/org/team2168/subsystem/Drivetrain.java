@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import org.team2168.RobotMap;
 import org.team2168.commands.drivetrain.DriveWithJoystick;
 import org.team2168.thirdcoast.swerve.*;
@@ -133,6 +132,14 @@ public class Drivetrain extends Subsystem {
         _sd.drive(forward, strafe, azimuth);
     }
 
+    public Wheel[] getWheels() {
+        return _wheels;
+    }
+
+    public AHRS getGyro() {
+        return _sd.getGyro();
+    }
+
     /**
      * Set the absolute module heading in terms of the module
      * 
@@ -199,6 +206,10 @@ public class Drivetrain extends Subsystem {
             _wheels[i].setAzimuthInternalEncoderPosition(position - prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
         }
     }
+
+    public void setDriveMode(SwerveDrive.DriveMode mode) {
+        _sd.setDriveMode(mode);
+      }
 
     @Override
     protected void initDefaultCommand() {
