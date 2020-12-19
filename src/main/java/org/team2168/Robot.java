@@ -60,6 +60,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Gyro heading", dt.getGyro().getAngle());
   }
 
   /** Adds autos to the selector
@@ -82,6 +83,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    dt.getGyro().calibrate();
     autoMode = true;
     autonomousCommand = (Command) autoChooser.getSelected();
 
