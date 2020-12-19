@@ -83,7 +83,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    dt.getGyro().calibrate();
+    dt.getGyro().reset();
     autoMode = true;
     autonomousCommand = (Command) autoChooser.getSelected();
 
