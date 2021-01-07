@@ -4,30 +4,39 @@ import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.CANifierStatusFrame;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.kauailabs.navx.frc.AHRS;
+
+import org.team2168.RobotMap;
+import org.team2168.commands.drivetrain.DriveWithJoystick;
+import org.team2168.thirdcoast.swerve.SwerveDrive;
+import org.team2168.thirdcoast.swerve.SwerveDriveConfig;
+import org.team2168.thirdcoast.swerve.Wheel;
+
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.team2168.RobotMap;
-import org.team2168.commands.drivetrain.DriveWithJoystick;
-import org.team2168.thirdcoast.swerve.*;
-
 public class Drivetrain extends Subsystem {
-    private CANifier _canifier = new CANifier(00);
+    private CANifier _canifier = new CANifier(RobotMap.CANIFIER_ID);
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
+    private SwerveDrive _sd = configSwerve();
+
     private final boolean[] DRIVE_INVERTED = {true, true, true, true};
     private final boolean[] ABSOLUTE_ENCODER_INVERTED = {false, true, false, false};
-    private SwerveDrive _sd = configSwerve();
-    private final boolean ENABLE_CURRENT_LIMIT = true;
-    private final double CONTINUOUS_CURRENT_LIMIT = 40; // amps
-    private final double TRIGGER_THRESHOLD_LIMIT = 60; // amp
-    private final double TRIGGER_THRESHOLD_TIME = 0.2; // s
+
+    private final boolean DRIVE_ENABLE_CURRENT_LIMIT = true;
+    private final double DRIVE_CONTINUOUS_CURRENT_LIMIT = 40; // amps
+    private final double DRIVE_TRIGGER_THRESHOLD_LIMIT = 60; // amp
+    private final double DRIVE_TRIGGER_THRESHOLD_TIME = 0.2; // s
+
+    private final boolean AZIMUTH_ENABLE_CURRENT_LIMIT = true;
+    private final double AZIMUTH_CONTINUOUS_CURRENT_LIMIT = 10; // amps
+    private final double AZIMUTH_TRIGGER_THRESHOLD_LIMIT = 15; // amp
+    private final double AZIMUTH_TRIGGER_THRESHOLD_TIME = 0.2; // s
 
     private static Drivetrain instance = null;
 
@@ -56,14 +65,16 @@ public class Drivetrain extends Subsystem {
     private SwerveDrive configSwerve() {
         TalonFXConfiguration azimuthConfig = new TalonFXConfiguration();
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
-        SupplyCurrentLimitConfiguration talonCurrentLimit;
+        SupplyCurrentLimitConfiguration driveCurrentLimit;
+        SupplyCurrentLimitConfiguration azimuthCurrentLimit;
 
-        talonCurrentLimit = new SupplyCurrentLimitConfiguration(ENABLE_CURRENT_LIMIT,
-        CONTINUOUS_CURRENT_LIMIT, TRIGGER_THRESHOLD_LIMIT, TRIGGER_THRESHOLD_TIME);
+        driveCurrentLimit = new SupplyCurrentLimitConfiguration(DRIVE_ENABLE_CURRENT_LIMIT,
+        DRIVE_CONTINUOUS_CURRENT_LIMIT, DRIVE_TRIGGER_THRESHOLD_LIMIT, DRIVE_TRIGGER_THRESHOLD_TIME);
+
+        azimuthCurrentLimit = new SupplyCurrentLimitConfiguration(AZIMUTH_ENABLE_CURRENT_LIMIT,
+        AZIMUTH_CONTINUOUS_CURRENT_LIMIT, AZIMUTH_TRIGGER_THRESHOLD_LIMIT, AZIMUTH_TRIGGER_THRESHOLD_TIME);
+
         
-        // TODO: Set up gear ratios, at least for the driveTalon
-        // TODO: Check if we need to set/configure any canifier settings
-
 
         azimuthConfig.remoteFilter0.remoteSensorDeviceID = _canifier.getDeviceID();
         // azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
@@ -99,14 +110,14 @@ public class Drivetrain extends Subsystem {
             azimuthTalon.setInverted(true);
             azimuthTalon.setSensorPhase(false);
             azimuthTalon.configAllSettings(azimuthConfig);
-            azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
+            azimuthTalon.configSupplyCurrentLimit(azimuthCurrentLimit);
             azimuthTalon.setNeutralMode(NeutralMode.Coast);
  
             TalonFX driveTalon = new TalonFX(RobotMap.DRIVE_TALON_ID[i]);
             driveTalon.configFactoryDefault();
             driveTalon.setInverted(DRIVE_INVERTED[i]);
             driveTalon.configAllSettings(driveConfig);
-            driveTalon.configSupplyCurrentLimit(talonCurrentLimit);
+            driveTalon.configSupplyCurrentLimit(driveCurrentLimit);
             driveTalon.setNeutralMode(NeutralMode.Coast);
 
             Wheel wheel = new Wheel(azimuthTalon, driveTalon, ABSOLUTE_ENCODER_INVERTED[i]);
