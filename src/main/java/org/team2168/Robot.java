@@ -121,11 +121,6 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
-
-    // TODO: put this on a test joystick
-    if (oi.driverJoystick.isPressedButtonStart()) {
-      dt.saveAzimuthPositions();
-    }
   }
 
   /**

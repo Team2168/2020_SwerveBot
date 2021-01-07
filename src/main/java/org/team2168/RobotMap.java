@@ -18,6 +18,7 @@ public class RobotMap {
 
 	// Joysticks///////////////////////////////////////////////////////////////
 	public static final int DRIVER_JOYSTICK = 0;
+	public static final int TEST_JOYSTICK = 4;
 	
 
 
@@ -47,6 +48,7 @@ public class RobotMap {
 	*************************************************************************/
 	public static final int[] AZIMUTH_TALON_ID = {12, 2, 14, 0};
 	public static final int[] DRIVE_TALON_ID = {13, 3, 15, 1};
+	public static final int CANIFIER_ID = 00;
 
 	// CANifier Azimuth Motor Channels//////////////////////////////////////////
 	public static final RemoteSensorSource[] AZIMUTH_SENSOR_CHANNEL = {RemoteSensorSource.CANifier_PWMInput0, RemoteSensorSource.CANifier_PWMInput1,

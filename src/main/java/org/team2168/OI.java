@@ -45,7 +45,7 @@ public class OI {
 	// public F310 driverOperatorEJoystick = new
 	// F310(RobotMap.DRIVER_OPERATOR_E_BACKUP);
 
-	// public F310 testJoystick = new F310(RobotMap.COMMANDS_TEST_JOYSTICK);
+	public F310 testJoystick = new F310(RobotMap.TEST_JOYSTICK);
 	//public F310 pidTestJoystick = new F310(RobotMap.PID_TEST_JOYSTICK);
 
 	private LinearInterpolator driverJoystickYInterpolator;
@@ -79,9 +79,8 @@ public class OI {
 		driverJoystickXInterpolator = new LinearInterpolator(driverJoystickXArray);
 		driverJoystickZInterpolator = new LinearInterpolator(driverJoystickZArray);
 
-		// TODO: put these on a test joystick
-		driverJoystick.ButtonBack().whenPressed(new InitializeInternalAzimuthEncoder());
-		driverJoystick.ButtonStart().whenPressed(new ZeroEncoders());
+		testJoystick.ButtonBack().whenPressed(new InitializeInternalAzimuthEncoder());
+		testJoystick.ButtonStart().whenPressed(new ZeroEncoders());
 	}
 	
 	/**
