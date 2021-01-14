@@ -21,7 +21,7 @@ public class Drivetrain extends Subsystem {
     private CANifier _canifier = new CANifier(00);
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
     private final boolean[] DRIVE_INVERTED = {true, true, true, true};
-    private final boolean[] ABSOLUTE_ENCODER_INVERTED = {false, true, false, false};
+    private final boolean[] ABSOLUTE_ENCODER_INVERTED = {false, false, false, false};
     private SwerveDrive _sd = configSwerve();
     private final boolean ENABLE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_CURRENT_LIMIT = 40; // amps
@@ -204,6 +204,7 @@ public class Drivetrain extends Subsystem {
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
             position = _wheels[i].getAzimuthAbsolutePosition();
             _wheels[i].setAzimuthInternalEncoderPosition(position - prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
+            System.out.println(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
         }
     }
 
