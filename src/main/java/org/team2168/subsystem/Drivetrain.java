@@ -20,7 +20,7 @@ import org.team2168.thirdcoast.swerve.*;
 public class Drivetrain extends Subsystem {
     private CANifier _canifier = new CANifier(00);
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
-    private final boolean[] DRIVE_INVERTED = {true, true, true, true};
+    private final boolean[] DRIVE_INVERTED = {false, false, false, false};
     private final boolean[] ABSOLUTE_ENCODER_INVERTED = {false, false, false, false};
     private SwerveDrive _sd = configSwerve();
     private final boolean ENABLE_CURRENT_LIMIT = true;
@@ -95,7 +95,7 @@ public class Drivetrain extends Subsystem {
             azimuthConfig.remoteFilter0.remoteSensorSource = RobotMap.AZIMUTH_SENSOR_CHANNEL[i];
             TalonFX azimuthTalon = new TalonFX(RobotMap.AZIMUTH_TALON_ID[i]);
             azimuthTalon.configFactoryDefault();
-            azimuthTalon.setInverted(true);
+            azimuthTalon.setInverted(false);
             azimuthTalon.setSensorPhase(false);
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
