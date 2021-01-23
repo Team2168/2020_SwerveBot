@@ -303,7 +303,7 @@ public class Wheel {
 
   /**
    * Returns the wheel's azimuth absolute position in encoder ticks.
-   * This method is primarily used for zeroing the
+   * This method is primarily used for zeroing the modules
    *
    * @return 0 - 4095, corresponding to one full revolution.
    */
