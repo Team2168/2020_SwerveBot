@@ -42,6 +42,8 @@ public class Robot extends TimedRobot {
     autoSelectInit();
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
+    SmartDashboard.putString("Control Mode", "Joystick");
+
     SmartDashboard.putNumber("Drive Forward", 0.0);
     SmartDashboard.putNumber("Drive Strafe", 0.0);
     SmartDashboard.putNumber("Drive Azimuth", 0.0);
