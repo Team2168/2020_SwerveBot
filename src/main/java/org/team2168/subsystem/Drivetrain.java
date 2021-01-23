@@ -35,17 +35,17 @@ public class Drivetrain extends Subsystem {
         _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_4_PwmInputs1, 10);
         _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_5_PwmInputs2, 10);
         _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_6_PwmInputs3, 10);
-    
+
         //_sd.zeroAzimuthEncoders();
     }
-    
+
     /**
      * @return An instance of the DriveWheel subsystem
      */
     public static Drivetrain getInstance() {
         if (instance == null)
           instance = new Drivetrain();
-    
+
         return instance;
     }
 
@@ -59,7 +59,7 @@ public class Drivetrain extends Subsystem {
 
         talonCurrentLimit = new SupplyCurrentLimitConfiguration(ENABLE_CURRENT_LIMIT,
         CONTINUOUS_CURRENT_LIMIT, TRIGGER_THRESHOLD_LIMIT, TRIGGER_THRESHOLD_TIME);
-        
+
         // TODO: Set up gear ratios, at least for the driveTalon
         // TODO: Check if we need to set/configure any canifier settings
 
@@ -100,7 +100,7 @@ public class Drivetrain extends Subsystem {
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
             azimuthTalon.setNeutralMode(NeutralMode.Coast);
- 
+
             TalonFX driveTalon = new TalonFX(RobotMap.DRIVE_TALON_ID[i]);
             driveTalon.configFactoryDefault();
             driveTalon.setInverted(DRIVE_INVERTED[i]);
@@ -142,7 +142,7 @@ public class Drivetrain extends Subsystem {
 
     /**
      * Set the absolute module heading in terms of the module
-     * 
+     *
      * @param position position in motor ticks
      */
     public void setAzimuth(Wheel wheel, int position) {
