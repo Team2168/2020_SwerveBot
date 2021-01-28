@@ -22,7 +22,7 @@ import org.team2168.thirdcoast.talon.Errors;
 @SuppressWarnings("unused")
 public class SwerveDrive {
 
-  public static final int DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 2168; // 200
+  public static final int DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 200;
   private static final Logger logger = LoggerFactory.getLogger(SwerveDrive.class);
   private static final int WHEEL_COUNT = 4;
   private final AHRS gyro;
@@ -230,7 +230,7 @@ public class SwerveDrive {
 
   /**
    * Returns the number of wheels on the swerve drive.
-   * 
+   *
    * @return the number of wheels.
    */
   public static int getWheelCount() {
