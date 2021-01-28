@@ -23,7 +23,8 @@ import org.team2168.thirdcoast.talon.Errors;
 public class SwerveDrive {
 
   public static final int DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 200;
-  private static final Logger logger = LoggerFactory.getLogger(SwerveDrive.class);
+  private static final Logger loasdadaasdasd
+  gger = LoggerFactory.getLogger(SwerveDrive.class);
   private static final int WHEEL_COUNT = 4;
   private final AHRS gyro;
   private final double kLengthComponent;
