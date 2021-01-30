@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import org.team2168.RobotMap;
 import org.team2168.commands.drivetrain.DriveWithJoystick;
 import org.team2168.thirdcoast.swerve.*;
@@ -21,8 +20,8 @@ import org.team2168.thirdcoast.swerve.*;
 public class Drivetrain extends Subsystem {
     private CANifier _canifier = new CANifier(00);
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
-    private final boolean[] DRIVE_INVERTED = {true, true, true, true};
-    private final boolean[] ABSOLUTE_ENCODER_INVERTED = {false, true, false, false};
+    private final boolean[] DRIVE_INVERTED = {false, false, false, false};
+    private final boolean[] ABSOLUTE_ENCODER_INVERTED = {false, false, false, false};
     private SwerveDrive _sd = configSwerve();
     private final boolean ENABLE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_CURRENT_LIMIT = 40; // amps
@@ -96,7 +95,7 @@ public class Drivetrain extends Subsystem {
             azimuthConfig.remoteFilter0.remoteSensorSource = RobotMap.AZIMUTH_SENSOR_CHANNEL[i];
             TalonFX azimuthTalon = new TalonFX(RobotMap.AZIMUTH_TALON_ID[i]);
             azimuthTalon.configFactoryDefault();
-            azimuthTalon.setInverted(true);
+            azimuthTalon.setInverted(false);
             azimuthTalon.setSensorPhase(false);
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
@@ -131,6 +130,14 @@ public class Drivetrain extends Subsystem {
      */
     public void drive(double forward, double strafe, double azimuth) {
         _sd.drive(forward, strafe, azimuth);
+    }
+
+    public Wheel[] getWheels() {
+        return _wheels;
+    }
+
+    public AHRS getGyro() {
+        return _sd.getGyro();
     }
 
     /**
@@ -197,8 +204,13 @@ public class Drivetrain extends Subsystem {
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
             position = _wheels[i].getAzimuthAbsolutePosition();
             _wheels[i].setAzimuthInternalEncoderPosition(position - prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
+            System.out.println(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
         }
     }
+
+    public void setDriveMode(SwerveDrive.DriveMode mode) {
+        _sd.setDriveMode(mode);
+      }
 
     @Override
     protected void initDefaultCommand() {
