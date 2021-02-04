@@ -70,8 +70,6 @@ public class Wheel {
     driveTalon = Objects.requireNonNull(drive);
     this.absoluteEncoderInverted = absoluteEncoderInverted;
 
-    setDriveMode(DriveMode.AZIMUTH);
-
     logger.debug("azimuth = {} drive = {}", azimuthTalon.getDeviceID(), driveTalon.getDeviceID());
     logger.debug("DRIVE_SETPOINT_MAX = {}", DRIVE_SETPOINT_MAX);
     if (DRIVE_SETPOINT_MAX == 0.0) logger.warn("DRIVE_SETPOINT_MAX may not have been configured");
