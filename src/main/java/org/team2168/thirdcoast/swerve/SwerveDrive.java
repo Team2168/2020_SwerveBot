@@ -52,7 +52,8 @@ public class SwerveDrive {
 
     logger.info("gyro is configured: {}", gyro != null);
     logger.info("gyro is connected: {}", gyro != null && gyro.isConnected());
-    setFieldOriented(gyro != null && gyro.isConnected());
+    //setFieldOriented(gyro != null && gyro.isConnected());
+    setFieldOriented(false);
 
     if (isFieldOriented) {
       gyro.enableLogging(config.gyroLoggingEnabled);
