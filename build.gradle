@@ -17,7 +17,7 @@ deploy {
             // or from command line. If not found an exception will be thrown.
             // You can use getTeamOrDefault(team) instead of getTeamNumber if you
             // want to store a team number in this file.
-            team = frc.getTeamOrDefault(2168) 
+            team = frc.getTeamOrDefault(2168)
         }
     }
     artifacts {
@@ -58,6 +58,15 @@ dependencies {
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging
     simulation wpi.deps.sim.gui(wpi.platforms.desktop, false)
+
+    // Testing
+    testImplementation "org.junit.jupiter:junit-jupiter-params:5.+"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.+"
+    testImplementation "org.assertj:assertj-core:3.+"
+    testImplementation "org.mockito:mockito-junit-jupiter:2.+"
+    testImplementation "org.skyscreamer:jsonassert:1.+"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.+"
+    testRuntimeOnly "ch.qos.logback:logback-classic:1.2.+"
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
@@ -66,4 +75,8 @@ dependencies {
 jar {
     from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
+}
+
+test {
+    useJUnitPlatform()
 }
