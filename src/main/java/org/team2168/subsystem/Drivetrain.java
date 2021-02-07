@@ -75,7 +75,7 @@ public class Drivetrain extends Subsystem {
         azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
         // a possible workaround to get the remote sensor value?
         azimuthConfig.auxiliaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
-        azimuthConfig.slot0.kP = 0.6;
+        azimuthConfig.slot0.kP = 0.5;
         azimuthConfig.slot0.kI = 0.0;
         azimuthConfig.slot0.kD = 0.0;
         azimuthConfig.slot0.kF = 0.0;
