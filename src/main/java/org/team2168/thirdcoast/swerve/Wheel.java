@@ -272,8 +272,8 @@ public class Wheel {
    * @param ticks number of ticks per 100 ms
    * @return number of feet per second
    */
-  public static int TicksPer100msToFPSDW(double ticks) {
-    return (int) (ticks * 10.0 / TICKS_PER_FOOT_DW);
+  public static double TicksPer100msToFPSDW(double ticks) {
+    return ticks * 10.0 / TICKS_PER_FOOT_DW;
   }
 
 
@@ -321,6 +321,13 @@ public class Wheel {
    */
   public double getAzimuthPosition() {
     return azimuthTalon.getSelectedSensorPosition(primaryPID) * AZIMUTH_GEAR_RATIO;
+  }
+
+  /**
+   * @return speed of drive wheel in ticks per 100 ms
+   */
+  public double geDWSpeed() {
+    return driveTalon.getSelectedSensorVelocity(primaryPID);
   }
 
   /**

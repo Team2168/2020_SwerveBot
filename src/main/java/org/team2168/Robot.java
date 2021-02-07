@@ -10,6 +10,8 @@ package org.team2168;
 import org.team2168.commands.drivetrain.DoNothing;
 import org.team2168.commands.drivetrain.SwerveDriveTestsPathCommandGroup;
 import org.team2168.subsystem.Drivetrain;
+import org.team2168.thirdcoast.swerve.Wheel;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -63,6 +65,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SmartDashboard.putNumber("Gyro heading", dt.getGyro().getAngle());
+    for (int i = 0; i < dt.getWheels().length; i++) {
+      SmartDashboard.putNumber("Abs position module " + i, dt.getWheels()[i].getAzimuthAbsolutePosition());
+      SmartDashboard.putNumber("Int position module " + i, dt.getWheels()[i].getInternalEncoderPos());
+      SmartDashboard.putNumber("Probably incorrect module heading in degrees " + i, Wheel.ticksToDegreesAzimuth(dt.getWheels()[i].getAzimuthPosition()));
+      SmartDashboard.putNumber("Module heading in degrees " + i, Wheel.ticksToDegreesAzimuth(dt.getWheels()[i].getInternalEncoderPos()));
+      SmartDashboard.putNumber("Speed of wheel " + i, Wheel.TicksPer100msToFPSDW(dt.getWheels()[i].geDWSpeed()));
+    }
   }
 
   /** Adds autos to the selector
@@ -115,10 +124,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    for (int i = 0; i < dt.getWheels().length; i++) {
-      SmartDashboard.putNumber("Abs position module " + i, dt.getWheels()[i].getAzimuthAbsolutePosition());
-      SmartDashboard.putNumber("Int position module " + i, dt.getWheels()[i].getAzimuthPosition());
-    }
     autoMode = false;
     Scheduler.getInstance().run();
   }
