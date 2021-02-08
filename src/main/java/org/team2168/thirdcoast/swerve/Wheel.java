@@ -309,9 +309,9 @@ public class Wheel {
    */
   public int getAzimuthAbsolutePosition() {
     if (this.absoluteEncoderInverted)
-      return -azimuthTalon.getSelectedSensorPosition(auxPID);
+      return (int) -azimuthTalon.getSelectedSensorPosition(auxPID);
     else
-      return azimuthTalon.getSelectedSensorPosition(auxPID);
+      return (int) azimuthTalon.getSelectedSensorPosition(auxPID);
   }
 
   /**
@@ -358,7 +358,7 @@ public class Wheel {
    * @return position in encoder ticks
    */
   public int getInternalEncoderPos() {
-    return azimuthTalon.getSelectedSensorPosition(primaryPID);
+    return (int) azimuthTalon.getSelectedSensorPosition(primaryPID);
   }
 
   public boolean isInverted() {

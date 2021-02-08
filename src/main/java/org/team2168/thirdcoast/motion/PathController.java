@@ -72,7 +72,7 @@ public class PathController implements Runnable {
         DRIVE.setDriveMode(SwerveDrive.DriveMode.CLOSED_LOOP);
 
         for (int i = 0; i < NUM_WHEELS; i++) {
-          start[i] = wheels[i].getDriveTalon().getSelectedSensorPosition(PID);
+          start[i] = (int) wheels[i].getDriveTalon().getSelectedSensorPosition(PID);
         }
 
         double currentAngle = DRIVE.getGyro().getAngle();

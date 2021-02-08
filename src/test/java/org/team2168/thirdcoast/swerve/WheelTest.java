@@ -43,7 +43,7 @@ class WheelTest {
   void set(double startPosition, double setpoint, double endPosition, boolean isReversed) {
     Wheel wheel = new Wheel(azimuthTalon, driveTalon, false);
     int encoderStartingPosition = (int) Math.round(startPosition * INTERNAL_ENCODER_TICKS_PER_REV);
-    when(azimuthTalon.getSelectedSensorPosition(0)).thenReturn(encoderStartingPosition);
+    when(azimuthTalon.getSelectedSensorPosition(0)).thenReturn((double) encoderStartingPosition);
     wheel.set(setpoint, 1.0);
 
     ArgumentCaptor<Double> argument = ArgumentCaptor.forClass(Double.class);
@@ -89,7 +89,7 @@ class WheelTest {
   @Test
   void stopOpenLoop() {
     Wheel wheel = new Wheel(azimuthTalon, driveTalon, false);
-    when(azimuthTalon.getSelectedSensorPosition(0)).thenReturn(2767);
+    when(azimuthTalon.getSelectedSensorPosition(0)).thenReturn(2767.0);
     wheel.setDriveMode(OPEN_LOOP);
     wheel.stop();
     wheel.setDriveMode(CLOSED_LOOP);
@@ -105,7 +105,7 @@ class WheelTest {
   void setAzimuthZero(
       int encoderPosition, int zero, int setpoint, @Mock TalonFXSensorCollection sensorCollection) {
     Wheel wheel = new Wheel(azimuthTalon, driveTalon, false);
-    when(azimuthTalon.getSelectedSensorPosition(1)).thenReturn(encoderPosition);
+    when(azimuthTalon.getSelectedSensorPosition(1)).thenReturn((double) encoderPosition);
     when(azimuthTalon.getSensorCollection()).thenReturn(sensorCollection);
 
     wheel.setAzimuthZero(zero);
@@ -117,7 +117,7 @@ class WheelTest {
   void getAzimuthAbsolutePosition(
       int encoderPosition, int absolutePosition, @Mock TalonFXSensorCollection sensorCollection) {
     Wheel wheel = new Wheel(azimuthTalon, driveTalon, false);
-    when(azimuthTalon.getSelectedSensorPosition()).thenReturn(encoderPosition);
+    when(azimuthTalon.getSelectedSensorPosition()).thenReturn((double) encoderPosition);
     when(azimuthTalon.getSensorCollection()).thenReturn(sensorCollection);
     assertThat(wheel.getAzimuthAbsolutePosition()).isEqualTo(absolutePosition);
   }
