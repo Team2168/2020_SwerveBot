@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <title>2168 Dashboard!</title>
+    <style>
+      .big-chart {
+        width: 50%;
+        height: 600px;
+      }
+    </style>
+  </head>
+  <body>
+    <frc-dashboard>
+      <!-- graph module attributes-->
+      <frc-line-chart title="Module Positions" time-step="0.1" tracked-time="10" class="big-chart">
+        <frc-chart-data label="az_0" source-key="/SmartDashboard/Module heading in degrees 0" color=#003f5c></frc-chart-data>
+        <frc-chart-data label="az_1" source-key="/SmartDashboard/Module heading in degrees 1" color=#7a5195></frc-chart-data>
+        <frc-chart-data label="az_2" source-key="/SmartDashboard/Module heading in degrees 2" color=#ef5675></frc-chart-data>
+        <frc-chart-data label="az_3" source-key="/SmartDashboard/Module heading in degrees 3" color=#ffa600></frc-chart-data>
+      </frc-line-chart>
+      <frc-line-chart title="Module Speeds" time-step="0.1" tracked-time="10" class="big-chart">
+        <frc-chart-data label="sp_0" source-key="/SmartDashboard/Speed of wheel 0" color=#003f5c></frc-chart-data>
+        <frc-chart-data label="sp_1" source-key="/SmartDashboard/Speed of wheel 1" color=#7a5195></frc-chart-data>
+        <frc-chart-data label="sp_2" source-key="/SmartDashboard/Speed of wheel 2" color=#ef5675></frc-chart-data>
+        <frc-chart-data label="sp_3" source-key="/SmartDashboard/Speed of wheel 3" color=#ffa600></frc-chart-data>
+      </frc-line-chart>
+      </br>
+      <frc-gyro source-key="/SmartDashboard/Gyro heading" precision="2"></frc-gyro>
+    </frc-dashboard>
+    <script src="./frc-web-components.min.js"></script>
+  </body>
+</html>
