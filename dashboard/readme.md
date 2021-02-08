@@ -15,6 +15,12 @@
   * `pynetworktables2js.exe --team=2168` - this will attempt to connect to the robot
     using its `roboRIO-218-FRC.local` mDNS address
 
+## Alternative installation steps:
+
+  If you have python3 installed natively, or aren't running on a windows machine,
+  you can follow the [steps here](https://robotpy.readthedocs.io/projects/pynetworktables2js/en/stable/index.html)
+  to get pynetworktables2js installed (with `pip`) and running on your machine.
+
 # Documentation
 
   * For examples of how to use the frc web components: https://frc-web-components.github.io/
