@@ -9,11 +9,11 @@
   pynetworktables2js with one of the following options depending on how the
   robot is configured:
 
-    * `pynetworktables2js.exe --robot=10.21.68.2` - this will connect to a specific robot IP address
-    * `pynetworktables2js.exe --dashboard` - this will attempt to connect an IP address
-       provided by the driverstation application
-    * `pynetworktables2js.exe --team=2168` - this will attempt to connect to the robot
-       using its `roboRIO-218-FRC.local` mDNS address
+  * `pynetworktables2js.exe --robot=10.21.68.2` - this will connect to a specific robot IP address
+  * `pynetworktables2js.exe --dashboard` - this will attempt to connect an IP address
+    provided by the driverstation application
+  * `pynetworktables2js.exe --team=2168` - this will attempt to connect to the robot
+    using its `roboRIO-218-FRC.local` mDNS address
 
 # Documentation
 
