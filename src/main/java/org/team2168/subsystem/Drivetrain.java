@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2168.RobotMap;
+import org.team2168.commands.drivetrain.DriveAzimuthWithConstant;
 import org.team2168.commands.drivetrain.DriveWithJoystick;
 import org.team2168.thirdcoast.swerve.*;
 
@@ -35,7 +36,12 @@ public class Drivetrain extends Subsystem {
         _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_4_PwmInputs1, 10);
         _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_5_PwmInputs2, 10);
         _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_6_PwmInputs3, 10);
-    
+
+        // put the zeros for each module to the dashboard
+        for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
+            SmartDashboard.putNumber("Abs Zero Module " + i, Preferences.getInstance().getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
+        }
+        
         //_sd.zeroAzimuthEncoders();
     }
     
@@ -69,12 +75,12 @@ public class Drivetrain extends Subsystem {
         azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
         // a possible workaround to get the remote sensor value?
         azimuthConfig.auxiliaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
-        azimuthConfig.slot0.kP = 0.075;
+        azimuthConfig.slot0.kP = 0.5;
         azimuthConfig.slot0.kI = 0.0;
         azimuthConfig.slot0.kD = 0.0;
         azimuthConfig.slot0.kF = 0.0;
         azimuthConfig.slot0.integralZone = 0;
-        azimuthConfig.slot0.allowableClosedloopError = Wheel.degreesToTicksAzimuth(0.1);
+        azimuthConfig.slot0.allowableClosedloopError = 0; //Wheel.degreesToTicksAzimuth(0.1);
         azimuthConfig.motionAcceleration = Wheel.DPSToTicksPer100msAzimuth(7000); // 10_000;
         azimuthConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msAzimuth(700); // 800;
         driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
@@ -110,8 +116,11 @@ public class Drivetrain extends Subsystem {
 
             Wheel wheel = new Wheel(azimuthTalon, driveTalon, ABSOLUTE_ENCODER_INVERTED[i]);
             _wheels[i] = wheel;
+
+            SmartDashboard.putNumber("Abs position on init, module " + i, wheel.getAzimuthAbsolutePosition());
+            SmartDashboard.putNumber("Internal position on init, module " + i, wheel.getAzimuthPosition());
         }
-        initializeAzimuthPosition(); // set the value of the internal encoder's current position to that of the external encoder,
+        //initializeAzimuthPosition(); // set the value of the internal encoder's current position to that of the external encoder,
                                      // taking into account the gear ratio & difference in resolution, as well as the saved zero
 
         SwerveDriveConfig config = new SwerveDriveConfig();
