@@ -3,6 +3,7 @@ package org.team2168.thirdcoast.swerve;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,8 @@ public class SwerveDrive {
 
     logger.info("gyro is configured: {}", gyro != null);
     logger.info("gyro is connected: {}", gyro != null && gyro.isConnected());
-    setFieldOriented(gyro != null && gyro.isConnected());
+    //setFieldOriented(gyro != null && gyro.isConnected());
+    setFieldOriented(false);
 
     if (isFieldOriented) {
       gyro.enableLogging(config.gyroLoggingEnabled);
@@ -157,6 +159,7 @@ public class SwerveDrive {
     // set wheels
     for (int i = 0; i < WHEEL_COUNT; i++) {
       wheels[i].set(wa[i], ws[i]);
+      SmartDashboard.putNumber("Commanded position (percent of a rotation) module " + i, wa[i]);
     }
   }
 

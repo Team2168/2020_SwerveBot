@@ -70,8 +70,6 @@ public class Wheel {
     driveTalon = Objects.requireNonNull(drive);
     this.absoluteEncoderInverted = absoluteEncoderInverted;
 
-    setDriveMode(DriveMode.AZIMUTH);
-
     logger.debug("azimuth = {} drive = {}", azimuthTalon.getDeviceID(), driveTalon.getDeviceID());
     logger.debug("DRIVE_SETPOINT_MAX = {}", DRIVE_SETPOINT_MAX);
     if (DRIVE_SETPOINT_MAX == 0.0) logger.warn("DRIVE_SETPOINT_MAX may not have been configured");
@@ -86,10 +84,10 @@ public class Wheel {
    */
   public void set(double azimuth, double drive) {
     // don't reset wheel azimuth direction to zero when returning to neutral
-    if (drive == 0) {
-      driver.accept(0d);
-      return;
-    }
+    // if (drive == 0) {
+    //   driver.accept(0d);
+    //   return;
+    // }
     azimuth *= -INTERNAL_ENCODER_TICKS_PER_REV; // flip azimuth, hardware configuration dependent
 
     double azimuthPosition = azimuthTalon.getSelectedSensorPosition(0);
@@ -272,8 +270,8 @@ public class Wheel {
    * @param ticks number of ticks per 100 ms
    * @return number of feet per second
    */
-  public static int TicksPer100msToFPSDW(double ticks) {
-    return (int) (ticks * 10.0 / TICKS_PER_FOOT_DW);
+  public static double TicksPer100msToFPSDW(double ticks) {
+    return ticks * 10.0 / TICKS_PER_FOOT_DW;
   }
 
 
@@ -303,7 +301,7 @@ public class Wheel {
 
   /**
    * Returns the wheel's azimuth absolute position in encoder ticks.
-   * This method is primarily used for zeroing the
+   * This method is primarily used for zeroing the modules
    *
    * @return 0 - 4095, corresponding to one full revolution.
    */
@@ -321,6 +319,13 @@ public class Wheel {
    */
   public double getAzimuthPosition() {
     return azimuthTalon.getSelectedSensorPosition(primaryPID) * AZIMUTH_GEAR_RATIO;
+  }
+
+  /**
+   * @return speed of drive wheel in ticks per 100 ms
+   */
+  public double geDWSpeed() {
+    return driveTalon.getSelectedSensorVelocity(primaryPID);
   }
 
   /**

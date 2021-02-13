@@ -3,6 +3,7 @@ package org.team2168;
 
 import org.team2168.commands.drivetrain.InitializeInternalAzimuthEncoder;
 import org.team2168.commands.drivetrain.ZeroEncoders;
+import org.team2168.commands.drivetrain.ZeroGyro;
 import org.team2168.utils.F310;
 import org.team2168.utils.LinearInterpolator;
 
@@ -80,7 +81,7 @@ public class OI {
 		driverJoystickZInterpolator = new LinearInterpolator(driverJoystickZArray);
 
 		// TODO: put these on a test joystick
-		driverJoystick.ButtonBack().whenPressed(new InitializeInternalAzimuthEncoder());
+		driverJoystick.ButtonBack().whenPressed(new ZeroGyro());
 		driverJoystick.ButtonStart().whenPressed(new ZeroEncoders());
 	}
 	
