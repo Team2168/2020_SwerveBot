@@ -43,7 +43,7 @@ public class Wheel {
   private static final double TICKS_PER_DEGREE_AZIMUTH = ((1.0/360.0) * AZIMUTH_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
   private static final double TICKS_PER_DEGREE_DW = ((1.0/360.0) * DRIVE_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
   private static final double TICKS_PER_FOOT_DW = ((1.0/DRIVE_CIRCUMFERENCE_FT) * DRIVE_GEAR_RATIO *INTERNAL_ENCODER_TICKS); // TODO: check math?
-  private static final double INTERNAL_ENCODER_TICKS_PER_REV = 360 * TICKS_PER_DEGREE_AZIMUTH;
+  private static final double INTERNAL_ENCODER_TICKS_PER_REV = 360.0 * TICKS_PER_DEGREE_AZIMUTH;
   private static final double DRIVE_SETPOINT_MAX = 45_000.0; // ticks/100 ms
   private final BaseTalon driveTalon;
   private final TalonFX azimuthTalon;
@@ -115,7 +115,7 @@ public class Wheel {
 
   /**
    * Set module heading
-   * 
+   *
    * @param position position in motor ticks
    */
   public void setAzimuthPosition(int position) {
@@ -200,7 +200,7 @@ public class Wheel {
   /**
    * Takes in a number of degrees that we want to rotate the azimuth motor by and converts it to the number of ticks
    * the internal encoder should move by
-   * 
+   *
    * @param degrees number of degrees the wheel needs to rotate
    * @return the number of ticks the internal encoder should rotate in order to rotate the azimuth motor
    */
@@ -211,7 +211,7 @@ public class Wheel {
   /**
    * Takes in a number of ticks the internal encoder has moved and calculates the number of degrees
    * the azimuth wheel rotated
-   * 
+   *
    * @param ticks number of ticks the internal encoder has rotated
    * @return number of degrees the wheel moved
    */
@@ -220,9 +220,9 @@ public class Wheel {
   }
 
   /**
-   * Takes in the number of degrees the wheel has/needs to rotate and calculates the 
+   * Takes in the number of degrees the wheel has/needs to rotate and calculates the
    * the number of internal encoder ticks the movement equals
-   * 
+   *
    * @param degrees number of degrees the drive wheel has/needs to rotate
    * @return number of ticks for the drive wheel's internal encoder
    */
@@ -231,9 +231,9 @@ public class Wheel {
   }
 
   /**
-   * Takes in the number of ticks the internal encoder has moved and calculates the number of degrees 
+   * Takes in the number of ticks the internal encoder has moved and calculates the number of degrees
    * the drive wheel has/needs to rotate
-   * 
+   *
    * @param ticks number of ticks the drive wheel has/needs to rotate
    * @return number of degrees for the movement of the drivewheel
    */
@@ -244,19 +244,19 @@ public class Wheel {
   /**
    * Takes in the desired degrees per second (DPS) for the drive wheel and calculates the number of ticks
    * per 100 ms (units ctre wants for rate limits)
-   * 
-   * @param degrees number of degrees per second 
+   *
+   * @param degrees number of degrees per second
    * @return number of ticks per 100 ms
    */
   public static int DPSToTicksPer100msDW(double degrees) {
     return (int) (degreesToTicksDW(degrees) / 10.0);
   }
 
-  
+
   /**
    * Takes in the desired degrees per second (DPS) for the module azimuth and calculates the number of ticks
    * per 100 ms (units ctre wants for rate limits)
-   * 
+   *
    * @param degrees number of degrees per second
    * @return number of ticks per 100 ms
    */
@@ -307,14 +307,14 @@ public class Wheel {
    */
   public int getAzimuthAbsolutePosition() {
     if (this.absoluteEncoderInverted)
-      return -azimuthTalon.getSelectedSensorPosition(auxPID);
+      return (int) -azimuthTalon.getSelectedSensorPosition(auxPID);
     else
-      return azimuthTalon.getSelectedSensorPosition(auxPID);
+      return (int) azimuthTalon.getSelectedSensorPosition(auxPID);
   }
 
   /**
    * Returns the module heading, taking into account the gear ratio.
-   * 
+   *
    * @return position in motor ticks
    */
   public double getAzimuthPosition() {
@@ -352,11 +352,11 @@ public class Wheel {
 
   /**
    * Get the position of the azimuth's internal encoder
-   * 
+   *
    * @return position in encoder ticks
    */
   public int getInternalEncoderPos() {
-    return azimuthTalon.getSelectedSensorPosition(primaryPID);
+    return (int) azimuthTalon.getSelectedSensorPosition(primaryPID);
   }
 
   public boolean isInverted() {

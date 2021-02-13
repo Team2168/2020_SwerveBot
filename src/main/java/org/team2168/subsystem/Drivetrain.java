@@ -41,17 +41,18 @@ public class Drivetrain extends Subsystem {
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
             SmartDashboard.putNumber("Abs Zero Module " + i, Preferences.getInstance().getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
         }
-        
+
+
         //_sd.zeroAzimuthEncoders();
     }
-    
+
     /**
      * @return An instance of the DriveWheel subsystem
      */
     public static Drivetrain getInstance() {
         if (instance == null)
           instance = new Drivetrain();
-    
+
         return instance;
     }
 
@@ -65,7 +66,7 @@ public class Drivetrain extends Subsystem {
 
         talonCurrentLimit = new SupplyCurrentLimitConfiguration(ENABLE_CURRENT_LIMIT,
         CONTINUOUS_CURRENT_LIMIT, TRIGGER_THRESHOLD_LIMIT, TRIGGER_THRESHOLD_TIME);
-        
+
         // TODO: Set up gear ratios, at least for the driveTalon
         // TODO: Check if we need to set/configure any canifier settings
 
@@ -106,7 +107,7 @@ public class Drivetrain extends Subsystem {
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
             azimuthTalon.setNeutralMode(NeutralMode.Coast);
- 
+
             TalonFX driveTalon = new TalonFX(RobotMap.DRIVE_TALON_ID[i]);
             driveTalon.configFactoryDefault();
             driveTalon.setInverted(DRIVE_INVERTED[i]);
@@ -157,7 +158,7 @@ public class Drivetrain extends Subsystem {
 
     /**
      * Set the absolute module heading in terms of the module
-     * 
+     *
      * @param position position in motor ticks
      */
     public void setAzimuth(Wheel wheel, int position) {
