@@ -10,6 +10,7 @@ package org.team2168;
 import org.team2168.commands.drivetrain.DoNothing;
 import org.team2168.commands.drivetrain.SwerveDriveTestsPathCommandGroup;
 import org.team2168.subsystem.Drivetrain;
+import org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode;
 import org.team2168.thirdcoast.swerve.Wheel;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -96,6 +97,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     dt.getGyro().reset();
     autoMode = true;
+    dt.setDriveMode(DriveMode.AZIMUTH);
     autonomousCommand = (Command) autoChooser.getSelected();
 
     if (autonomousCommand != null)
@@ -117,6 +119,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     autoMode = false;
+    dt.setDriveMode(DriveMode.TELEOP);
   }
 
   /**

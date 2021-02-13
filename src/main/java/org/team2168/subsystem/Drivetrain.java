@@ -150,6 +150,12 @@ public class Drivetrain extends Subsystem {
         return _sd.getGyro();
     }
 
+    public void zeroGyro() {
+        _sd.getGyro().setAngleAdjustment(0);
+        double adj = _sd.getGyro().getAngle() % 360;
+        _sd.getGyro().setAngleAdjustment(-adj);
+      }
+
     /**
      * Set the absolute module heading in terms of the module
      *
