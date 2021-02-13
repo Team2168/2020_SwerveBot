@@ -5,25 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.team2168.commands.drivewheel;
+package org.team2168.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.team2168.subsystem.DriveWheel;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.team2168.OI;
-import java.lang.Math;
+import org.team2168.subsystem.Drivetrain;
+import org.team2168.thirdcoast.swerve.Wheel;
 
 public class DriveWithJoystick extends Command {
+  private OI oi;
+  private Drivetrain dt;
+  
   /**
    * Creates a new DriveWithJoystick.
    */
-  private OI oi;
-  private DriveWheel dw;
   public DriveWithJoystick() {
     // Use addRequirements() here to declare subsystem dependencies.
     
-    dw = DriveWheel.getInstance();
+    dt = Drivetrain.getInstance();
     
-    requires(dw);
+    requires(dt);
   }
 
   // Called when the command is initially scheduled.
@@ -35,13 +38,21 @@ public class DriveWithJoystick extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    dw.set(oi.getGunStyleXValue(), Math.abs(oi.getGunStyleYValue())); // abs for testing purposes; set doesn't take negative values
+    if (SmartDashboard.getString("Control Mode", "Joystick").equals("Joystick")) {
+      dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), oi.getDriverJoystickZValue());
+    }
+    else {
+      dt.drive(SmartDashboard.getNumber("Drive Forward", 0.0), SmartDashboard.getNumber("Drive Strafe", 0.0), SmartDashboard.getNumber("Drive Azimuth", 0.0));
+    }
+    SmartDashboard.putNumber("Joystick Y", oi.getDriverJoystickYValue());
+    SmartDashboard.putNumber("Joystick X", oi.getDriverJoystickXValue());
+    SmartDashboard.putNumber("Joystick Z", oi.getDriverJoystickZValue());
   }
 
   // Called once the command ends
   @Override
   public void end() {
-    dw.stop();
+    dt.stop();
   }
 
   @Override

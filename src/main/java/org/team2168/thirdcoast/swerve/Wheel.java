@@ -4,18 +4,19 @@
  */
 package org.team2168.thirdcoast.swerve;
 
-import static com.ctre.phoenix.motorcontrol.ControlMode.*;
-import static org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode.TELEOP;
+import static com.ctre.phoenix.motorcontrol.ControlMode.MotionMagic;
+import static com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput;
+import static com.ctre.phoenix.motorcontrol.ControlMode.Velocity;
 
-import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.motorcontrol.can.BaseTalon;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import java.util.Objects;
 import java.util.function.DoubleConsumer;
+
+import com.ctre.phoenix.motorcontrol.can.BaseTalon;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode;
-import org.team2168.thirdcoast.talon.Errors;
 
 /**
  * Controls a swerve drive wheel azimuth and drive motors.
@@ -36,17 +37,19 @@ public class Wheel {
   private static final Logger logger = LoggerFactory.getLogger(Wheel.class);
   private static final double AZIMUTH_GEAR_RATIO = (60.0/10.0) * (45.0/15.0); // defined as module input/motor output; placeholder
   private static final double DRIVE_GEAR_RATIO = (60.0/15.0) * (20.0/24.0) * (38.0/18.0);
+  private static final double DRIVE_CIRCUMFERENCE_FT = ((Math.PI * 4.0) / 12.0);
   private static final int INTERNAL_ENCODER_TICKS = 2048;
   private static final int EXTERNAL_ENCODER_TICKS = 4096;
   private static final double TICKS_PER_DEGREE_AZIMUTH = ((1.0/360.0) * AZIMUTH_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
   private static final double TICKS_PER_DEGREE_DW = ((1.0/360.0) * DRIVE_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
+  private static final double TICKS_PER_FOOT_DW = ((1.0/DRIVE_CIRCUMFERENCE_FT) * DRIVE_GEAR_RATIO *INTERNAL_ENCODER_TICKS); // TODO: check math?
   private static final double INTERNAL_ENCODER_TICKS_PER_REV = 360 * TICKS_PER_DEGREE_AZIMUTH;
-  private final double driveSetpointMax;
+  private static final double DRIVE_SETPOINT_MAX = 45_000.0; // ticks/100 ms
   private final BaseTalon driveTalon;
   private final TalonFX azimuthTalon;
-  // private final TalonSRX azimuthTalon; 
   protected DoubleConsumer driver;
   private boolean isInverted = false;
+  private boolean absoluteEncoderInverted = false;
   private int primaryPID = 0;
   private int auxPID = 1; //specifies the auxiliary pid loop for any method that takes in a pididx
 
@@ -54,25 +57,22 @@ public class Wheel {
   /**
    * This constructs a wheel with supplied azimuth and drive talons.
    *
-   * <p>Wheels will scale closed-loop drive output to {@code driveSetpointMax}. For example, if
+   * <p>Wheels will scale closed-loop drive output to {@code DRIVE_SETPOINT_MAX}. For example, if
    * closed-loop drive mode is tuned to have a max usable output of 10,000 ticks per 100ms, set this
    * to 10,000 and the wheel will send a setpoint of 10,000 to the drive talon when wheel is set to
    * max drive output (1.0).
    *
    * @param azimuth the configured azimuth TalonFX
    * @param drive the configured drive TalonFX
-   * @param driveSetpointMax scales closed-loop drive output to this value when drive setpoint = 1.0
    */
-  public Wheel(TalonFX azimuth, BaseTalon drive, double driveSetpointMax) {
-    this.driveSetpointMax = driveSetpointMax;
+  public Wheel(TalonFX azimuth, BaseTalon drive, boolean absoluteEncoderInverted) {
     azimuthTalon = Objects.requireNonNull(azimuth);
     driveTalon = Objects.requireNonNull(drive);
-
-    setDriveMode(TELEOP);
+    this.absoluteEncoderInverted = absoluteEncoderInverted;
 
     logger.debug("azimuth = {} drive = {}", azimuthTalon.getDeviceID(), driveTalon.getDeviceID());
-    logger.debug("driveSetpointMax = {}", driveSetpointMax);
-    if (driveSetpointMax == 0.0) logger.warn("driveSetpointMax may not have been configured");
+    logger.debug("DRIVE_SETPOINT_MAX = {}", DRIVE_SETPOINT_MAX);
+    if (DRIVE_SETPOINT_MAX == 0.0) logger.warn("DRIVE_SETPOINT_MAX may not have been configured");
   }
 
   /**
@@ -84,14 +84,14 @@ public class Wheel {
    */
   public void set(double azimuth, double drive) {
     // don't reset wheel azimuth direction to zero when returning to neutral
-    if (drive == 0) {
-      driver.accept(0d);
-      //return;  commented for testing purposes
-    }
+    // if (drive == 0) {
+    //   driver.accept(0d);
+    //   return;
+    // }
     azimuth *= -INTERNAL_ENCODER_TICKS_PER_REV; // flip azimuth, hardware configuration dependent
 
     double azimuthPosition = azimuthTalon.getSelectedSensorPosition(0);
-    double azimuthError = Math.IEEEremainder(azimuth - azimuthPosition, INTERNAL_ENCODER_TICKS_PER_REV);
+    double azimuthError = Math.IEEEremainder((azimuth - azimuthPosition), INTERNAL_ENCODER_TICKS_PER_REV);
 
     // minimize azimuth rotation, reversing drive if necessary
     isInverted = Math.abs(azimuthError) > 0.25 * INTERNAL_ENCODER_TICKS_PER_REV;
@@ -132,7 +132,7 @@ public class Wheel {
    * {@code AZIMUTH} are equivalent.
    *
    * <p>In closed-loop modes, the drive setpoint is scaled by the drive Talon {@code
-   * driveSetpointMax} parameter.
+   * DRIVE_SETPOINT_MAX} parameter.
    *
    * <p>This method is intended to be overridden if the open or closed-loop drive wheel drivers need
    * to be customized.
@@ -148,7 +148,7 @@ public class Wheel {
       case CLOSED_LOOP:
       case TRAJECTORY:
       case AZIMUTH:
-        driver = (setpoint) -> driveTalon.set(Velocity, setpoint * driveSetpointMax);
+        driver = (setpoint) -> driveTalon.set(Velocity, setpoint * DRIVE_SETPOINT_MAX);
         break;
     }
   }
@@ -178,9 +178,13 @@ public class Wheel {
    */
   public void setAzimuthZero(int zero) {
     int azimuthSetpoint = getAzimuthAbsolutePosition() - zero;
-    ErrorCode err = azimuthTalon.setSelectedSensorPosition(externalToInternalTicks(azimuthSetpoint), primaryPID, 10);
-    Errors.check(err, logger);
+    // ErrorCode err = azimuthTalon.setSelectedSensorPosition(externalToInternalTicks(azimuthSetpoint), primaryPID, 10);
+    // Errors.check(err, logger);
+    System.out.println("zero: " + zero);
+    System.out.println("current pos: " + getAzimuthAbsolutePosition());
+    azimuthTalon.setSelectedSensorPosition(externalToInternalTicks(azimuthSetpoint), primaryPID, 10);
     azimuthTalon.set(MotionMagic, azimuthSetpoint);
+    System.out.println("SETPOINT: " + azimuthSetpoint);
   }
 
   /**
@@ -190,7 +194,7 @@ public class Wheel {
    * @return a proportional number of estamated internal ticks
    */
   public static int externalToInternalTicks(int externalTicks) {
-    return (int) Math.round(externalTicks*(INTERNAL_ENCODER_TICKS/EXTERNAL_ENCODER_TICKS)*AZIMUTH_GEAR_RATIO);
+    return (int) Math.round((double) externalTicks*((double) INTERNAL_ENCODER_TICKS/(double) EXTERNAL_ENCODER_TICKS)*AZIMUTH_GEAR_RATIO);
   }
 
   /**
@@ -262,8 +266,33 @@ public class Wheel {
 
 
   /**
-   * Sets the azimuth's internal encoder to the given position
-   * 
+   * Converts the drive wheel's speed from ticks per 100 ms to feet per second.
+   * @param ticks number of ticks per 100 ms
+   * @return number of feet per second
+   */
+  public static double TicksPer100msToFPSDW(double ticks) {
+    return ticks * 10.0 / TICKS_PER_FOOT_DW;
+  }
+
+
+  /**
+   * Converts the drive wheel's speed from feet per second to ticks per 100 ms.
+   * @param feet number of feet per second
+   * @return number of ticks per 100 ms
+   */
+  public static int FPSToTicksPer100msDW(double feet) {
+    return (int) (feet / 10.0 * TICKS_PER_FOOT_DW);
+  }
+
+
+  public static double FPStoPercentVelocity(double feet) {
+    return FPSToTicksPer100msDW(feet) / DRIVE_SETPOINT_MAX;
+  }
+
+
+  /**
+   * Sets the azimuth internal encoder's current position to the given absolute encoder position,
+   * taking difference in resolution and gear ratio into account
    * @param position position in absolute encoder ticks
    */
   public void setAzimuthInternalEncoderPosition(int position) {
@@ -272,21 +301,31 @@ public class Wheel {
 
   /**
    * Returns the wheel's azimuth absolute position in encoder ticks.
-   * This method is primarily used for zeroing the
+   * This method is primarily used for zeroing the modules
    *
    * @return 0 - 4095, corresponding to one full revolution.
    */
   public int getAzimuthAbsolutePosition() {
-    return azimuthTalon.getSelectedSensorPosition(auxPID);
+    if (this.absoluteEncoderInverted)
+      return -azimuthTalon.getSelectedSensorPosition(auxPID);
+    else
+      return azimuthTalon.getSelectedSensorPosition(auxPID);
   }
 
-/**
- * Returns the module heading, taking into account the gear ratio.
- * 
- * @return position in motor ticks
- */
+  /**
+   * Returns the module heading, taking into account the gear ratio.
+   * 
+   * @return position in motor ticks
+   */
   public double getAzimuthPosition() {
     return azimuthTalon.getSelectedSensorPosition(primaryPID) * AZIMUTH_GEAR_RATIO;
+  }
+
+  /**
+   * @return speed of drive wheel in ticks per 100 ms
+   */
+  public double geDWSpeed() {
+    return driveTalon.getSelectedSensorVelocity(primaryPID);
   }
 
   /**
@@ -307,17 +346,17 @@ public class Wheel {
     return driveTalon;
   }
 
-  public double getDriveSetpointMax() {
-    return driveSetpointMax;
+  public static double getDriveSetpointMax() {
+    return DRIVE_SETPOINT_MAX;
   }
 
   /**
-   * Get the position of the azimuth's external encoder
+   * Get the position of the azimuth's internal encoder
    * 
    * @return position in encoder ticks
    */
-  public int getExternalEncoderPos() {
-    return azimuthTalon.getSelectedSensorPosition(auxPID);
+  public int getInternalEncoderPos() {
+    return azimuthTalon.getSelectedSensorPosition(primaryPID);
   }
 
   public boolean isInverted() {
@@ -331,8 +370,8 @@ public class Wheel {
         + azimuthTalon
         + ", driveTalon="
         + driveTalon
-        + ", driveSetpointMax="
-        + driveSetpointMax
+        + ", DRIVE_SETPOINT_MAX="
+        + DRIVE_SETPOINT_MAX
         + '}';
   }
 }

@@ -2,6 +2,9 @@ package org.team2168.thirdcoast.swerve;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.team2168.thirdcoast.talon.Errors;
@@ -20,7 +23,7 @@ import org.team2168.thirdcoast.talon.Errors;
 @SuppressWarnings("unused")
 public class SwerveDrive {
 
-  public static final int DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 200;
+  public static final int DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 2168; // 200
   private static final Logger logger = LoggerFactory.getLogger(SwerveDrive.class);
   private static final int WHEEL_COUNT = 4;
   private final AHRS gyro;
@@ -49,7 +52,8 @@ public class SwerveDrive {
 
     logger.info("gyro is configured: {}", gyro != null);
     logger.info("gyro is connected: {}", gyro != null && gyro.isConnected());
-    setFieldOriented(gyro != null && gyro.isConnected());
+    //setFieldOriented(gyro != null && gyro.isConnected());
+    setFieldOriented(false);
 
     if (isFieldOriented) {
       gyro.enableLogging(config.gyroLoggingEnabled);
@@ -59,7 +63,8 @@ public class SwerveDrive {
       double gyroPeriod = 1.0 / rate;
       kGyroRateCorrection = (robotPeriod / gyroPeriod) * gyroRateCoeff;
       logger.debug("gyro frequency = {} Hz", rate);
-    } else {
+    }
+    else {
       logger.warn("gyro is missing or not enabled");
       kGyroRateCorrection = 0;
     }
@@ -113,11 +118,10 @@ public class SwerveDrive {
    * @param azimuth robot rotation, from -1.0 (CCW) to 1.0 (CW)
    */
   public void drive(double forward, double strafe, double azimuth) {
-
     // Use gyro for field-oriented drive. We use getAngle instead of getYaw to enable arbitrary
     // autonomous starting positions.
     if (isFieldOriented) {
-      double angle = gyro.getAngle();
+      double angle = -gyro.getAngle();
       angle += gyro.getRate() * kGyroRateCorrection;
       angle = Math.IEEEremainder(angle, 360.0);
 
@@ -155,6 +159,7 @@ public class SwerveDrive {
     // set wheels
     for (int i = 0; i < WHEEL_COUNT; i++) {
       wheels[i].set(wa[i], ws[i]);
+      SmartDashboard.putNumber("Commanded position (percent of a rotation) module " + i, wa[i]);
     }
   }
 
@@ -188,7 +193,8 @@ public class SwerveDrive {
     for (int i = 0; i < WHEEL_COUNT; i++) {
       int position = wheels[i].getAzimuthAbsolutePosition();
       prefs.putInt(getPreferenceKeyForWheel(i), position);
-      logger.info("azimuth {}: saved zero = {}", i, position);
+      // logger.info("azimuth {}: saved zero = {}", i, position);
+      System.out.println("azimuth " + i + ": saved zero = " + position);
     }
   }
 
@@ -208,14 +214,15 @@ public class SwerveDrive {
     for (int i = 0; i < WHEEL_COUNT; i++) {
       int position = prefs.getInt(getPreferenceKeyForWheel(i), DEFAULT_ABSOLUTE_AZIMUTH_OFFSET);
       wheels[i].setAzimuthZero(position);
-      logger.info("azimuth {}: loaded zero = {}", i, position);
+      // logger.info("azimuth {}: loaded zero = {}", i, position);
+      System.out.println("azimuth " + i + ": loaded zero = " + position);
     }
     int errorCount = Errors.getCount();
     if (errorCount > 0) logger.error("TalonSRX set azimuth zero error count = {}", errorCount);
   }
 
   /**
-   * Returns the four wheels of the swerve drive.
+   * Returns the wheels of the swerve drive.
    *
    * @return the Wheel array.
    */
@@ -224,9 +231,18 @@ public class SwerveDrive {
   }
 
   /**
+   * Returns the number of wheels on the swerve drive.
+   * 
+   * @return the number of wheels.
+   */
+  public static int getWheelCount() {
+    return WHEEL_COUNT;
+  }
+
+  /**
    * Get the gyro instance being used by the drive.
    *
-   * @return the gyro instance
+   * @return the gyro instance.
    */
   public AHRS getGyro() {
     return gyro;

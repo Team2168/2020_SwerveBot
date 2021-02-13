@@ -5,17 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.team2168.commands.drivewheel;
-import org.team2168.subsystem.DriveWheel;
+package org.team2168.commands.drivetrain;
+
+import org.team2168.subsystem.Drivetrain;
+
 import edu.wpi.first.wpilibj.command.Command;
 
-public class InitializeInternalAzimuthEncoder extends Command {
-  private DriveWheel dw;
+public class ZeroGyro extends Command {
+  private Drivetrain dt;
 
-  public InitializeInternalAzimuthEncoder() {
-    dw = DriveWheel.getInstance();
-
-    requires(dw);
+  public ZeroGyro() {
+    dt = Drivetrain.getInstance();
+    requires(dt);
   }
 
   // Called just before this Command runs the first time
@@ -26,7 +27,7 @@ public class InitializeInternalAzimuthEncoder extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    dw.initializeAzimuthPosition();
+    dt.zeroGyro();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -44,6 +45,5 @@ public class InitializeInternalAzimuthEncoder extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }
