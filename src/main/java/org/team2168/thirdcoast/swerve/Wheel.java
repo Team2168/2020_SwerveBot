@@ -309,10 +309,12 @@ public class Wheel {
    * @return 0 - 4095, corresponding to one full revolution.
    */
   public int getAzimuthAbsolutePosition() {
+    int position = (int) azimuthTalon.getSelectedSensorPosition(auxPID)
+                    & (EXTERNAL_ENCODER_TICKS - 1);
     if (this.absoluteEncoderInverted)
-      return (int) -azimuthTalon.getSelectedSensorPosition(auxPID);
-    else
-      return (int) azimuthTalon.getSelectedSensorPosition(auxPID);
+      position *= -1;
+
+    return position;
   }
 
   /**

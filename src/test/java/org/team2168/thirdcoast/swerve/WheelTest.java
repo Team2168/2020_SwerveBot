@@ -115,10 +115,9 @@ class WheelTest {
   @ParameterizedTest
   @CsvSource({"2048, 2048", "6144, 2048", "63488, 2048", "-1045504, 3072"})
   void getAzimuthAbsolutePosition(
-      int encoderPosition, int absolutePosition, @Mock TalonFXSensorCollection sensorCollection) {
+      double encoderPosition, int absolutePosition) {
     Wheel wheel = new Wheel(azimuthTalon, driveTalon, false);
-    when(azimuthTalon.getSelectedSensorPosition()).thenReturn((double) encoderPosition);
-    when(azimuthTalon.getSensorCollection()).thenReturn(sensorCollection);
+    when(azimuthTalon.getSelectedSensorPosition(anyInt())).thenReturn(encoderPosition);
     assertThat(wheel.getAzimuthAbsolutePosition()).isEqualTo(absolutePosition);
   }
 
