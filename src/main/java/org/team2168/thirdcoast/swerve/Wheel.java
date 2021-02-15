@@ -191,10 +191,10 @@ public class Wheel {
   }
 
   /**
-   * Takes in a number of ticks from the external encoder of a module, and estamates a number of internal
+   * Takes in a number of ticks from the external encoder of a module, and estimates a number of internal
    * ticks based off the number
    * @param externalTicks a number of ticks from the external encoder
-   * @return a proportional number of estamated internal ticks
+   * @return a proportional number of estimated internal ticks
    */
   public static int externalToInternalTicks(int externalTicks) {
     return (int) Math.round((double) externalTicks*((double) INTERNAL_ENCODER_TICKS/(double) EXTERNAL_ENCODER_TICKS)*AZIMUTH_GEAR_RATIO);
