@@ -1,7 +1,6 @@
 
 package org.team2168;
 
-import org.team2168.commands.drivetrain.InitializeInternalAzimuthEncoder;
 import org.team2168.commands.drivetrain.ZeroEncoders;
 import org.team2168.commands.drivetrain.ZeroGyro;
 import org.team2168.utils.F310;
