@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.team2168.OI;
 import org.team2168.subsystem.Drivetrain;
-import org.team2168.thirdcoast.swerve.Wheel;
 
 public class DriveWithJoystick extends Command {
   private OI oi;
