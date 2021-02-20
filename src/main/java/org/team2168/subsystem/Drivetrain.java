@@ -21,7 +21,7 @@ public class Drivetrain extends Subsystem {
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
     private final boolean[] DRIVE_INVERTED = {false, false, false, false};
     private final boolean[] ABSOLUTE_ENCODER_INVERTED = {false, false, false, false};
-    private SwerveDrive _sd = configSwerve();
+    private SwerveDrive _sd;
     private final boolean ENABLE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_CURRENT_LIMIT = 40; // amps
     private final double TRIGGER_THRESHOLD_LIMIT = 60; // amp
@@ -42,6 +42,7 @@ public class Drivetrain extends Subsystem {
 
 
         //_sd.zeroAzimuthEncoders();
+        _sd = configSwerve();
     }
 
     /**

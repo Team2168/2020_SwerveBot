@@ -50,10 +50,14 @@ public class SwerveDrive {
     kLengthComponent = length / radius;
     kWidthComponent = width / radius;
 
-    logger.info("gyro is configured: {}", gyro != null);
-    logger.info("gyro is connected: {}", gyro != null && gyro.isConnected());
-    //setFieldOriented(gyro != null && gyro.isConnected());
-    setFieldOriented(false);
+    Timer.delay(5.0);
+
+    System.out.println("gyro is configured: " + gyro != null);
+    SmartDashboard.putBoolean("gyro is configured", gyro != null);
+    System.out.println("gyro is connected: " + gyro != null && gyro.isConnected());
+    SmartDashboard.putBoolean("gyro is connected", gyro != null && gyro.isConnected());
+    setFieldOriented(gyro != null && gyro.isConnected());
+    SmartDashboard.putBoolean("field oriented?", isFieldOriented);
 
     if (isFieldOriented) {
       gyro.enableLogging(config.gyroLoggingEnabled);
@@ -121,7 +125,7 @@ public class SwerveDrive {
     // Use gyro for field-oriented drive. We use getAngle instead of getYaw to enable arbitrary
     // autonomous starting positions.
     if (isFieldOriented) {
-      double angle = -gyro.getAngle();
+      double angle = gyro.getAngle();
       angle += gyro.getRate() * kGyroRateCorrection;
       angle = Math.IEEEremainder(angle, 360.0);
 
