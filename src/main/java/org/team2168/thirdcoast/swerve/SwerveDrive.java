@@ -1,6 +1,9 @@
 package org.team2168.thirdcoast.swerve;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
+import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
+
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,7 +29,7 @@ public class SwerveDrive {
   public static final int DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 200;
   private static final Logger logger = LoggerFactory.getLogger(SwerveDrive.class);
   private static final int WHEEL_COUNT = 4;
-  private final AHRS gyro;
+  private final PigeonIMU gyro;
   private final double kLengthComponent;
   private final double kWidthComponent;
   private final double kGyroRateCorrection;
@@ -50,20 +53,20 @@ public class SwerveDrive {
     kLengthComponent = length / radius;
     kWidthComponent = width / radius;
 
-    Timer.delay(5.0);
+    //Wait for NavX to initialize on startup
+    Timer.delay(5.0); //Seconds
 
-    System.out.println("gyro is configured: " + gyro != null);
+    boolean gyroIsConnected = gyro != null && gyro.getState() == PigeonState.Ready;
     SmartDashboard.putBoolean("gyro is configured", gyro != null);
-    System.out.println("gyro is connected: " + gyro != null && gyro.isConnected());
-    SmartDashboard.putBoolean("gyro is connected", gyro != null && gyro.isConnected());
-    setFieldOriented(gyro != null && gyro.isConnected());
+    SmartDashboard.putBoolean("gyro is connected", gyroIsConnected);
+    setFieldOriented(gyroIsConnected);
     SmartDashboard.putBoolean("field oriented?", isFieldOriented);
 
     if (isFieldOriented) {
-      gyro.enableLogging(config.gyroLoggingEnabled);
+      // gyro.enableLogging(config.gyroLoggingEnabled);
       double robotPeriod = config.robotPeriod;
       double gyroRateCoeff = config.gyroRateCoeff;
-      int rate = gyro.getActualUpdateRate();
+      int rate = gyro.getStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_9_SixDeg_YPR);
       double gyroPeriod = 1.0 / rate;
       kGyroRateCorrection = (robotPeriod / gyroPeriod) * gyroRateCoeff;
       logger.debug("gyro frequency = {} Hz", rate);
@@ -122,11 +125,14 @@ public class SwerveDrive {
    * @param azimuth robot rotation, from -1.0 (CCW) to 1.0 (CW)
    */
   public void drive(double forward, double strafe, double azimuth) {
+    double ypr[] = new double[3];
+
     // Use gyro for field-oriented drive. We use getAngle instead of getYaw to enable arbitrary
     // autonomous starting positions.
     if (isFieldOriented) {
-      double angle = gyro.getAngle();
-      angle += gyro.getRate() * kGyroRateCorrection;
+      gyro.getYawPitchRoll(ypr);
+      double angle = ypr[0];
+      // angle += gyro.getRate() * kGyroRateCorrection; // Disable this, as we aren't actually using this feature
       angle = Math.IEEEremainder(angle, 360.0);
 
       angle = Math.toRadians(angle);
@@ -248,7 +254,7 @@ public class SwerveDrive {
    *
    * @return the gyro instance.
    */
-  public AHRS getGyro() {
+  public PigeonIMU getGyro() {
     return gyro;
   }
 

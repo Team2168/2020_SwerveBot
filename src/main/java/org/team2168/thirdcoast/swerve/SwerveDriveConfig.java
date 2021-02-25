@@ -1,15 +1,15 @@
 package org.team2168.thirdcoast.swerve;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.wpilibj.TimedRobot;
 
 public class SwerveDriveConfig {
 
   /**
-   * NavX gyro connected to MXP SPI port, used for field-oriented driving. If null, field-oriented
+   * PigeonIMU gyro connected to CAN bus, used for field-oriented driving. If null, field-oriented
    * driving is disabled.
    */
-  public AHRS gyro;
+  public PigeonIMU gyro;
 
   /** Initialize with four initialized wheels, in order from wheel 0 to wheel 3.
    *  0 is front left, 1 is front right, 2 is back left, and 3 is back right
