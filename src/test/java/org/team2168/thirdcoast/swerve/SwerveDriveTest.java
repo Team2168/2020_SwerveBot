@@ -5,7 +5,9 @@ import static org.assertj.core.api.Assertions.byLessThan;
 import static org.mockito.Mockito.*;
 import static org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode.TELEOP;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
+
 import edu.wpi.first.wpilibj.Preferences;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -25,13 +27,13 @@ class SwerveDriveTest {
     @Mock private Wheel wheel0, wheel1, wheel2, wheel3;
     private Wheel[] wheels;
     private SwerveDriveConfig config = new SwerveDriveConfig();
-    @Mock private AHRS gyro;
+    @Mock private PigeonIMU gyro;
 
     @BeforeEach
     void setUp() {
       wheels = new Wheel[] {wheel0, wheel1, wheel2, wheel3};
       config.wheels = wheels;
-      when(gyro.isConnected()).thenReturn(true);
+      when(gyro.getState()).thenReturn(PigeonState.Ready);
       config.gyro = gyro;
     }
 
@@ -178,8 +180,8 @@ class SwerveDriveTest {
 
     @Test
     void disableWithDisconnectedGyro() {
-      AHRS gyro = mock(AHRS.class);
-      when(gyro.isConnected()).thenReturn(false);
+      PigeonIMU gyro = mock(PigeonIMU.class);
+      when(gyro.getState()).thenReturn(PigeonState.NoComm);
       SwerveDriveConfig config = new SwerveDriveConfig();
       config.gyro = gyro;
 
