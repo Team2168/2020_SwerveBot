@@ -6,7 +6,6 @@ import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
 
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +28,8 @@ public class SwerveDrive {
   public static final int DEFAULT_ABSOLUTE_AZIMUTH_OFFSET = 200;
   private static final Logger logger = LoggerFactory.getLogger(SwerveDrive.class);
   private static final int WHEEL_COUNT = 4;
+  private static final double GYRO_INIT_MAX_WAIT_S = 5.0; //seconds
+  private static final double GYRO_POLL_DELAY_S = 0.25; //wait (sec) between checking if the gyro is ready on init
   private final PigeonIMU gyro;
   private final double kLengthComponent;
   private final double kWidthComponent;
@@ -53,14 +54,26 @@ public class SwerveDrive {
     kLengthComponent = length / radius;
     kWidthComponent = width / radius;
 
-    //Wait for NavX to initialize on startup
-    Timer.delay(5.0); //Seconds
+    boolean gyroIsConnected = false;
 
-    boolean gyroIsConnected = gyro != null && gyro.getState() == PigeonState.Ready;
-    SmartDashboard.putBoolean("gyro is configured", gyro != null);
-    SmartDashboard.putBoolean("gyro is connected", gyroIsConnected);
+    if(gyro != null) {
+      double delayed_time = 0.0;
+
+      //The NavX needed some time to initialize on startup.
+      //Wait for up to GYRO_INIT_MAX_WAIT_S, checking every GYRO_POLL_DELAY_S if it's ready yet.
+      while(gyro.getState() != PigeonState.Ready && delayed_time <= GYRO_INIT_MAX_WAIT_S) {
+        delayed_time += GYRO_POLL_DELAY_S;
+        Timer.delay(GYRO_POLL_DELAY_S); //Seconds
+      }
+      gyroIsConnected = gyro.getState() == PigeonState.Ready;
+    }
+
     setFieldOriented(gyroIsConnected);
-    SmartDashboard.putBoolean("field oriented?", isFieldOriented);
+
+    logger.debug("gyro is configured {}", gyro != null);
+    logger.debug("gyro is connected {}", gyroIsConnected);
+    setFieldOriented(gyroIsConnected);
+    logger.debug("field oriented? {}", isFieldOriented);
 
     if (isFieldOriented) {
       // gyro.enableLogging(config.gyroLoggingEnabled);
@@ -169,7 +182,7 @@ public class SwerveDrive {
     // set wheels
     for (int i = 0; i < WHEEL_COUNT; i++) {
       wheels[i].set(wa[i], ws[i]);
-      SmartDashboard.putNumber("Commanded position (percent of a rotation) module " + i, wa[i]);
+      // SmartDashboard.putNumber("Commanded position (percent of a rotation) module " + i, wa[i]);
     }
   }
 
