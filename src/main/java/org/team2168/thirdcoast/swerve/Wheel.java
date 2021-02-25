@@ -42,7 +42,7 @@ public class Wheel {
   private static final int EXTERNAL_ENCODER_TICKS = 4096;
   private static final double TICKS_PER_DEGREE_AZIMUTH = ((1.0/360.0) * AZIMUTH_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
   private static final double TICKS_PER_DEGREE_DW = ((1.0/360.0) * DRIVE_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
-  private static final double TICKS_PER_FOOT_DW = ((1.0/DRIVE_CIRCUMFERENCE_FT) * DRIVE_GEAR_RATIO *INTERNAL_ENCODER_TICKS); // TODO: check math?
+  public static final double TICKS_PER_FOOT_DW = ((1.0/DRIVE_CIRCUMFERENCE_FT) * DRIVE_GEAR_RATIO *INTERNAL_ENCODER_TICKS); // TODO: check math?
   private static final double INTERNAL_ENCODER_TICKS_PER_REV = 360.0 * TICKS_PER_DEGREE_AZIMUTH;
   private static final double DRIVE_SETPOINT_MAX = 45_000.0; // ticks/100 ms
   private final BaseTalon driveTalon;
