@@ -18,6 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode;
 
+import edu.wpi.first.wpilibj.AnalogInput;
+
 /**
  * Controls a swerve drive wheel azimuth and drive motors.
  *
@@ -51,8 +53,8 @@ public class Wheel {
   private boolean isInverted = false;
   private boolean absoluteEncoderInverted = false;
   private int primaryPID = 0;
-  private int auxPID = 1; //specifies the auxiliary pid loop for any method that takes in a pididx
-
+  // private int auxPID = 1; //specifies the auxiliary pid loop for any method that takes in a pididx
+  private AnalogInput externalEncoder;
 
   /**
    * This constructs a wheel with supplied azimuth and drive talons.
@@ -64,11 +66,14 @@ public class Wheel {
    *
    * @param azimuth the configured azimuth TalonFX
    * @param drive the configured drive TalonFX
+   * @param analogInputChannelID the AI port number the external encoder is plugged into
+   * @param absoluteEncoderInverted invert the polarity of the absolute encoder
    */
-  public Wheel(TalonFX azimuth, BaseTalon drive, boolean absoluteEncoderInverted) {
+  public Wheel(TalonFX azimuth, BaseTalon drive, int analogInputChannelID, boolean absoluteEncoderInverted) {
     azimuthTalon = Objects.requireNonNull(azimuth);
     driveTalon = Objects.requireNonNull(drive);
     this.absoluteEncoderInverted = absoluteEncoderInverted;
+    externalEncoder = new AnalogInput(analogInputChannelID);
 
     logger.debug("azimuth = {} drive = {}", azimuthTalon.getDeviceID(), driveTalon.getDeviceID());
     logger.debug("DRIVE_SETPOINT_MAX = {}", DRIVE_SETPOINT_MAX);
@@ -305,10 +310,12 @@ public class Wheel {
    * @return 0 - 4095, corresponding to one full revolution.
    */
   public int getAzimuthAbsolutePosition() {
+    int position = externalEncoder.getValue();
+
     if (this.absoluteEncoderInverted)
-      return (int) -azimuthTalon.getSelectedSensorPosition(auxPID);
-    else
-      return (int) azimuthTalon.getSelectedSensorPosition(auxPID);
+      position = -position;
+
+    return position;
   }
 
   /**
