@@ -1,15 +1,12 @@
 package org.team2168.subsystem;
 
-import com.ctre.phoenix.CANifier;
-import com.ctre.phoenix.CANifierStatusFrame;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.kauailabs.navx.frc.AHRS;
+import com.ctre.phoenix.sensors.PigeonIMU;
 import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2168.RobotMap;
@@ -17,7 +14,6 @@ import org.team2168.commands.drivetrain.DriveWithJoystick;
 import org.team2168.thirdcoast.swerve.*;
 
 public class Drivetrain extends Subsystem {
-    private CANifier _canifier = new CANifier(00);
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
     private final boolean[] DRIVE_INVERTED = {false, false, false, false};
     private final boolean[] ABSOLUTE_ENCODER_INVERTED = {false, false, false, false};
@@ -30,16 +26,11 @@ public class Drivetrain extends Subsystem {
     private static Drivetrain instance = null;
 
     private Drivetrain() {
-        _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_3_PwmInputs0, 10);
-        _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_4_PwmInputs1, 10);
-        _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_5_PwmInputs2, 10);
-        _canifier.setStatusFramePeriod(CANifierStatusFrame.Status_6_PwmInputs3, 10);
 
         // put the zeros for each module to the dashboard
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
             SmartDashboard.putNumber("Abs Zero Module " + i, Preferences.getInstance().getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
         }
-
 
         //_sd.zeroAzimuthEncoders();
         _sd = configSwerve();
@@ -69,12 +60,7 @@ public class Drivetrain extends Subsystem {
         // TODO: Set up gear ratios, at least for the driveTalon
         // TODO: Check if we need to set/configure any canifier settings
 
-
-        azimuthConfig.remoteFilter0.remoteSensorDeviceID = _canifier.getDeviceID();
-        // azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
         azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
-        // a possible workaround to get the remote sensor value?
-        azimuthConfig.auxiliaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
         azimuthConfig.slot0.kP = 0.5;
         azimuthConfig.slot0.kI = 0.0;
         azimuthConfig.slot0.kD = 0.0;
@@ -98,7 +84,6 @@ public class Drivetrain extends Subsystem {
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
 
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
-            azimuthConfig.remoteFilter0.remoteSensorSource = RobotMap.AZIMUTH_SENSOR_CHANNEL[i];
             TalonFX azimuthTalon = new TalonFX(RobotMap.AZIMUTH_TALON_ID[i]);
             azimuthTalon.configFactoryDefault();
             azimuthTalon.setInverted(false);
@@ -114,7 +99,8 @@ public class Drivetrain extends Subsystem {
             driveTalon.configSupplyCurrentLimit(talonCurrentLimit);
             driveTalon.setNeutralMode(NeutralMode.Coast);
 
-            Wheel wheel = new Wheel(azimuthTalon, driveTalon, ABSOLUTE_ENCODER_INVERTED[i]);
+            Wheel wheel = new Wheel(azimuthTalon, driveTalon,
+                RobotMap.SWERVE_ENCODER_AI[i], ABSOLUTE_ENCODER_INVERTED[i]);
             _wheels[i] = wheel;
 
             SmartDashboard.putNumber("Abs position on init, module " + i, wheel.getAzimuthAbsolutePosition());
@@ -125,8 +111,8 @@ public class Drivetrain extends Subsystem {
 
         SwerveDriveConfig config = new SwerveDriveConfig();
         config.wheels = _wheels;
-        config.gyro = new AHRS(SPI.Port.kMXP);
-        config.gyro.setAngleAdjustment(0);
+        config.gyro = new PigeonIMU(RobotMap.PIGEON_IMU_ID);
+        zeroGyro();
         return new SwerveDrive(config);
     }
 
@@ -145,15 +131,22 @@ public class Drivetrain extends Subsystem {
         return _wheels;
     }
 
-    public AHRS getGyro() {
-        return _sd.getGyro();
+    /**
+     * sets the gyros heading (yaw) to 0 degrees.
+     */
+    public void zeroGyro() {
+      _sd.getGyro().setYaw(0.0);
     }
 
-    public void zeroGyro() {
-        _sd.getGyro().setAngleAdjustment(0);
-        double adj = _sd.getGyro().getAngle() % 360;
-        _sd.getGyro().setAngleAdjustment(-adj);
-      }
+    /**
+     *
+     * @return the robots heading (yaw) in degrees.
+     */
+    public double getHeading() {
+      double ypr_deg[] = new double[3];
+      _sd.getGyro().getYawPitchRoll(ypr_deg);
+      return ypr_deg[0];
+    }
 
     /**
      * Set the absolute module heading in terms of the module
