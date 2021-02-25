@@ -52,8 +52,8 @@ public class Wheel {
   protected DoubleConsumer driver;
   private boolean isInverted = false;
   private boolean absoluteEncoderInverted = false;
-  private int primaryPID = 0;
-  // private int auxPID = 1; //specifies the auxiliary pid loop for any method that takes in a pididx
+  private static final int PRIMARY_PID = 0;
+  private static final int AUX_PID = 1; //the auxiliary pid loop on the CTRE motor controllers
   private AnalogInput externalEncoder;
 
   /**
@@ -94,7 +94,7 @@ public class Wheel {
     // }
     azimuth *= -INTERNAL_ENCODER_TICKS_PER_REV; // flip azimuth, hardware configuration dependent
 
-    double azimuthPosition = azimuthTalon.getSelectedSensorPosition(0);
+    double azimuthPosition = azimuthTalon.getSelectedSensorPosition(PRIMARY_PID);
     double azimuthError = Math.IEEEremainder((azimuth - azimuthPosition), INTERNAL_ENCODER_TICKS_PER_REV);
 
     // minimize azimuth rotation, reversing drive if necessary
@@ -162,7 +162,7 @@ public class Wheel {
    * current position in case the wheel has been manually rotated away from its previous setpoint.
    */
   public void stop() {
-    azimuthTalon.set(MotionMagic, azimuthTalon.getSelectedSensorPosition(0));
+    azimuthTalon.set(MotionMagic, azimuthTalon.getSelectedSensorPosition(PRIMARY_PID));
     driver.accept(0d);
   }
 
@@ -186,7 +186,7 @@ public class Wheel {
     // Errors.check(err, logger);
     System.out.println("zero: " + zero);
     System.out.println("current pos: " + getAzimuthAbsolutePosition());
-    azimuthTalon.setSelectedSensorPosition(externalToInternalTicks(azimuthSetpoint), primaryPID, 10);
+    azimuthTalon.setSelectedSensorPosition(externalToInternalTicks(azimuthSetpoint), PRIMARY_PID, 10);
     azimuthTalon.set(MotionMagic, azimuthSetpoint);
     System.out.println("SETPOINT: " + azimuthSetpoint);
   }
@@ -300,7 +300,7 @@ public class Wheel {
    * @param position position in absolute encoder ticks
    */
   public void setAzimuthInternalEncoderPosition(int position) {
-    azimuthTalon.setSelectedSensorPosition((int)((position * ((double)INTERNAL_ENCODER_TICKS/(double)EXTERNAL_ENCODER_TICKS)) * AZIMUTH_GEAR_RATIO), primaryPID, 0);
+    azimuthTalon.setSelectedSensorPosition((int)((position * ((double)INTERNAL_ENCODER_TICKS/(double)EXTERNAL_ENCODER_TICKS)) * AZIMUTH_GEAR_RATIO), PRIMARY_PID, 0);
   }
 
   /**
@@ -324,14 +324,14 @@ public class Wheel {
    * @return position in motor ticks
    */
   public double getAzimuthPosition() {
-    return azimuthTalon.getSelectedSensorPosition(primaryPID) * AZIMUTH_GEAR_RATIO;
+    return azimuthTalon.getSelectedSensorPosition(PRIMARY_PID) * AZIMUTH_GEAR_RATIO;
   }
 
   /**
    * @return speed of drive wheel in ticks per 100 ms
    */
   public double geDWSpeed() {
-    return driveTalon.getSelectedSensorVelocity(primaryPID);
+    return driveTalon.getSelectedSensorVelocity(PRIMARY_PID);
   }
 
   /**
@@ -362,7 +362,7 @@ public class Wheel {
    * @return position in encoder ticks
    */
   public int getInternalEncoderPos() {
-    return (int) azimuthTalon.getSelectedSensorPosition(primaryPID);
+    return (int) azimuthTalon.getSelectedSensorPosition(PRIMARY_PID);
   }
 
   public boolean isInverted() {
