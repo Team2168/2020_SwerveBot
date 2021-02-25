@@ -66,14 +66,14 @@ public class Wheel {
    *
    * @param azimuth the configured azimuth TalonFX
    * @param drive the configured drive TalonFX
-   * @param analogInputChannelID the AI port number the external encoder is plugged into
+   * @param externalEncoder the analog input device that the external encoder is plugged into
    * @param absoluteEncoderInverted invert the polarity of the absolute encoder
    */
-  public Wheel(TalonFX azimuth, BaseTalon drive, int analogInputChannelID, boolean absoluteEncoderInverted) {
+  public Wheel(TalonFX azimuth, BaseTalon drive, AnalogInput externalEncoder, boolean absoluteEncoderInverted) {
     azimuthTalon = Objects.requireNonNull(azimuth);
     driveTalon = Objects.requireNonNull(drive);
     this.absoluteEncoderInverted = absoluteEncoderInverted;
-    externalEncoder = new AnalogInput(analogInputChannelID);
+    this.externalEncoder = externalEncoder;
 
     logger.debug("azimuth = {} drive = {}", azimuthTalon.getDeviceID(), driveTalon.getDeviceID());
     logger.debug("DRIVE_SETPOINT_MAX = {}", DRIVE_SETPOINT_MAX);

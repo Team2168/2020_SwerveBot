@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.sensors.PigeonIMU;
+
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -100,7 +102,7 @@ public class Drivetrain extends Subsystem {
             driveTalon.setNeutralMode(NeutralMode.Coast);
 
             Wheel wheel = new Wheel(azimuthTalon, driveTalon,
-                RobotMap.SWERVE_ENCODER_AI[i], ABSOLUTE_ENCODER_INVERTED[i]);
+                new AnalogInput(RobotMap.SWERVE_ENCODER_AI[i]), ABSOLUTE_ENCODER_INVERTED[i]);
             _wheels[i] = wheel;
 
             SmartDashboard.putNumber("Abs position on init, module " + i, wheel.getAzimuthAbsolutePosition());
