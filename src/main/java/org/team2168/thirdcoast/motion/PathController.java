@@ -75,7 +75,7 @@ public class PathController implements Runnable {
           start[i] = (int) wheels[i].getDriveTalon().getSelectedSensorPosition(PID);
         }
 
-        double currentAngle = DRIVE.getGyro().getAngle();
+        double currentAngle = DRIVE.getHeading();
         setpoint = new Setpoint(currentAngle, yawDelta, percentToDone);
 
         logInit();
@@ -106,7 +106,7 @@ public class PathController implements Runnable {
 
         setpointPos = setpoint.getSetpoint(currentProgress);
 
-        yawError = setpointPos - DRIVE.getGyro().getAngle();
+        yawError = setpointPos - DRIVE.getHeading();
         double yaw;
 
         yaw = yawError * yawKp;

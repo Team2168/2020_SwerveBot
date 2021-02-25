@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Gyro heading", dt.getGyro().getAngle());
+    SmartDashboard.putNumber("Gyro heading", dt.getHeading());
     for (int i = 0; i < dt.getWheels().length; i++) {
       SmartDashboard.putNumber("Abs position module " + i, dt.getWheels()[i].getAzimuthAbsolutePosition());
       SmartDashboard.putNumber("Int position module " + i, dt.getWheels()[i].getInternalEncoderPos());
@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    dt.getGyro().reset();
+    dt.zeroGyro();
     autoMode = true;
     dt.setDriveMode(DriveMode.AZIMUTH);
     autonomousCommand = (Command) autoChooser.getSelected();
