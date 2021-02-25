@@ -12,7 +12,7 @@ import org.team2168.thirdcoast.swerve.Wheel;
 public class PathController implements Runnable {
 
   private static final int NUM_WHEELS = 4;
-  private static final int TICKS_PER_INCH = 2300;
+  private static final int TICKS_PER_INCH = (int) Wheel.TICKS_PER_FOOT_DW / 12;
   private static final Drivetrain DRIVE = Drivetrain.getInstance();
 
   @SuppressWarnings("FieldCanBeLocal")
