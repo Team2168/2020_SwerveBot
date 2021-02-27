@@ -68,7 +68,8 @@ public class SwerveDrive {
       gyroIsConnected = gyro.getState() == PigeonState.Ready;
     }
 
-    setFieldOriented(gyroIsConnected);
+    //setFieldOriented(gyroIsConnected);
+    setFieldOriented(false);
 
     logger.debug("gyro is configured {}", gyro != null);
     logger.debug("gyro is connected {}", gyroIsConnected);
