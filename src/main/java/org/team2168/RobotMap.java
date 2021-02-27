@@ -18,6 +18,7 @@ public class RobotMap {
 
 	// Joysticks///////////////////////////////////////////////////////////////
 	public static final int DRIVER_JOYSTICK = 0;
+	public static final int TEST_JOYSTICK = 5;
 
 
 

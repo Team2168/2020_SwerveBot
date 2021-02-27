@@ -40,6 +40,7 @@ public class OI {
 	private static OI instance = null;
 
 	public F310 driverJoystick = new F310(RobotMap.DRIVER_JOYSTICK);
+	public F310 testJoystick = new F310(RobotMap.TEST_JOYSTICK);
 	// public F310 operatorJoystick = new F310(RobotMap.OPERATOR_JOYSTICK);
 
 	// public F310 driverOperatorEJoystick = new
@@ -80,8 +81,8 @@ public class OI {
 		driverJoystickZInterpolator = new LinearInterpolator(driverJoystickZArray);
 
 		// TODO: put these on a test joystick
-		driverJoystick.ButtonBack().whenPressed(new ZeroGyro());
-		driverJoystick.ButtonStart().whenPressed(new ZeroEncoders());
+		testJoystick.ButtonBack().whenPressed(new ZeroGyro());
+		testJoystick.ButtonStart().whenPressed(new ZeroEncoders());
 	}
 	
 	/**
@@ -109,6 +110,18 @@ public class OI {
 	}
 
 	public double getDriverJoystickZValue() {
+		return driverJoystickZInterpolator.interpolate(driverJoystick.getRawAxis(2));
+	}
+
+	public double getTestJoystickXValue() {
+		return driverJoystickXInterpolator.interpolate(driverJoystick.getLeftStickRaw_X());
+	}
+
+	public double getTestJoystickYValue() {
+		return driverJoystickYInterpolator.interpolate(driverJoystick.getLeftStickRaw_Y());
+	}
+
+	public double getTestJoystickZValue() {
 		return driverJoystickZInterpolator.interpolate(driverJoystick.getRightStickRaw_X());
 	}
 
