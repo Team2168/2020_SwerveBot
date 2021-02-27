@@ -6,6 +6,7 @@ import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
 
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,6 +70,7 @@ public class SwerveDrive {
     }
 
     setFieldOriented(gyroIsConnected);
+    SmartDashboard.putBoolean("field oriented?", isFieldOriented);
 
     logger.debug("gyro is configured {}", gyro != null);
     logger.debug("gyro is connected {}", gyroIsConnected);
@@ -144,7 +146,7 @@ public class SwerveDrive {
     // autonomous starting positions.
     if (isFieldOriented) {
       gyro.getYawPitchRoll(ypr);
-      double angle = ypr[0];
+      double angle = -ypr[0];
       // angle += gyro.getRate() * kGyroRateCorrection; // Disable this, as we aren't actually using this feature
       angle = Math.IEEEremainder(angle, 360.0);
 
