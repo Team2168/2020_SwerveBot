@@ -6,6 +6,9 @@ import org.team2168.commands.drivetrain.ZeroGyro;
 import org.team2168.utils.F310;
 import org.team2168.utils.LinearInterpolator;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -71,6 +74,7 @@ public class OI {
 		{+1.00,+0.50}
 	};
 
+	public static final SendableChooser<String> joystickChooser = new SendableChooser<>();
 
 	/**
 	 * Private constructor for singleton class which instantiates the OI object
@@ -80,7 +84,10 @@ public class OI {
 		driverJoystickXInterpolator = new LinearInterpolator(driverJoystickXArray);
 		driverJoystickZInterpolator = new LinearInterpolator(driverJoystickZArray);
 
-		// TODO: put these on a test joystick
+		SmartDashboard.putData("Driver Joystick Chooser", joystickChooser);
+		joystickChooser.setDefaultOption("Flight Joystick", "flight");
+    joystickChooser.addOption("F310 Joystick", "F310");
+
 		testJoystick.ButtonBack().whenPressed(new ZeroGyro());
 		testJoystick.ButtonStart().whenPressed(new ZeroEncoders());
 	}
@@ -110,19 +117,10 @@ public class OI {
 	}
 
 	public double getDriverJoystickZValue() {
-		return driverJoystickZInterpolator.interpolate(driverJoystick.getRawAxis(2));
-	}
-
-	public double getTestJoystickXValue() {
-		return driverJoystickXInterpolator.interpolate(driverJoystick.getLeftStickRaw_X());
-	}
-
-	public double getTestJoystickYValue() {
-		return driverJoystickYInterpolator.interpolate(driverJoystick.getLeftStickRaw_Y());
-	}
-
-	public double getTestJoystickZValue() {
-		return driverJoystickZInterpolator.interpolate(driverJoystick.getRightStickRaw_X());
+		if (joystickChooser.getSelected().equals("flight"))
+			return driverJoystickZInterpolator.interpolate(driverJoystick.getRawAxis(2));
+		else
+			return driverJoystickZInterpolator.interpolate(driverJoystick.getRightStickRaw_X());
 	}
 
 }
