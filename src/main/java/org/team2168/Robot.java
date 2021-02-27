@@ -13,6 +13,7 @@ import org.team2168.subsystem.Drivetrain;
 import org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode;
 import org.team2168.thirdcoast.swerve.Wheel;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -29,6 +30,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 public class Robot extends TimedRobot {
   static Command autonomousCommand;
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+  public static final SendableChooser<Joystick> joystickChooser = new SendableChooser<>();
 
   private static Drivetrain dt;
   private static OI oi;
@@ -44,8 +46,11 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     autoSelectInit();
     SmartDashboard.putData("Auto Chooser", autoChooser);
-
+    SmartDashboard.putData("Joystick Chooser", joystickChooser);
     SmartDashboard.putString("Control Mode", "Joystick");
+
+    joystickChooser.setDefaultOption("Driver Joystick", oi.driverJoystick);
+    joystickChooser.addOption("Test Joystick", oi.testJoystick);
 
     SmartDashboard.putNumber("Drive Forward", 0.0);
     SmartDashboard.putNumber("Drive Strafe", 0.0);

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.team2168.OI;
+import org.team2168.Robot;
 import org.team2168.subsystem.Drivetrain;
 
 public class DriveWithJoystick extends Command {
@@ -37,8 +38,11 @@ public class DriveWithJoystick extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (SmartDashboard.getString("Control Mode", "Joystick").equals("Joystick")) {
+    if (SmartDashboard.getString("Control Mode", "Joystick").equals("Joystick") && Robot.joystickChooser.getSelected() == oi.driverJoystick) {
       dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), oi.getDriverJoystickZValue());
+    }
+    else if (SmartDashboard.getString("Control Mode", "Joystick").equals("Joystick") && Robot.joystickChooser.getSelected() == oi.testJoystick) {
+      dt.drive(oi.getTestJoystickYValue(), oi.getTestJoystickXValue(), oi.getTestJoystickZValue());
     }
     else {
       dt.drive(SmartDashboard.getNumber("Drive Forward", 0.0), SmartDashboard.getNumber("Drive Strafe", 0.0), SmartDashboard.getNumber("Drive Azimuth", 0.0));
