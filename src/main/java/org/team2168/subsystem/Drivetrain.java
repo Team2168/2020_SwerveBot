@@ -114,7 +114,7 @@ public class Drivetrain extends Subsystem {
         SwerveDriveConfig config = new SwerveDriveConfig();
         config.wheels = _wheels;
         config.gyro = new PigeonIMU(RobotMap.PIGEON_IMU_ID);
-        zeroGyro();
+        config.gyro.setYaw(0.0);
         return new SwerveDrive(config);
     }
 
