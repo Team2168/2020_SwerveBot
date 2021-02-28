@@ -2,4 +2,5 @@
     "java.configuration.updateBuildConfiguration": "interactive",
     "java.checkstyle.configuration": "/google_checks.xml",
     "java.checkstyle.version": "8.36",
+    "wpilib.skipTests": true,
 }
