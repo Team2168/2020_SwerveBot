@@ -220,8 +220,6 @@ public class OI {
 
     operatorJoystick.ButtonB().whenPressed(new FireBalls());
 		operatorJoystick.ButtonB().whenReleased(new FinishFiring());
-		operatorJoystick.ButtonY().whenPressed(new ExtendIntakePneumatic()); //TODO: get working with IntakeBallStart
-		operatorJoystick.ButtonA().whenPressed(new RetractIntakePneumatic()); //TODO: get working with IntakeBallStop
 
     operatorJoystick.ButtonLeftBumper().whenPressed(new IntakeBallStop());
 		operatorJoystick.ButtonRightBumper().whenPressed(new IntakeBallStart());
