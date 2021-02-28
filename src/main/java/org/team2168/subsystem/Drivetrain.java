@@ -147,7 +147,7 @@ public class Drivetrain extends Subsystem {
     public double getHeading() {
       double ypr_deg[] = new double[3];
       _sd.getGyro().getYawPitchRoll(ypr_deg);
-      return ypr_deg[0];
+      return -ypr_deg[0];
     }
 
     /**
