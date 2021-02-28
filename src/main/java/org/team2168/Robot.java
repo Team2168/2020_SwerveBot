@@ -44,7 +44,6 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     autoSelectInit();
     SmartDashboard.putData("Auto Chooser", autoChooser);
-
     SmartDashboard.putString("Control Mode", "Joystick");
 
     SmartDashboard.putNumber("Drive Forward", 0.0);
