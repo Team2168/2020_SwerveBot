@@ -82,7 +82,6 @@ public class Robot extends TimedRobot {
     practiceBot = new DigitalInput(RobotMap.PRACTICE_BOT_JUMPER);
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
-
     SmartDashboard.putString("Control Mode", "Joystick");
 
     SmartDashboard.putNumber("Drive Forward", 0.0);

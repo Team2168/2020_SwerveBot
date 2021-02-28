@@ -15,6 +15,9 @@ import org.team2168.subsystems.Shooter;
 import org.team2168.utils.F310;
 import org.team2168.utils.LinearInterpolator;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -50,7 +53,7 @@ public class OI {
 
   public F310 driverJoystick = new F310(RobotMap.DRIVER_JOYSTICK);
   public F310 operatorJoystick = new F310(RobotMap.OPERATOR_JOYSTICK);
-	public F310 pidTestJoystick = new F310(RobotMap.PID_TEST_JOYSTICK);
+	public F310 testJoystick = new F310(RobotMap.TEST_JOYSTICK);
 	public F310 buttonBox1 = new F310(RobotMap.BUTTON_BOX_1);
 	public F310 buttonBox2 = new F310(RobotMap.BUTTON_BOX_2);
 
@@ -110,6 +113,7 @@ public class OI {
 
 
 
+	public static final SendableChooser<String> joystickChooser = new SendableChooser<>();
 
 	/**
 	 * Private constructor for singleton class which instantiates the OI object
@@ -119,9 +123,9 @@ public class OI {
 		driverJoystickXInterpolator = new LinearInterpolator(driverJoystickXArray);
 		driverJoystickZInterpolator = new LinearInterpolator(driverJoystickZArray);
 
-		// TODO: put these on a test joystick
-		driverJoystick.ButtonBack().whenPressed(new ZeroGyro());
-    driverJoystick.ButtonStart().whenPressed(new ZeroEncoders());
+		SmartDashboard.putData("Driver Joystick Chooser", joystickChooser);
+		joystickChooser.setDefaultOption("Flight Joystick", "flight");
+		joystickChooser.addOption("F310 Joystick", "F310");
 
     if (Robot.ENABLE_BUTTON_BOX)
     {
@@ -160,7 +164,7 @@ public class OI {
       buttonBox2.ButtonLeftDPad().whenPressed(new DriveToXSpeed(Shooter.FiringLocation.FRONT_TRENCH));
       buttonBox2.ButtonRightDPad().whenPressed(new DriveToXSpeed(Shooter.FiringLocation.WHITE_LINE));
       // buttonBox2.ButtonA().whenPressed(new MoveToFiringLocation(Shooter.getInstance().getFiringLocation()));
-      // pidTestJoystick.ButtonA().whenReleased(new MoveToWallNoShoot());
+      // testJoystick.ButtonA().whenReleased(new MoveToWallNoShoot());
 
       buttonBox2.ButtonB().whenPressed(new FireBalls());
       buttonBox2.ButtonB().whenReleased(new FinishFiring());
@@ -223,32 +227,35 @@ public class OI {
 		operatorJoystick.ButtonRightBumper().whenPressed(new IntakeBallStart());
 
     /***********************************************************************
-     * Commands Test Joystick
+     * Test Joystick
      ***********************************************************************/
     // // //leds testing
-    // pidTestJoystick.ButtonB().whenPressed(new DriveXDistance(60.0));
-    // pidTestJoystick.ButtonX().whenPressed(new DriveXDistance(-60.0));
-    // pidTestJoystick.ButtonRightDPad().whenPressed(new TurnXAngle(-9.0, 0.3));
-    // pidTestJoystick.ButtonLeftDPad().whenPressed(new TurnXAngle(+9.0,0.3));
-    // pidTestJoystick.ButtonUpDPad().whenPressed(new TurnXAngle(-90.0,0.3));
-    // pidTestJoystick.ButtonDownDPad().whenPressed(new TurnXAngle(+90.0, 0.3));
-    // pidTestJoystick.ButtonStart().whenPressed(new DefaultTrenchAuto());
-    // pidTestJoystick.ButtonBack().whenPressed(new OppositeTrenchAuto());
+    // testJoystick.ButtonB().whenPressed(new DriveXDistance(60.0));
+    // testJoystick.ButtonX().whenPressed(new DriveXDistance(-60.0));
+    // testJoystick.ButtonRightDPad().whenPressed(new TurnXAngle(-9.0, 0.3));
+    // testJoystick.ButtonLeftDPad().whenPressed(new TurnXAngle(+9.0,0.3));
+    // testJoystick.ButtonUpDPad().whenPressed(new TurnXAngle(-90.0,0.3));
+    // testJoystick.ButtonDownDPad().whenPressed(new TurnXAngle(+90.0, 0.3));
+    // testJoystick.ButtonStart().whenPressed(new DefaultTrenchAuto());
+    // testJoystick.ButtonBack().whenPressed(new OppositeTrenchAuto());
 
-    pidTestJoystick.ButtonX().whenPressed(new ResetClimberPosition());
-    pidTestJoystick.ButtonY().whenPressed(new PrepareToClimb());
-    pidTestJoystick.ButtonA().whenPressed(new Climb());
+		testJoystick.ButtonBack().whenPressed(new ZeroGyro());
+    testJoystick.ButtonStart().whenPressed(new ZeroEncoders());
 
-    pidTestJoystick.ButtonUpDPad().whenPressed(new EngageRatchet());
-    pidTestJoystick.ButtonDownDPad().whenPressed(new DisengageRatchet());
+    testJoystick.ButtonX().whenPressed(new ResetClimberPosition());
+    testJoystick.ButtonY().whenPressed(new PrepareToClimb());
+    testJoystick.ButtonA().whenPressed(new Climb());
+
+    testJoystick.ButtonUpDPad().whenPressed(new EngageRatchet());
+    testJoystick.ButtonDownDPad().whenPressed(new DisengageRatchet());
 
     climberResetInterpolator = new LinearInterpolator(climberResetArray);
-    pidTestJoystick.ButtonRightStick().whenPressed(new DriveClimberWithTestJoystickUnSafe());
+    testJoystick.ButtonRightStick().whenPressed(new DriveClimberWithTestJoystickUnSafe());
 
-    // pidTestJoystick.ButtonB().whenPressed(new FireBalls());
-    // pidTestJoystick.ButtonB().whenReleased(new FinishFiring());
-    // pidTestJoystick.ButtonDownDPad().whenPressed(new MoveToWall());
-    // pidTestJoystick.ButtonLeftBumper().whenPressed(new IntakeBallStop());
+    // testJoystick.ButtonB().whenPressed(new FireBalls());
+    // testJoystick.ButtonB().whenReleased(new FinishFiring());
+    // testJoystick.ButtonDownDPad().whenPressed(new MoveToWall());
+    // testJoystick.ButtonLeftBumper().whenPressed(new IntakeBallStop());
 	}
 
 	/**
@@ -267,16 +274,31 @@ public class OI {
 	 * Drivetrain *
 	 *************************************************************************/
 
+	/**
+	 * Get the value of the left stick's x-axis after being put through the interpolator
+	 * @return a value from -0.1 to 0.1
+	 */
 	public double getDriverJoystickXValue() {
 		return driverJoystickXInterpolator.interpolate(driverJoystick.getLeftStickRaw_X());
 	}
 
+	/**
+	 * Get the value of the left stick's y-axis after being put through the interpolator
+	 * @return a value from -0.1 to 0.1
+	 */
 	public double getDriverJoystickYValue() {
 		return driverJoystickYInterpolator.interpolate(driverJoystick.getLeftStickRaw_Y());
 	}
 
+	/**
+	 * Get the value of the right stick's x-axis after being put through the interpolator
+	 * @return a value from -0.5 to 0.5
+	 */
 	public double getDriverJoystickZValue() {
-		return driverJoystickZInterpolator.interpolate(driverJoystick.getRightStickRaw_X());
+		if (joystickChooser.getSelected().equals("flight"))
+			return driverJoystickZInterpolator.interpolate(driverJoystick.getRawAxis(2));
+		else
+			return driverJoystickZInterpolator.interpolate(driverJoystick.getRightStickRaw_X());
 	}
 
   public double getColorWheelJoystick() {
@@ -293,7 +315,7 @@ public class OI {
 	 * @return a double - value
 	 */
 	public double getIndexerJoystick() {
-		return 0.0; //pidTestJoystick.getRightStickRaw_Y();
+		return 0.0; //testJoystick.getRightStickRaw_Y();
 	}
 
 	/**
@@ -306,7 +328,7 @@ public class OI {
 	}
 
 	public double getClimberTestJoystickValue() {
-		return climberResetInterpolator.interpolate(pidTestJoystick.getRightStickRaw_Y());
+		return climberResetInterpolator.interpolate(testJoystick.getRightStickRaw_Y());
 	}
 
 	/**
@@ -314,7 +336,7 @@ public class OI {
 	 * @return
 	 */
 	public double getShooterJoystick() {
-		return 0.0; //pidTestJoystick.getRightStickRaw_Y();
+		return 0.0; //testJoystick.getRightStickRaw_Y();
 	}
 
 	/**
@@ -323,7 +345,7 @@ public class OI {
 	 * @return
 	 */
 	public double getBalancerJoystickValue() {
-		return  balancerInterpolator.interpolate(buttonBox2.getLeftStickRaw_X()); //pidTestJoystick.getLeftStickRaw_Y();
+		return  balancerInterpolator.interpolate(buttonBox2.getLeftStickRaw_X()); //testJoystick.getLeftStickRaw_Y();
 	}
 
 	/**
@@ -332,7 +354,7 @@ public class OI {
 	 * @return
 	 */
 	public double getHopperJoystickValue() {
-		return  0.0; //pidTestJoystick.getRightStickRaw_Y();
+		return  0.0; //testJoystick.getRightStickRaw_Y();
 	}
 
 }

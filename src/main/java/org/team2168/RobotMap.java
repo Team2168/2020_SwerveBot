@@ -1,7 +1,5 @@
 package org.team2168;
 
-import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
-
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -22,7 +20,7 @@ public class RobotMap {
 	public static final int BUTTON_BOX_1 = 2;
 	public static final int BUTTON_BOX_2 = 3;
 	public static final int DRIVER_OPERATOR_E_BACKUP = 4;
-	public static final int PID_TEST_JOYSTICK = 5;
+	public static final int TEST_JOYSTICK = 5;
 
 	// Joystick Control Styles/////////////////////////////////////////////////
 
