@@ -215,10 +215,12 @@ public class OI {
     operatorJoystick.ButtonX().whenPressed(new DriveShooterWithConstant(0.52));
 
     operatorJoystick.ButtonB().whenPressed(new FireBalls());
-    operatorJoystick.ButtonB().whenReleased(new FinishFiring());
+		operatorJoystick.ButtonB().whenReleased(new FinishFiring());
+		operatorJoystick.ButtonY().whenPressed(new ExtendIntakePneumatic()); //TODO: get working with IntakeBallStart
+		operatorJoystick.ButtonA().whenPressed(new RetractIntakePneumatic()); //TODO: get working with IntakeBallStop
 
     operatorJoystick.ButtonLeftBumper().whenPressed(new IntakeBallStop());
-    operatorJoystick.ButtonRightBumper().whenPressed(new IntakeBallStart());
+		operatorJoystick.ButtonRightBumper().whenPressed(new IntakeBallStart());
 
     /***********************************************************************
      * Commands Test Joystick
