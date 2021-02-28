@@ -108,15 +108,26 @@ public class OI {
 	 * Drivetrain *
 	 *************************************************************************/
 
-	 //TODO: add javadocs
+	/**
+	 * Get the value of the left stick's x-axis after being put through the interpolator
+	 * @return a value from -0.1 to 0.1
+	 */
 	public double getDriverJoystickXValue() {
 		return driverJoystickXInterpolator.interpolate(driverJoystick.getLeftStickRaw_X());
 	}
 
+	/**
+	 * Get the value of the left stick's y-axis after being put through the interpolator
+	 * @return a value from -0.1 to 0.1
+	 */
 	public double getDriverJoystickYValue() {
 		return driverJoystickYInterpolator.interpolate(driverJoystick.getLeftStickRaw_Y());
 	}
 
+	/**
+	 * Get the value of the right stick's x-axis after being put through the interpolator
+	 * @return a value from -0.5 to 0.5
+	 */
 	public double getDriverJoystickZValue() {
 		if (joystickChooser.getSelected().equals("flight"))
 			return driverJoystickZInterpolator.interpolate(driverJoystick.getRawAxis(2));
