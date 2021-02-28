@@ -108,6 +108,7 @@ public class OI {
 	 * Drivetrain *
 	 *************************************************************************/
 
+	 //TODO: add javadocs
 	public double getDriverJoystickXValue() {
 		return driverJoystickXInterpolator.interpolate(driverJoystick.getLeftStickRaw_X());
 	}
