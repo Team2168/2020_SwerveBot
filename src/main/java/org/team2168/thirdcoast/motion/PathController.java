@@ -12,7 +12,7 @@ import org.team2168.thirdcoast.swerve.Wheel;
 public class PathController implements Runnable {
 
   private static final int NUM_WHEELS = 4;
-  private static final int TICKS_PER_INCH = (int) Wheel.TICKS_PER_FOOT_DW / 12;
+  private static final int TICKS_PER_FOOT = (int) Wheel.TICKS_PER_FOOT_DW;
   private static final Drivetrain DRIVE = Drivetrain.getInstance();
 
   @SuppressWarnings("FieldCanBeLocal")
@@ -31,7 +31,7 @@ public class PathController implements Runnable {
   private Notifier notifier;
   private Wheel[] wheels;
   private States state;
-  private double maxVelocityInSec;
+  private double maxVelocityFtSec;
   private double yawDelta;
   private int iteration;
   private int[] start;
@@ -67,7 +67,7 @@ public class PathController implements Runnable {
       case STARTING:
         logState();
         double ticksPerSecMax = Wheel.getDriveSetpointMax() * 10.0;
-        maxVelocityInSec = ticksPerSecMax / TICKS_PER_INCH;
+        maxVelocityFtSec = ticksPerSecMax / TICKS_PER_FOOT;
         iteration = 0;
         DRIVE.setDriveMode(SwerveDrive.DriveMode.CLOSED_LOOP);
 
@@ -95,7 +95,7 @@ public class PathController implements Runnable {
           segmentVelocity = MIN_START;
         }
 
-        double setpointVelocity = segmentVelocity / maxVelocityInSec;
+        double setpointVelocity = segmentVelocity / maxVelocityFtSec;
 
         double forward = Math.cos(segment.heading) * setpointVelocity;
         double strafe = Math.sin(segment.heading) * setpointVelocity;
@@ -137,7 +137,7 @@ public class PathController implements Runnable {
         "Path start yawKp = {} yawDelta = {} maxVelocity in/s = {}",
         yawKp,
         yawDelta,
-        maxVelocityInSec);
+        maxVelocityFtSec);
   }
 
   public double getYawError() {
