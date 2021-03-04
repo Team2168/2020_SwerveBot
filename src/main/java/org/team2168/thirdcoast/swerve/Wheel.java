@@ -44,7 +44,9 @@ public class Wheel {
   private static final double TICKS_PER_DEGREE_DW = ((1.0/360.0) * DRIVE_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
   public static final double TICKS_PER_FOOT_DW = ((1.0/DRIVE_CIRCUMFERENCE_FT) * DRIVE_GEAR_RATIO *INTERNAL_ENCODER_TICKS); // TODO: check math?
   private static final double INTERNAL_ENCODER_TICKS_PER_REV = 360.0 * TICKS_PER_DEGREE_AZIMUTH;
-  private static final double DRIVE_SETPOINT_MAX = 45_000.0; // ticks/100 ms
+  private static final double FREE_SPEED_RPM = 6380;
+  private static final double FREE_SPEED_RPS = FREE_SPEED_RPM / 60.0;
+  private static final double DRIVE_SETPOINT_MAX = (INTERNAL_ENCODER_TICKS * FREE_SPEED_RPS) / 10.0; // ticks/100 ms
   private final BaseTalon driveTalon;
   private final TalonFX azimuthTalon;
   protected DoubleConsumer driver;
