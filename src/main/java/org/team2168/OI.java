@@ -5,6 +5,7 @@ import org.team2168.commands.drivetrain.ZeroEncoders;
 import org.team2168.commands.drivetrain.ZeroGyro;
 import org.team2168.commands.flashlight.*;
 import org.team2168.commands.hood_adjust.*;
+import org.team2168.commands.hopper.DriveHopperWithConstant;
 import org.team2168.commands.indexer.*;
 import org.team2168.commands.intakeMotor.*;
 import org.team2168.commands.intakePivot.*;
@@ -202,10 +203,18 @@ public class OI {
     /*************************************************************************
      * Operator Joystick *
      *************************************************************************/
-    operatorJoystick.ButtonUpDPad().whenPressed(new MoveToBackTrench());
-    operatorJoystick.ButtonLeftDPad().whenPressed(new MoveToFrontTrench());
-    operatorJoystick.ButtonRightDPad().whenPressed(new MoveToWhiteLine());
-    operatorJoystick.ButtonDownDPad().whenPressed(new MoveToWall());
+		operatorJoystick.ButtonUpDPad().whenPressed(new MoveToBackTrench());
+		operatorJoystick.ButtonUpDPad().whenPressed(new DriveHopperWithConstant(1.0));
+		operatorJoystick.ButtonUpDPad().whenReleased(new DriveHopperWithConstant(0.0));
+		operatorJoystick.ButtonLeftDPad().whenPressed(new MoveToFrontTrench());
+		operatorJoystick.ButtonLeftDPad().whenPressed(new DriveHopperWithConstant(1.0));
+		operatorJoystick.ButtonLeftDPad().whenReleased(new DriveHopperWithConstant(0.0));
+		operatorJoystick.ButtonRightDPad().whenPressed(new MoveToWhiteLine());
+		operatorJoystick.ButtonRightDPad().whenPressed(new DriveHopperWithConstant(1.0));
+		operatorJoystick.ButtonRightDPad().whenReleased(new DriveHopperWithConstant(0.0));
+		operatorJoystick.ButtonDownDPad().whenPressed(new MoveToWall());
+		operatorJoystick.ButtonDownDPad().whenPressed(new DriveHopperWithConstant(1.0));
+		operatorJoystick.ButtonDownDPad().whenReleased(new DriveHopperWithConstant(0.0));
 
 
     // operatorJoystick.ButtonY().whenPressed(new EngageColorWheel());
@@ -335,15 +344,6 @@ public class OI {
 	 */
 	public double getShooterJoystick() {
 		return 0.0; //testJoystick.getRightStickRaw_Y();
-	}
-
-	/**
-	 * Balancer joystick value
-	 *
-	 * @return
-	 */
-	public double getBalancerJoystickValue() {
-		return  balancerInterpolator.interpolate(buttonBox2.getLeftStickRaw_X()); //testJoystick.getLeftStickRaw_Y();
 	}
 
 	/**

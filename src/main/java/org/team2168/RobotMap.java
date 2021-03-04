@@ -71,7 +71,7 @@ public class RobotMap {
   public static final int DRIVE_1_CAN_ID = 1;
   public static final int CLIMBER_1_CAN_ID = 2;
   public static final int CLIMBER_2_CAN_ID = 3;
-  public static final int BALANCER_CAN_ID = 4;
+  public static final int HOPPER_CAN_ID = 4;
   public static final int INTAKE_CAN_ID = 5;
   public static final int AZIMUTH_3_CAN_ID = 6;
   public static final int AZIMUTH_1_CAN_ID = 7;
