@@ -1,5 +1,6 @@
 package org.team2168.thirdcoast.motion;
 
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Notifier;
 import org.team2168.subsystem.Drivetrain;
 import org.team2168.thirdcoast.util.Setpoint;
@@ -21,8 +22,8 @@ public class PathController implements Runnable {
   private static final double percentToDone = 0.50;
   private static final double DT = 0.04;
 
-  private static final double MIN_VEL = 45.0;
-  private static final double MIN_START = 40.0;
+  private static final double MIN_VEL = 0.0;
+  private static final double MIN_START = 0.0;
   //  private static final double RATE_CAP = 0.35;
   //  private static final RateLimit rateLimit = new RateLimit(0.015);
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -44,7 +45,7 @@ public class PathController implements Runnable {
     this.yawDelta = yawDelta;
     this.isDriftOut = isDriftOut;
     wheels = DRIVE.getWheels();
-    File csvFile = new File("home/lvuser/deploy/paths/" + pathName + ".pf1.csv");
+    File csvFile = new File(Filesystem.getDeployDirectory().getPath() + "/paths/" + pathName + ".pf1.csv");
 
     trajectory = new Trajectory(csvFile);
   }
@@ -67,7 +68,7 @@ public class PathController implements Runnable {
       case STARTING:
         logState();
         double ticksPerSecMax = Wheel.getDriveSetpointMax() * 10.0;
-        maxVelocityFtSec = ticksPerSecMax / (TICKS_PER_FOOT / 132);
+        maxVelocityFtSec = ticksPerSecMax / TICKS_PER_FOOT;
         iteration = 0;
         DRIVE.setDriveMode(SwerveDrive.DriveMode.CLOSED_LOOP);
 
