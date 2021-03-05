@@ -67,7 +67,7 @@ public class PathController implements Runnable {
       case STARTING:
         logState();
         double ticksPerSecMax = Wheel.getDriveSetpointMax() * 10.0;
-        maxVelocityFtSec = ticksPerSecMax / TICKS_PER_FOOT;
+        maxVelocityFtSec = ticksPerSecMax / (TICKS_PER_FOOT / 132);
         iteration = 0;
         DRIVE.setDriveMode(SwerveDrive.DriveMode.CLOSED_LOOP);
 
