@@ -1,9 +1,9 @@
 {
   "lengthUnit": "Foot",
   "timeStep": 0.02,
-  "maxVelocity": 0.5,
-  "maxAcceleration": 0.25,
-  "maxJerk": 0.25,
+  "maxVelocity": 7.5,
+  "maxAcceleration": 6.0,
+  "maxJerk": 2.0,
   "wheelBase": 2.08,
   "gameName": "2021 Skills Challenge",
   "outputDir": "../src/main/deploy/paths"
