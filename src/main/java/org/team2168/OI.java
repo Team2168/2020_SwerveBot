@@ -6,6 +6,9 @@ import org.team2168.commands.drivetrain.ZeroGyro;
 import org.team2168.utils.F310;
 import org.team2168.utils.LinearInterpolator;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
@@ -40,6 +43,7 @@ public class OI {
 	private static OI instance = null;
 
 	public F310 driverJoystick = new F310(RobotMap.DRIVER_JOYSTICK);
+	public F310 testJoystick = new F310(RobotMap.TEST_JOYSTICK);
 	// public F310 operatorJoystick = new F310(RobotMap.OPERATOR_JOYSTICK);
 
 	// public F310 driverOperatorEJoystick = new
@@ -70,6 +74,7 @@ public class OI {
 		{+1.00,+0.50}
 	};
 
+	public static final SendableChooser<String> joystickChooser = new SendableChooser<>();
 
 	/**
 	 * Private constructor for singleton class which instantiates the OI object
@@ -79,9 +84,12 @@ public class OI {
 		driverJoystickXInterpolator = new LinearInterpolator(driverJoystickXArray);
 		driverJoystickZInterpolator = new LinearInterpolator(driverJoystickZArray);
 
-		// TODO: put these on a test joystick
-		driverJoystick.ButtonBack().whenPressed(new ZeroGyro());
-		driverJoystick.ButtonStart().whenPressed(new ZeroEncoders());
+		SmartDashboard.putData("Driver Joystick Chooser", joystickChooser);
+		joystickChooser.setDefaultOption("Flight Joystick", "flight");
+    joystickChooser.addOption("F310 Joystick", "F310");
+
+		testJoystick.ButtonBack().whenPressed(new ZeroGyro());
+		testJoystick.ButtonStart().whenPressed(new ZeroEncoders());
 	}
 	
 	/**
@@ -100,16 +108,31 @@ public class OI {
 	 * Drivetrain *
 	 *************************************************************************/
 
+	/**
+	 * Get the value of the left stick's x-axis after being put through the interpolator
+	 * @return a value from -0.1 to 0.1
+	 */
 	public double getDriverJoystickXValue() {
 		return driverJoystickXInterpolator.interpolate(driverJoystick.getLeftStickRaw_X());
 	}
 
+	/**
+	 * Get the value of the left stick's y-axis after being put through the interpolator
+	 * @return a value from -0.1 to 0.1
+	 */
 	public double getDriverJoystickYValue() {
 		return driverJoystickYInterpolator.interpolate(driverJoystick.getLeftStickRaw_Y());
 	}
 
+	/**
+	 * Get the value of the right stick's x-axis after being put through the interpolator
+	 * @return a value from -0.5 to 0.5
+	 */
 	public double getDriverJoystickZValue() {
-		return driverJoystickZInterpolator.interpolate(driverJoystick.getRightStickRaw_X());
+		if (joystickChooser.getSelected().equals("flight"))
+			return driverJoystickZInterpolator.interpolate(driverJoystick.getRawAxis(2));
+		else
+			return driverJoystickZInterpolator.interpolate(driverJoystick.getRightStickRaw_X());
 	}
 
 }
