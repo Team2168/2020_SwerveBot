@@ -49,7 +49,7 @@ public class PathController implements Runnable {
     this.yawDelta = yawDelta;
     this.isDriftOut = isDriftOut;
     wheels = DRIVE.getWheels();
-    File csvFile = new File(Filesystem.getDeployDirectory().getPath() + "/paths/" + pathName + ".pf1.csv");
+    File csvFile = new File(Filesystem.getDeployDirectory().getPath() + "/paths/output/" + pathName + ".pf1.csv");
 
     trajectory = new Trajectory(csvFile);
   }

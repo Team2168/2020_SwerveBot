@@ -8,6 +8,7 @@
 package org.team2168;
 
 import org.team2168.commands.drivetrain.DoNothing;
+import org.team2168.commands.drivetrain.GalacticSearchARed;
 import org.team2168.commands.drivetrain.SwerveDriveTestsPathCommandGroup;
 import org.team2168.subsystem.Drivetrain;
 import org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode;
@@ -80,6 +81,7 @@ public class Robot extends TimedRobot {
   public void autoSelectInit() {
     autoChooser.setDefaultOption("Default Auto", new DoNothing());
     autoChooser.addOption("Drive Straight", new SwerveDriveTestsPathCommandGroup());
+    autoChooser.addOption("Galactic Search A Red", new GalacticSearchARed());
   }
 
   /**
