@@ -2,6 +2,9 @@ package org.team2168.thirdcoast.motion;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.team2168.subsystem.Drivetrain;
 import org.team2168.thirdcoast.util.Setpoint;
 import java.io.File;
@@ -20,7 +23,8 @@ public class PathController implements Runnable {
   private static final double yawKp = 0.01; // 0.03
 
   private static final double percentToDone = 0.50;
-  private static final double DT = 0.04;
+  // timestep
+  private static final double DT = 0.02;
 
   private static final double MIN_VEL = 0.0;
   private static final double MIN_START = 0.0;
@@ -115,6 +119,7 @@ public class PathController implements Runnable {
         if (forward > 1d || strafe > 1d) logger.warn("forward = {} strafe = {}", forward, strafe);
 
         DRIVE.drive(forward, strafe, yaw);
+        SmartDashboard.putNumber("Auto commanded fwd speed normalized", forward);
         iteration++;
         break;
       case STOPPING:
@@ -127,6 +132,7 @@ public class PathController implements Runnable {
         notifier.close();
         break;
     }
+    System.out.println("Time: " + Timer.getFPGATimestamp());
   }
 
   private void logState() {
