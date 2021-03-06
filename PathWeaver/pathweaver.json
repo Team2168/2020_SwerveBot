@@ -5,6 +5,6 @@
   "maxAcceleration": 0.25,
   "maxJerk": 0.25,
   "wheelBase": 2.08,
-  "gameName": "Destination: Deep Space",
+  "gameName": "2021 Skills Challenge",
   "outputDir": "../src/main/deploy/paths"
 }
