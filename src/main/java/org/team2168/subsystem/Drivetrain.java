@@ -5,8 +5,8 @@ import com.ctre.phoenix.CANifierStatusFrame;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.SPI;
@@ -21,7 +21,7 @@ public class Drivetrain extends Subsystem {
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
     private final boolean[] DRIVE_INVERTED = {false, false, false, false};
     private final boolean[] ABSOLUTE_ENCODER_INVERTED = {false, false, false, false};
-    private SwerveDrive _sd = configSwerve();
+    private SwerveDrive _sd;
     private final boolean ENABLE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_CURRENT_LIMIT = 40; // amps
     private final double TRIGGER_THRESHOLD_LIMIT = 60; // amp
@@ -42,6 +42,7 @@ public class Drivetrain extends Subsystem {
 
 
         //_sd.zeroAzimuthEncoders();
+        _sd = configSwerve();
     }
 
     /**
@@ -98,7 +99,7 @@ public class Drivetrain extends Subsystem {
 
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
             azimuthConfig.remoteFilter0.remoteSensorSource = RobotMap.AZIMUTH_SENSOR_CHANNEL[i];
-            TalonFX azimuthTalon = new TalonFX(RobotMap.AZIMUTH_TALON_ID[i]);
+            WPI_TalonFX azimuthTalon = new WPI_TalonFX(RobotMap.AZIMUTH_TALON_ID[i]);
             azimuthTalon.configFactoryDefault();
             azimuthTalon.setInverted(false);
             azimuthTalon.setSensorPhase(false);
@@ -106,7 +107,7 @@ public class Drivetrain extends Subsystem {
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
             azimuthTalon.setNeutralMode(NeutralMode.Coast);
 
-            TalonFX driveTalon = new TalonFX(RobotMap.DRIVE_TALON_ID[i]);
+            WPI_TalonFX driveTalon = new WPI_TalonFX(RobotMap.DRIVE_TALON_ID[i]);
             driveTalon.configFactoryDefault();
             driveTalon.setInverted(DRIVE_INVERTED[i]);
             driveTalon.configAllSettings(driveConfig);
