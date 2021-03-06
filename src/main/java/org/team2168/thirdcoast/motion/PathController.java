@@ -26,7 +26,7 @@ public class PathController implements Runnable {
   // timestep
   private static final double DT = 0.02;
 
-  private static final double MIN_VEL = 0.0;
+  private static final double MIN_VEL = 0.0; // TODO: set min velocity
   private static final double MIN_START = 0.0;
   //  private static final double RATE_CAP = 0.35;
   //  private static final RateLimit rateLimit = new RateLimit(0.015);
