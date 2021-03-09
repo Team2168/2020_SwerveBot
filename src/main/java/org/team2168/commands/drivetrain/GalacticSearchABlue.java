@@ -9,11 +9,11 @@ package org.team2168.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class GalacticSearchARed extends CommandGroup {
+public class GalacticSearchABlue extends CommandGroup {
   /**
-   * The Galactic Search A: Red path
+   * The Galactic Search A: Blue path
    */
-  public GalacticSearchARed() {
-    addSequential(new PathCommand("gs-a-red", 0));
+  public GalacticSearchABlue() {
+    addSequential(new PathCommand("gs-a-blue", 0));
   }
 }
