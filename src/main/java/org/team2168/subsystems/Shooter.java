@@ -64,8 +64,8 @@ public class Shooter extends Subsystem {
     public static final double max_velocity = 8000.0; //TODO set (measured ~18,000 units/1000ms at full stick)
 
     /** Invert Directions for Left and Right */
-    TalonFXInvertType _motorOneInvert = TalonFXInvertType.Clockwise;
-    TalonFXInvertType _motorTwoInvert = TalonFXInvertType.CounterClockwise;
+    TalonFXInvertType _motorOneInvert = TalonFXInvertType.CounterClockwise;
+    TalonFXInvertType _motorTwoInvert = TalonFXInvertType.Clockwise;
 
     /** Config Objects for motor controllers */
     TalonFXConfiguration _leftConfig = new TalonFXConfiguration();
