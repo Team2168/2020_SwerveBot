@@ -41,7 +41,7 @@ public class Indexer extends Subsystem {
     entranceLineBreak = new DigitalInput(RobotMap.ENTRANCE_LINE_BREAK);
     exitLineBreak = new DigitalInput(RobotMap.EXIT_LINE_BREAK);
 
-    _srx_motor = new TalonSRX(RobotMap.HOPPER_INDEXER_CAN_ID);
+    _srx_motor = new TalonSRX(RobotMap.INDEXER_CAN_ID);
 
     talonCurrentLimit = new SupplyCurrentLimitConfiguration(ENABLE_CURRENT_LIMIT,
     CONTINUOUS_CURRENT_LIMIT, TRIGGER_THRESHOLD_LIMIT, TRIGGER_THRESHOLD_TIME);

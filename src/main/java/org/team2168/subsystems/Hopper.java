@@ -33,7 +33,7 @@ public class Hopper extends Subsystem {
   private final double TRIGGER_THRESHOLD_TIME = 0.2; //s
 
   private Hopper() {
-    hopperMotor = new TalonSRX(RobotMap.HOPPER_CAN_ID);
+    hopperMotor = new TalonSRX(RobotMap.HOPPER_BALANCER_CAN_ID);
 
     talonCurrentLimit = new SupplyCurrentLimitConfiguration(ENABLE_CURRENT_LIMIT,
     CONTINUOUS_CURRENT_LIMIT, TRIGGER_THRESHOLD_LIMIT, TRIGGER_THRESHOLD_TIME);
