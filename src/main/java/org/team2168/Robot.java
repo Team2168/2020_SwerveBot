@@ -10,10 +10,10 @@ package org.team2168;
 import org.team2168.commands.drivetrain.DoNothing;
 import org.team2168.commands.drivetrain.SwerveDriveTestsPathCommandGroup;
 import org.team2168.commands.hood_adjust.MoveToFiringLocation;
-import org.team2168.subsystems.Balancer;
 import org.team2168.subsystems.Climber;
 import org.team2168.subsystems.Drivetrain;
 import org.team2168.subsystems.HoodAdjust;
+import org.team2168.subsystems.Hopper;
 import org.team2168.subsystems.Indexer;
 import org.team2168.subsystems.IntakeMotor;
 import org.team2168.subsystems.IntakePivot;
@@ -53,12 +53,12 @@ public class Robot extends TimedRobot {
   private static IntakeMotor intakeMotor;
   private static IntakePivot intakePivot;
   private static Indexer indexer;
-  private static Balancer balancer;
   private static Shooter shooter;
   private static HoodAdjust hoodAdjust;
   private static Drivetrain drivetrain;
   private static Limelight limelight;
   private static Compressor compressor;
+  private static Hopper hopper;
 
   private static Drivetrain dt;
   private static OI oi;
@@ -91,10 +91,10 @@ public class Robot extends TimedRobot {
     dt = Drivetrain.getInstance();
     intakeMotor = IntakeMotor.getInstance();
     intakePivot = IntakePivot.getInstance();
-    balancer = Balancer.getInstance();
     indexer = Indexer.getInstance();
     shooter = Shooter.getInstance();
     hoodAdjust = HoodAdjust.getInstance();
+    hopper = Hopper.getInstance();
     drivetrain = Drivetrain.getInstance();
     limelight = Limelight.getInstance();
     compressor = new Compressor();

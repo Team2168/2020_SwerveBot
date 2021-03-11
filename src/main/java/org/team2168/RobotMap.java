@@ -71,13 +71,13 @@ public class RobotMap {
   public static final int DRIVE_1_CAN_ID = 1;
   public static final int CLIMBER_1_CAN_ID = 2;
   public static final int CLIMBER_2_CAN_ID = 3;
-  public static final int BALANCER_CAN_ID = 4;
+  public static final int INDEXER_CAN_ID = 4;
   public static final int INTAKE_CAN_ID = 5;
   public static final int AZIMUTH_3_CAN_ID = 6;
   public static final int AZIMUTH_1_CAN_ID = 7;
   public static final int AZIMUTH_2_CAN_ID = 8;
   public static final int AZIMUTH_0_CAN_ID = 9;
-  public static final int HOPPER_INDEXER_CAN_ID = 10;
+  public static final int HOPPER_BALANCER_CAN_ID = 10; //hopper balancer?
   public static final int SHOOTER_1_CAN_ID = 12;
   public static final int SHOOTER_2_CAN_ID = 13;
   public static final int DRIVE_2_CAN_ID = 14;
