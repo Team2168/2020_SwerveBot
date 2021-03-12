@@ -191,6 +191,23 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     autoMode = false;
+    final boolean buttonBox2_buttonA = oi.buttonBox2.isPressedButtonA();
+
+    if(!oi.driverJoystick.isPressedButtonLeftBumper()
+        && (buttonBox2_buttonA && !lastCallHoodButtonA)) {
+      //The driver isn't going under the trench
+      //the operator pressed hood raise button
+      //raise the hood to the firing position
+      moveHood = new MoveToFiringLocation(shooter.getFiringLocation());
+      moveHood.start();
+    } else if (!buttonBox2_buttonA && lastCallHoodButtonA) {
+      // or the operator isn't pressing hood raise button
+      //lower the hood
+      moveHood = new MoveToFiringLocation(Shooter.FiringLocation.WALL);
+      moveHood.start();
+    }
+
+    lastCallHoodButtonA = buttonBox2_buttonA;
     Scheduler.getInstance().run();
   }
 
