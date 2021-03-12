@@ -164,7 +164,9 @@ public class OI {
       buttonBox2.ButtonDownDPad().whenPressed(new DriveToXSpeed(Shooter.FiringLocation.WALL));
       buttonBox2.ButtonLeftDPad().whenPressed(new DriveToXSpeed(Shooter.FiringLocation.FRONT_TRENCH));
       buttonBox2.ButtonRightDPad().whenPressed(new DriveToXSpeed(Shooter.FiringLocation.WHITE_LINE));
-      // buttonBox2.ButtonA().whenPressed(new MoveToFiringLocation(Shooter.getInstance().getFiringLocation()));
+			// buttonBox2.ButtonA().whenPressed(new MoveToFiringLocation(Shooter.getInstance().getFiringLocation()));
+			buttonBox2.ButtonA().whenPressed(new DriveHopperWithConstant(1.0));
+			buttonBox2.ButtonA().whenReleased(new DriveHopperWithConstant(0));
       // testJoystick.ButtonA().whenReleased(new MoveToWallNoShoot());
 
       buttonBox2.ButtonB().whenPressed(new FireBalls());
