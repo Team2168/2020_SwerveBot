@@ -91,10 +91,11 @@ public class Shooter extends Subsystem {
     private final double FRONT_TRENCH_VEL = 3250.0;
     private final double BACK_TRENCH_VEL = 3340.0;
 
-    private final double WALL_VEL_PBOT = 2540.0; //new red balls
-    private final double WHITE_LINE_VEL_PBOT = 3300.0; //
-    private final double FRONT_TRENCH_VEL_PBOT = 3900.0; //
-    private final double BACK_TRENCH_VEL_PBOT = 4540.0; //
+
+    private final double WALL_VEL_PBOT = 1490.0; //new red balls
+    private final double WHITE_LINE_VEL_PBOT = 2140.0; //
+    private final double FRONT_TRENCH_VEL_PBOT = 3250.0; //
+    private final double BACK_TRENCH_VEL_PBOT = 3340.0; //
 
     private static double _wallVel;
     private static double _whiteLineVel;
