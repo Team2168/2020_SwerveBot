@@ -206,17 +206,9 @@ public class OI {
      * Operator Joystick *
      *************************************************************************/
 		operatorJoystick.ButtonUpDPad().whenPressed(new MoveToBackTrench());
-		operatorJoystick.ButtonUpDPad().whenPressed(new DriveHopperWithConstant(1.0));
-		operatorJoystick.ButtonUpDPad().whenReleased(new DriveHopperWithConstant(0.0));
 		operatorJoystick.ButtonLeftDPad().whenPressed(new MoveToFrontTrench());
-		operatorJoystick.ButtonLeftDPad().whenPressed(new DriveHopperWithConstant(1.0));
-		operatorJoystick.ButtonLeftDPad().whenReleased(new DriveHopperWithConstant(0.0));
 		operatorJoystick.ButtonRightDPad().whenPressed(new MoveToWhiteLine());
-		operatorJoystick.ButtonRightDPad().whenPressed(new DriveHopperWithConstant(1.0));
-		operatorJoystick.ButtonRightDPad().whenReleased(new DriveHopperWithConstant(0.0));
 		operatorJoystick.ButtonDownDPad().whenPressed(new MoveToWall());
-		operatorJoystick.ButtonDownDPad().whenPressed(new DriveHopperWithConstant(1.0));
-		operatorJoystick.ButtonDownDPad().whenReleased(new DriveHopperWithConstant(0.0));
 
 
     // operatorJoystick.ButtonY().whenPressed(new EngageColorWheel());
