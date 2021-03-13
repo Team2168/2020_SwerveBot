@@ -7,7 +7,7 @@
 
 package org.team2168.commands.drivetrain;
 
-import org.team2168.subsystem.Drivetrain;
+import org.team2168.subsystems.Drivetrain;
 import org.team2168.thirdcoast.swerve.SwerveDrive;
 import org.team2168.thirdcoast.swerve.Wheel;
 

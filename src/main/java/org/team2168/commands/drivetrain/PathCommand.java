@@ -1,7 +1,7 @@
 package org.team2168.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.team2168.subsystem.Drivetrain;
+import org.team2168.subsystems.Drivetrain;
 import org.team2168.thirdcoast.motion.PathController;
 
 public class PathCommand extends Command {

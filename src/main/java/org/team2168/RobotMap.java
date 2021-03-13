@@ -1,7 +1,5 @@
 package org.team2168;
 
-import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
-
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -10,7 +8,7 @@ import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
  */
 public class RobotMap {
 
-    public static final double MAIN_PERIOD_S = 1.0/50.0; // Main loop 200Hz
+  public static final double MAIN_PERIOD_S = 1.0/50.0; // Main loop 200Hz
 
 	/*************************************************************************
 	 *                        ROBORIO WIRING MAP                             *
@@ -18,16 +16,25 @@ public class RobotMap {
 
 	// Joysticks///////////////////////////////////////////////////////////////
 	public static final int DRIVER_JOYSTICK = 0;
+  public static final int OPERATOR_JOYSTICK = 1;
+	public static final int BUTTON_BOX_1 = 2;
+	public static final int BUTTON_BOX_2 = 3;
+	public static final int DRIVER_OPERATOR_E_BACKUP = 4;
 	public static final int TEST_JOYSTICK = 5;
-
 
 	// Joystick Control Styles/////////////////////////////////////////////////
 
 
 	// PWM (0 to 9) on RoboRio/////////////////////////////////////////////////
+  public static final int PWM_LIGHTS = 9;
 
+  // Digital IO Channels//////////////////////////////////////////////////////
+  // Channels 0-9 on RoboRio
+	public static final int ENTRANCE_LINE_BREAK = 5; //TODO SET
+	public static final int EXIT_LINE_BREAK = 6;
 
-	// Digital IO Channels//////////////////////////////////////////////////////
+	//Channels 10-25 on MXP (PWM and DIO)
+  public static final int PRACTICE_BOT_JUMPER = 24;
 
 
 	//Analog Input Channels////////////////////////////////////////////////////
@@ -46,29 +53,38 @@ public class RobotMap {
 	/*************************************************************************
 	*                         Solenoids                                      *
 	*************************************************************************/
-
-
+  //Double Soldenoids PCM ID = 0 ///////////////////////////////////////////
+	public static final int INTAKE_RETRACT_PCM = 0;
+	public static final int INTAKE_EXTEND_PCM = 1;
+	public static final int CLIMBER_RATCHET_ENGAGE_PCM = 2;
+	public static final int CLIMBER_RATCHET_DISENGAGE_PCM = 3;
+	public static final int PANCAKE_SOLENOID_OUT = 4;
+	public static final int PANCAKE_SOLENOID_IN = 5;
+	public static final int HOOD_SOLENOID_EXTEND = 6;
+	public static final int HOOD_SOLENOID_RETRACT = 7;
 
 	/*************************************************************************
 	*                         PDP/CAN DEVICES                                *
   *************************************************************************/
 
-  public static final int DRIVE_3_ID = 0;
-  public static final int DRIVE_1_ID = 1;
-  public static final int CLIMBER_1_ID = 2;
-  public static final int CLIMBER_2_ID = 3;
-  public static final int BALANCER_ID = 4;
-  public static final int INTAKE_ID = 5;
-  public static final int AZIMUTH_3_ID = 6;
-  public static final int AZIMUTH_1_ID = 7;
-  public static final int AZIMUTH_2_ID = 8;
-  public static final int AZIMUTH_0_ID = 9;
-  public static final int HOPPER_INDEXER_ID = 10;
-  public static final int SHOOTER_1_ID = 12;
-  public static final int SHOOTER_2_ID = 13;
-  public static final int DRIVE_2_ID = 14;
-  public static final int DRIVE_0_ID = 15;
-  public static final int PIGEON_IMU_ID = 17;
+  public static final int DRIVE_3_CAN_ID = 0;
+  public static final int DRIVE_1_CAN_ID = 1;
+  public static final int CLIMBER_1_CAN_ID = 2;
+  public static final int CLIMBER_2_CAN_ID = 3;
+  public static final int INDEXER_CAN_ID = 4;
+  public static final int INTAKE_CAN_ID = 5;
+  public static final int AZIMUTH_3_CAN_ID = 6;
+  public static final int AZIMUTH_1_CAN_ID = 7;
+  public static final int AZIMUTH_2_CAN_ID = 8;
+  public static final int AZIMUTH_0_CAN_ID = 9;
+  public static final int HOPPER_BALANCER_CAN_ID = 10; //hopper balancer?
+  public static final int SHOOTER_1_CAN_ID = 12;
+  public static final int SHOOTER_2_CAN_ID = 13;
+  public static final int DRIVE_2_CAN_ID = 14;
+  public static final int DRIVE_0_CAN_ID = 15;
+  public static final int PIGEON_IMU_CAN_ID = 17;
+
+  public static final int PCM_CAN_ID_BELLYPAN = 0;
 
 	/**
 	 * ORIENTATION OF SWERVE MODULES:
@@ -77,10 +93,10 @@ public class RobotMap {
 	 *				2		3
 	 *		Back (hopper)
 	*/
-  public static final int[] AZIMUTH_TALON_ID = {AZIMUTH_0_ID, AZIMUTH_1_ID,
-                                                AZIMUTH_2_ID, AZIMUTH_3_ID};
-  public static final int[] DRIVE_TALON_ID   = {DRIVE_0_ID, DRIVE_1_ID,
-                                                DRIVE_2_ID, DRIVE_3_ID};
+  public static final int[] AZIMUTH_TALON_ID = {AZIMUTH_0_CAN_ID, AZIMUTH_1_CAN_ID,
+                                                AZIMUTH_2_CAN_ID, AZIMUTH_3_CAN_ID};
+  public static final int[] DRIVE_TALON_ID   = {DRIVE_0_CAN_ID, DRIVE_1_CAN_ID,
+                                                DRIVE_2_CAN_ID, DRIVE_3_CAN_ID};
 
 
 	// Relay Channels///////////////////////////////////////////////////////////

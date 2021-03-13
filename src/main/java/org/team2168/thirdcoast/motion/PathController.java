@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.team2168.subsystem.Drivetrain;
+import org.team2168.subsystems.Drivetrain;
 import org.team2168.thirdcoast.util.Setpoint;
 import java.io.File;
 import org.slf4j.Logger;

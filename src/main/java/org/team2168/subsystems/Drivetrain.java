@@ -1,4 +1,4 @@
-package org.team2168.subsystem;
+package org.team2168.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -113,7 +113,7 @@ public class Drivetrain extends Subsystem {
 
         SwerveDriveConfig config = new SwerveDriveConfig();
         config.wheels = _wheels;
-        config.gyro = new PigeonIMU(RobotMap.PIGEON_IMU_ID);
+        config.gyro = new PigeonIMU(RobotMap.PIGEON_IMU_CAN_ID);
         config.gyro.setYaw(0.0);
         return new SwerveDrive(config);
     }
