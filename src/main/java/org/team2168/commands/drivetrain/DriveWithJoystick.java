@@ -11,20 +11,20 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.team2168.OI;
-import org.team2168.subsystem.Drivetrain;
+import org.team2168.subsystems.Drivetrain;
 
 public class DriveWithJoystick extends Command {
   private OI oi;
   private Drivetrain dt;
-  
+
   /**
    * Creates a new DriveWithJoystick.
    */
   public DriveWithJoystick() {
     // Use addRequirements() here to declare subsystem dependencies.
-    
+
     dt = Drivetrain.getInstance();
-    
+
     requires(dt);
   }
 
