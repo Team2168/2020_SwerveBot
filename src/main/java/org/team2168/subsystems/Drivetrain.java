@@ -108,7 +108,7 @@ public class Drivetrain extends Subsystem {
             SmartDashboard.putNumber("Abs position on init, module " + i, wheel.getAzimuthAbsolutePosition());
             SmartDashboard.putNumber("Internal position on init, module " + i, wheel.getAzimuthPosition());
         }
-        initializeAzimuthPosition(); // set the value of the internal encoder's current position to that of the external encoder,
+        //initializeAzimuthPosition(); // set the value of the internal encoder's current position to that of the external encoder,
                                      // taking into account the gear ratio & difference in resolution, as well as the saved zero
 
         SwerveDriveConfig config = new SwerveDriveConfig();
