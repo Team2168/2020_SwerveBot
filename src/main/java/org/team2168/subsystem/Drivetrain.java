@@ -142,7 +142,7 @@ public class Drivetrain extends Subsystem {
 
     /**
      *
-     * @return the robots heading (yaw) in degrees.
+     * @return the robot's heading (yaw) in degrees. Yaw positively increases in the CW direction TODO: verify this is accurate
      */
     public double getHeading() {
       double ypr_deg[] = new double[3];
