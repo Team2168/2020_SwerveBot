@@ -21,7 +21,6 @@ public class RobotMap {
 	public static final int TEST_JOYSTICK = 5;
 
 
-
 	// Joystick Control Styles/////////////////////////////////////////////////
 
 
