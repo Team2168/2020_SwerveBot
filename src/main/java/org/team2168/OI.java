@@ -55,6 +55,7 @@ public class OI {
 	private LinearInterpolator driverJoystickYInterpolator;
 	private LinearInterpolator driverJoystickXInterpolator;
 	private LinearInterpolator driverJoystickZInterpolator;
+	private LinearInterpolator driverFlightStickZInterpolator;
 	private double[][] driverJoystickYArray = {
 		{-1.0, -1.0},  //don't scale turning max
 		{-0.15, 0.00}, //set neutral deadband to 15%
@@ -73,6 +74,12 @@ public class OI {
 		{+0.05, 0.00},
 		{+1.00,+0.50}
 	};
+	private double[][] driverFlightStickZArray = {
+		{-1.0, -0.50},
+		{-0.08, 0.00},
+		{+0.05, 0.00},
+		{+1.00, +0.50}
+	};
 
 	public static final SendableChooser<String> joystickChooser = new SendableChooser<>();
 
@@ -83,6 +90,7 @@ public class OI {
 		driverJoystickYInterpolator = new LinearInterpolator(driverJoystickYArray);
 		driverJoystickXInterpolator = new LinearInterpolator(driverJoystickXArray);
 		driverJoystickZInterpolator = new LinearInterpolator(driverJoystickZArray);
+		driverFlightStickZInterpolator = new LinearInterpolator(driverFlightStickZArray);
 
 		SmartDashboard.putData("Driver Joystick Chooser", joystickChooser);
 		joystickChooser.setDefaultOption("Flight Joystick", "flight");
@@ -132,7 +140,7 @@ public class OI {
 		if (joystickChooser.getSelected().equals("flight"))
 			return driverJoystickZInterpolator.interpolate(driverJoystick.getRawAxis(2));
 		else
-			return driverJoystickZInterpolator.interpolate(driverJoystick.getRightStickRaw_X());
+			return driverFlightStickZInterpolator.interpolate(driverJoystick.getRightStickRaw_X());
 	}
 
 }
