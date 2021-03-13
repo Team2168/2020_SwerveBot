@@ -164,7 +164,9 @@ public class OI {
       buttonBox2.ButtonDownDPad().whenPressed(new DriveToXSpeed(Shooter.FiringLocation.WALL));
       buttonBox2.ButtonLeftDPad().whenPressed(new DriveToXSpeed(Shooter.FiringLocation.FRONT_TRENCH));
       buttonBox2.ButtonRightDPad().whenPressed(new DriveToXSpeed(Shooter.FiringLocation.WHITE_LINE));
-      // buttonBox2.ButtonA().whenPressed(new MoveToFiringLocation(Shooter.getInstance().getFiringLocation()));
+			// buttonBox2.ButtonA().whenPressed(new MoveToFiringLocation(Shooter.getInstance().getFiringLocation()));
+			buttonBox2.ButtonA().whenPressed(new DriveHopperWithConstant(1.0));
+			buttonBox2.ButtonA().whenReleased(new DriveHopperWithConstant(0));
       // testJoystick.ButtonA().whenReleased(new MoveToWallNoShoot());
 
       buttonBox2.ButtonB().whenPressed(new FireBalls());
@@ -204,17 +206,9 @@ public class OI {
      * Operator Joystick *
      *************************************************************************/
 		operatorJoystick.ButtonUpDPad().whenPressed(new MoveToBackTrench());
-		operatorJoystick.ButtonUpDPad().whenPressed(new DriveHopperWithConstant(1.0));
-		operatorJoystick.ButtonUpDPad().whenReleased(new DriveHopperWithConstant(0.0));
 		operatorJoystick.ButtonLeftDPad().whenPressed(new MoveToFrontTrench());
-		operatorJoystick.ButtonLeftDPad().whenPressed(new DriveHopperWithConstant(1.0));
-		operatorJoystick.ButtonLeftDPad().whenReleased(new DriveHopperWithConstant(0.0));
 		operatorJoystick.ButtonRightDPad().whenPressed(new MoveToWhiteLine());
-		operatorJoystick.ButtonRightDPad().whenPressed(new DriveHopperWithConstant(1.0));
-		operatorJoystick.ButtonRightDPad().whenReleased(new DriveHopperWithConstant(0.0));
 		operatorJoystick.ButtonDownDPad().whenPressed(new MoveToWall());
-		operatorJoystick.ButtonDownDPad().whenPressed(new DriveHopperWithConstant(1.0));
-		operatorJoystick.ButtonDownDPad().whenReleased(new DriveHopperWithConstant(0.0));
 
 
     // operatorJoystick.ButtonY().whenPressed(new EngageColorWheel());
