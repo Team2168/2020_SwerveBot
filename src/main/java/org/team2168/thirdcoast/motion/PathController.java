@@ -120,6 +120,7 @@ public class PathController implements Runnable {
 
         DRIVE.drive(forward, strafe, yaw);
         SmartDashboard.putNumber("Auto commanded fwd speed normalized", forward);
+        SmartDashboard.putNumber("Auto commanded fwd speed FPS", forward * maxVelocityFtSec);
         iteration++;
         break;
       case STOPPING:
@@ -132,7 +133,6 @@ public class PathController implements Runnable {
         notifier.close();
         break;
     }
-    System.out.println("Time: " + Timer.getFPGATimestamp());
   }
 
   private void logState() {
