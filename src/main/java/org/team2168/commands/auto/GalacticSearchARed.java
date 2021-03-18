@@ -5,15 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.team2168.commands.drivetrain;
+package org.team2168.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class GalacticSearchABlue extends CommandGroup {
+public class GalacticSearchARed extends CommandGroup {
   /**
-   * The Galactic Search A: Blue path
+   * The Galactic Search A: Red path
    */
-  public GalacticSearchABlue() {
-    addSequential(new PathCommand("gs-a-blue", 0));
+  public GalacticSearchARed() {
+    addSequential(new PathCommand("gs-a-red", 0));
   }
 }

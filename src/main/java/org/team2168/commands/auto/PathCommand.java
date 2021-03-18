@@ -1,4 +1,4 @@
-package org.team2168.commands.drivetrain;
+package org.team2168.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.team2168.subsystems.Drivetrain;

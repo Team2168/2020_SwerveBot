@@ -7,12 +7,7 @@
 
 package org.team2168;
 
-import org.team2168.commands.drivetrain.DoNothing;
-import org.team2168.commands.drivetrain.GalacticSearchABlue;
-import org.team2168.commands.drivetrain.GalacticSearchARed;
-import org.team2168.commands.drivetrain.GalacticSearchBBlue;
-import org.team2168.commands.drivetrain.GalacticSearchBRed;
-import org.team2168.commands.drivetrain.SwerveDriveTestsPathCommandGroup;
+import org.team2168.commands.auto.*;
 import org.team2168.commands.hood_adjust.MoveToFiringLocation;
 import org.team2168.subsystems.Climber;
 import org.team2168.subsystems.Drivetrain;
@@ -112,7 +107,6 @@ public class Robot extends TimedRobot {
     autoSelectInit();
 
     ConsolePrinter.putBoolean("isPracticeBot", ()->{return isPracticeBot();}, true, false);
-    SmartDashboard.putData("Autonomous Mode Chooser", autoChooser);
     // SmartDashboard.putData("Push Robot Chooser", pushRobotChooser);
     ConsolePrinter.putString("AutoName", () -> {return Robot.getAutoName();}, true, false);
 
