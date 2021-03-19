@@ -10,6 +10,7 @@ package org.team2168;
 import org.team2168.commands.drivetrain.DoNothing;
 import org.team2168.commands.drivetrain.SwerveDriveTestsPathCommandGroup;
 import org.team2168.subsystem.Drivetrain;
+import org.team2168.subsystem.Limelight;
 import org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode;
 import org.team2168.thirdcoast.swerve.Wheel;
 
@@ -32,6 +33,7 @@ public class Robot extends TimedRobot {
 
   private static Drivetrain dt;
   private static OI oi;
+  private static Limelight lime;
 
   static boolean autoMode;
 
@@ -53,6 +55,7 @@ public class Robot extends TimedRobot {
 
     dt = Drivetrain.getInstance();
     oi = OI.getInstance();
+    lime = Limelight.getInstance();
   }
 
   /**
