@@ -4,23 +4,15 @@
 
 package org.team2168.subsystem;
 
-import java.time.Instant;
-
-import org.team2168.commands.limelight.RefreshValuesLimelight;
-
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /** Add your docs here. */
 public class Limelight extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-
-  private static double X_ERROR_MARGIN = 0.0;
-  private static double Y_ERROR_MARGIN = 0.0;
 
   /* NetworkTables Entries */
   private NetworkTable citrusTable;
@@ -34,10 +26,14 @@ public class Limelight extends Subsystem {
 
   private Limelight() {
     citrusTable = NetworkTableInstance.getDefault().getTable("limelight");
+    citrusTable.getEntry("ledMode").setNumber(1);
+    citrusTable.getEntry("camMode").setNumber(0);
+    citrusTable.getEntry("pipeline").setNumber(0);
     tv = citrusTable.getEntry("tv");
     tx = citrusTable.getEntry("tx");
     ty = citrusTable.getEntry("ty");
     ta = citrusTable.getEntry("ta");
+
 
   }
 
@@ -57,23 +53,16 @@ public class Limelight extends Subsystem {
     return ta.getDouble(0.0);
   }
 
-  public void refreshDashboardValues() {
-    SmartDashboard.putNumber("LimelightX", getXOffset());
-    SmartDashboard.putNumber("LimelightY", getYOffset());
-    SmartDashboard.putNumber("Limelight Area", getTargetArea());
-    SmartDashboard.putBoolean("Has target?", hasTarget());
-  }
-
-
   public static Limelight getInstance() {
     if (instance == null) 
       instance = new Limelight();
     return instance;
   }
+
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new RefreshValuesLimelight());
   }
 }

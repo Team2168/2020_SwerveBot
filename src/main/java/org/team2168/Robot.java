@@ -75,7 +75,13 @@ public class Robot extends TimedRobot {
       SmartDashboard.putNumber("Probably incorrect module heading in degrees " + i, Wheel.ticksToDegreesAzimuth(dt.getWheels()[i].getAzimuthPosition()));
       SmartDashboard.putNumber("Module heading in degrees " + i, Wheel.ticksToDegreesAzimuth(dt.getWheels()[i].getInternalEncoderPos()));
       SmartDashboard.putNumber("Speed of wheel " + i, Wheel.TicksPer100msToFPSDW(dt.getWheels()[i].geDWSpeed()));
-    }
+    }/* Limelight stuff */    
+    SmartDashboard.putNumber("LimelightX", lime.getXOffset());
+    SmartDashboard.putNumber("LimelightY", lime.getYOffset());
+    SmartDashboard.putNumber("Limelight Area", lime.getTargetArea());
+    SmartDashboard.putBoolean("Has target?", lime.hasTarget());
+
+
   }
 
   /** Adds autos to the selector
