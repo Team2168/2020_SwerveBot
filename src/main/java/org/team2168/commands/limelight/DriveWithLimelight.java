@@ -4,6 +4,7 @@
 
 package org.team2168.commands.limelight;
 
+import org.team2168.OI;
 import org.team2168.subsystem.Drivetrain;
 import org.team2168.subsystem.Limelight;
 import org.team2168.utils.LinearInterpolator;
@@ -13,18 +14,25 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveWithLimelight extends Command {
   private Limelight lime;
   private Drivetrain dt;
+  private OI oi;
 
   private LinearInterpolator limeInterpolator;
-  private double[][] limeScaling = {
-    {-27.00, -0.50},
-    {-0.25, 0.00},
-    {0.25, 0.00},
-    {27.00, 0.50}
+  private static final double MAX_SPEED = 0.20;
+  private static final double DEADZONE = 0.1;
+  private static double[][] scaling = {
+    {-27.00, -MAX_SPEED},
+    {-0.25, -MAX_SPEED},
+    {-DEADZONE, 0},
+    {DEADZONE, 0},
+    {0.25, MAX_SPEED},
+    {27.00, MAX_SPEED}
   };
+
   public DriveWithLimelight() {
     lime = Limelight.getInstance();
     dt = Drivetrain.getInstance();
-    limeInterpolator = new LinearInterpolator(limeScaling);
+    oi = OI.getInstance();
+    limeInterpolator = new LinearInterpolator(scaling);
 
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -39,7 +47,7 @@ public class DriveWithLimelight extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    dt.drive(0.0, limeInterpolator.interpolate(lime.getXOffset()), 0.0);
+    dt.drive(oi.getDriverJoystickYValue(), limeInterpolator.interpolate(lime.getXOffset()), 0.0);
   }
 
   // Make this return true when this Command no longer needs to run execute()

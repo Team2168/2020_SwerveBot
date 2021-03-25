@@ -3,6 +3,7 @@ package org.team2168;
 
 import org.team2168.commands.drivetrain.ZeroEncoders;
 import org.team2168.commands.drivetrain.ZeroGyro;
+import org.team2168.commands.limelight.DriveWithLimelight;
 import org.team2168.commands.limelight.TurnWithLimelight;
 import org.team2168.utils.F310;
 import org.team2168.utils.LinearInterpolator;
@@ -100,6 +101,7 @@ public class OI {
 		testJoystick.ButtonBack().whenPressed(new ZeroGyro());
 		testJoystick.ButtonStart().whenPressed(new ZeroEncoders());
 		testJoystick.ButtonA().whenPressed(new TurnWithLimelight());
+		testJoystick.ButtonB().whenPressed(new DriveWithLimelight());
 	}
 	
 	/**

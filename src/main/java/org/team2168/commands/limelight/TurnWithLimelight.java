@@ -18,12 +18,12 @@ private Limelight lime;
 private static LinearInterpolator scalar = null;
 
 private static double[][] scaling = {
-  {-27.00, 0.25},
-  {-0.25, 0.25},
+  {-27.00, -0.10},
+  {-0.25, -0.10},
   {-0.05, 0},
   {0.05, 0},
-  {0.25, -0.25},
-  {27.00, -0.25}
+  {0.25, 0.10},
+  {27.00, 0.10}
 };
 
 private static LinearInterpolator getScalar() {
