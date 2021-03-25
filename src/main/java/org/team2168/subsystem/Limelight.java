@@ -26,7 +26,7 @@ public class Limelight extends Subsystem {
 
   private Limelight() {
     citrusTable = NetworkTableInstance.getDefault().getTable("limelight");
-    citrusTable.getEntry("ledMode").setNumber(1);
+    citrusTable.getEntry("ledMode").setNumber(0);
     citrusTable.getEntry("camMode").setNumber(0);
     citrusTable.getEntry("pipeline").setNumber(0);
     tv = citrusTable.getEntry("tv");
