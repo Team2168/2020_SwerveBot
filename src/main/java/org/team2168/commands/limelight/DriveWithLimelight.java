@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveWithLimelight extends Command {
   private Limelight lime;
   private Drivetrain dt;
-  private OI oi;
+  // private OI oi;
 
   private LinearInterpolator limeInterpolator;
   private static final double MAX_SPEED = 0.20;
@@ -31,7 +31,7 @@ public class DriveWithLimelight extends Command {
   public DriveWithLimelight() {
     lime = Limelight.getInstance();
     dt = Drivetrain.getInstance();
-    oi = OI.getInstance();
+    // oi = OI.getInstance();
     limeInterpolator = new LinearInterpolator(scaling);
 
     // Use requires() here to declare subsystem dependencies
@@ -47,7 +47,9 @@ public class DriveWithLimelight extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    dt.drive(oi.getDriverJoystickYValue(), limeInterpolator.interpolate(lime.getXOffset()), 0.0);
+    // dt.drive(oi.getDriverJoystickYValue(), limeInterpolator.interpolate(lime.getXOffset()), 0.0);
+    dt.drive(0.0, limeInterpolator.interpolate(lime.getXOffset()), 0.0);
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
