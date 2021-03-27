@@ -140,6 +140,9 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("Galactic Search A Blue", new GalacticSearchABlue());
     autoChooser.addOption("Galactic Search B Red", new GalacticSearchBRed());
     autoChooser.addOption("Galactic Search B Blue", new GalacticSearchBBlue());
+    autoChooser.addOption("AutoNav Barrel Racing", new AutoNavBarrelRacing());
+    autoChooser.addOption("AutoNav Slalom", new AutoNavSlalom());
+    autoChooser.addOption("AutoNav Bounce", new AutoNavBounce());
   }
 
   /**
