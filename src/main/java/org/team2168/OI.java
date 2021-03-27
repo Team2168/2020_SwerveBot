@@ -99,6 +99,7 @@ public class OI {
     joystickChooser.addOption("F310 Joystick", "F310");
 
 		driverJoystick.ButtonA().whileHeld(new DriveWithLimelight());
+		driverJoystick.ButtonB().whileHeld(new TurnWithLimelight());
 		testJoystick.ButtonBack().whenPressed(new ZeroGyro());
 		testJoystick.ButtonStart().whenPressed(new ZeroEncoders());
 		testJoystick.ButtonA().whenPressed(new TurnWithLimelight());

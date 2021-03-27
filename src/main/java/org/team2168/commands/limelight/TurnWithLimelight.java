@@ -19,10 +19,10 @@ private Drivetrain dt;
 private Limelight lime;
 private OI oi;
 private LinearInterpolator scalar;
-private static final double MAX_SPEED = 0.35;
+private static final double MAX_SPEED = 0.20;
 private static final double MIN_SPEED = 0.10;
-private static final double DEADZONE = 0.35;
-private static final double LOW_POINT = 0.45;
+private static final double DEADZONE = 0.45;
+private static final double LOW_POINT = 0.65;
 private static double[][] scaling = {
   {-27.00, -MAX_SPEED},
   {-LOW_POINT, -MIN_SPEED},
@@ -57,7 +57,7 @@ private static double[][] scaling = {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
