@@ -17,7 +17,7 @@ public class Limelight extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public static final int DEFAULT_PIPELINE = 0;
+  public static final int DEFAULT_PIPELINE = 9;
   public static final int DEFAULT_CAMMODE = 0;
   public static final int DEFAULT_LEDMODE = 0;
 

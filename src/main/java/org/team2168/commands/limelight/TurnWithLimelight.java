@@ -20,15 +20,15 @@ private Limelight lime;
 private OI oi;
 private LinearInterpolator scalar;
 private static final double MAX_SPEED = 0.25;
-private static final double RAMP = 0.80;
-private static final double RAMP_MAX = 0.06;
-private static final double DEADZONE = 0.40;
+private static final double RAMP = 7.00;
+private static final double RAMP_MAX = 0.10;
+private static final double DEADZONE = 0.50;
 private static double[][] scaling = {
   {-27.00, -MAX_SPEED},
-  {-RAMP, -RAMP_MAX},
+  {-RAMP, -MAX_SPEED},
   {-DEADZONE, 0},
   {DEADZONE, 0},
-  {RAMP, RAMP_MAX},
+  {RAMP, MAX_SPEED},
   {27.00, MAX_SPEED}
 };
 
