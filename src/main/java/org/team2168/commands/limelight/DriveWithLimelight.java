@@ -18,10 +18,10 @@ public class DriveWithLimelight extends Command {
   private static final double LOW_POINT = 0.45;
   private static double[][] scaling = {
     {-27.00, -MAX_SPEED},
-    {-LOW_POINT, -MIN_SPEED},
+    // {-LOW_POINT, -MIN_SPEED},
     {-DEADZONE, 0},
     {DEADZONE, 0},
-    {LOW_POINT, MIN_SPEED},
+    // {LOW_POINT, MIN_SPEED},
     {27.00, MAX_SPEED}
   };
 

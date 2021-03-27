@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 /** A helper class for getting values from a limelight.
  * This doesn't *do* much, but it rather acts as a convenient
- * way to get things from network tables.
+ * way to get/set things in NetworkTables.
  */
 public class Limelight extends Subsystem {
   // Put methods for controlling this subsystem

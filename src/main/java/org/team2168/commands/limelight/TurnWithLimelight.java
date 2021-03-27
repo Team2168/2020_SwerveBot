@@ -19,16 +19,16 @@ private Drivetrain dt;
 private Limelight lime;
 private OI oi;
 private LinearInterpolator scalar;
-private static final double MAX_SPEED = 0.20;
-private static final double MIN_SPEED = 0.10;
-private static final double DEADZONE = 0.45;
-private static final double LOW_POINT = 0.65;
+private static final double MAX_SPEED = 0.25;
+private static final double RAMP = 0.80;
+private static final double RAMP_MAX = 0.06;
+private static final double DEADZONE = 0.40;
 private static double[][] scaling = {
   {-27.00, -MAX_SPEED},
-  {-LOW_POINT, -MIN_SPEED},
+  {-RAMP, -RAMP_MAX},
   {-DEADZONE, 0},
   {DEADZONE, 0},
-  {LOW_POINT, MIN_SPEED},
+  {RAMP, RAMP_MAX},
   {27.00, MAX_SPEED}
 };
 
