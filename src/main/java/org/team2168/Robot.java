@@ -54,12 +54,11 @@ public class Robot extends TimedRobot {
   private static Indexer indexer;
   private static Shooter shooter;
   private static HoodAdjust hoodAdjust;
-  private static Drivetrain drivetrain;
+  private static Drivetrain dt;
   private static Limelight limelight;
   private static Compressor compressor;
   private static Hopper hopper;
 
-  private static Drivetrain dt;
   private static OI oi;
 
   static boolean autoMode;
@@ -94,7 +93,6 @@ public class Robot extends TimedRobot {
     shooter = Shooter.getInstance();
     hoodAdjust = HoodAdjust.getInstance();
     hopper = Hopper.getInstance();
-    drivetrain = Drivetrain.getInstance();
     limelight = Limelight.getInstance();
     compressor = new Compressor();
 
@@ -129,7 +127,7 @@ public class Robot extends TimedRobot {
       SmartDashboard.putNumber("Int position module " + i, dt.getWheels()[i].getInternalEncoderPos());
       SmartDashboard.putNumber("Probably incorrect module heading in degrees " + i, Wheel.ticksToDegreesAzimuth(dt.getWheels()[i].getAzimuthPosition()));
       SmartDashboard.putNumber("Module heading in degrees " + i, Wheel.ticksToDegreesAzimuth(dt.getWheels()[i].getInternalEncoderPos()));
-      SmartDashboard.putNumber("Speed of wheel (FPS) " + i, Wheel.TicksPer100msToFPSDW(dt.getWheels()[i].geDWSpeed()));
+      SmartDashboard.putNumber("Speed of wheel (FPS) " + i, Wheel.TicksPer100msToFPSDW(dt.getWheels()[i].getDWSpeed()));
     }
   }
 
