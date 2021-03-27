@@ -102,8 +102,6 @@ public class OI {
 		driverJoystick.ButtonB().whileHeld(new TurnWithLimelight());
 		testJoystick.ButtonBack().whenPressed(new ZeroGyro());
 		testJoystick.ButtonStart().whenPressed(new ZeroEncoders());
-		testJoystick.ButtonA().whenPressed(new TurnWithLimelight());
-		testJoystick.ButtonB().whileHeld(new DriveWithLimelight());
 	}
 	
 	/**
