@@ -8,6 +8,8 @@
 package org.team2168.commands.limelight;
 
 import edu.wpi.first.wpilibj.command.Command;
+
+import org.team2168.OI;
 import org.team2168.subsystem.Drivetrain;
 import org.team2168.subsystem.Limelight;
 import org.team2168.utils.LinearInterpolator;
@@ -15,27 +17,25 @@ import org.team2168.utils.LinearInterpolator;
 public class TurnWithLimelight extends Command {
 private Drivetrain dt;
 private Limelight lime;
-private static LinearInterpolator scalar = null;
-
+private OI oi;
+private LinearInterpolator scalar;
+private static final double MAX_SPEED = 0.35;
+private static final double MIN_SPEED = 0.10;
+private static final double DEADZONE = 0.35;
+private static final double LOW_POINT = 0.45;
 private static double[][] scaling = {
-  {-27.00, -0.10},
-  {-0.25, -0.10},
-  {-0.05, 0},
-  {0.05, 0},
-  {0.25, 0.10},
-  {27.00, 0.10}
+  {-27.00, -MAX_SPEED},
+  {-LOW_POINT, -MIN_SPEED},
+  {-DEADZONE, 0},
+  {DEADZONE, 0},
+  {LOW_POINT, MIN_SPEED},
+  {27.00, MAX_SPEED}
 };
-
-private static LinearInterpolator getScalar() {
-  if (scalar == null)
-    scalar = new LinearInterpolator(scaling);
-  return scalar;
-}
 
   public TurnWithLimelight() {
     dt = Drivetrain.getInstance();
     lime = Limelight.getInstance();
-    scalar = getScalar();
+    scalar = new LinearInterpolator(scaling);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(dt);
@@ -45,12 +45,13 @@ private static LinearInterpolator getScalar() {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    oi = OI.getInstance();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    dt.drive(0.0, 0.0, scalar.interpolate(lime.getXOffset()));
+    dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), scalar.interpolate(lime.getXOffset()));
   }
 
   // Make this return true when this Command no longer needs to run execute()

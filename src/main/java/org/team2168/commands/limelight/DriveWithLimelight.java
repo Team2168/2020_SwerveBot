@@ -12,14 +12,16 @@ import org.team2168.utils.LinearInterpolator;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveWithLimelight extends Command {
-  private static final double MAX_SPEED = 0.20;
-  private static final double DEADZONE = 0.1;
+  private static final double MAX_SPEED = 0.35;
+  private static final double MIN_SPEED = 0.10;
+  private static final double DEADZONE = 0.35;
+  private static final double LOW_POINT = 0.45;
   private static double[][] scaling = {
     {-27.00, -MAX_SPEED},
-    {-0.50, -MAX_SPEED},
+    {-LOW_POINT, -MIN_SPEED},
     {-DEADZONE, 0},
     {DEADZONE, 0},
-    {0.50, MAX_SPEED},
+    {LOW_POINT, MIN_SPEED},
     {27.00, MAX_SPEED}
   };
 
@@ -55,7 +57,7 @@ public class DriveWithLimelight extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true

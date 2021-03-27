@@ -98,10 +98,11 @@ public class OI {
 		joystickChooser.setDefaultOption("Flight Joystick", "flight");
     joystickChooser.addOption("F310 Joystick", "F310");
 
+		driverJoystick.ButtonA().whileHeld(new DriveWithLimelight());
 		testJoystick.ButtonBack().whenPressed(new ZeroGyro());
 		testJoystick.ButtonStart().whenPressed(new ZeroEncoders());
 		testJoystick.ButtonA().whenPressed(new TurnWithLimelight());
-		testJoystick.ButtonB().whenPressed(new DriveWithLimelight());
+		testJoystick.ButtonB().whileHeld(new DriveWithLimelight());
 	}
 	
 	/**
