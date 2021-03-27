@@ -180,8 +180,6 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     autoMode = false;
     dt.setDriveMode(DriveMode.TELEOP);
-
-    SmartDashboard.putNumber("Drive 1 Pos TeleopInit", dt.getWheels()[1].getDriveTalon().getSelectedSensorPosition(0));
   }
 
   /**
@@ -216,9 +214,6 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     autoMode = false;
-    SmartDashboard.putNumber("Drive 1 Pos DisabledInit", dt.getWheels()[1].getDriveTalon().getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Drive 1 Change in Ticks", SmartDashboard.getNumber("Drive 1 Pos TeleopInit", 0) - SmartDashboard.getNumber("Drive 1 Pos DisabledInit", 0));
-    SmartDashboard.putNumber("Drive 1 Change in Feet", (SmartDashboard.getNumber("Drive 1 Change in Ticks", 0) / Wheel.TICKS_PER_FOOT_DW) * 12);
   }
 
   /**
