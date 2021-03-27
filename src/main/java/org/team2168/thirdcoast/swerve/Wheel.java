@@ -332,7 +332,7 @@ public class Wheel {
   /**
    * @return speed of drive wheel in ticks per 100 ms
    */
-  public double geDWSpeed() {
+  public double getDWSpeed() {
     return driveTalon.getSelectedSensorVelocity(PRIMARY_PID);
   }
 
