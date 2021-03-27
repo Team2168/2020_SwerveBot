@@ -40,6 +40,8 @@ public class Shooter extends Subsystem {
     private final double TRIGGER_THRESHOLD_LIMIT_SUPPLY = 50; //amp
     private final double TRIGGER_THRESHOLD_TIME_SUPPLY = 0.2; //s
 
+    public static final double DEFAULT_ERROR_TOLERANCE = 50.0;
+
     private static Shooter _instance;
 
     /**
@@ -242,6 +244,17 @@ public class Shooter extends Subsystem {
     {
         return ticks_per_100ms_to_revs_per_minute(_motorOne.getClosedLoopError(kPIDLoopIdx)) ;
     }
+    /**
+     * Used for LED's
+     * 
+     * @return ture when the shooter speed is +/- DEFAULT_ERROR_COMMAND
+     */
+    
+    public boolean isShooterAtSpeed()
+    {
+        return Math.abs(getError()) < DEFAULT_ERROR_TOLERANCE;
+    }
+    
 
     /**
      * Converts RPM to sensor ticks per 100ms

@@ -20,6 +20,8 @@ import org.team2168.subsystems.IntakePivot;
 import org.team2168.subsystems.Limelight;
 import org.team2168.subsystems.Shooter;
 import org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode;
+import org.team2168.utils.I2CLights;
+import org.team2168.utils.I2CLights.Range;
 import org.team2168.utils.consoleprinter.ConsolePrinter;
 import org.team2168.thirdcoast.swerve.Wheel;
 
@@ -59,6 +61,7 @@ public class Robot extends TimedRobot {
   private static Limelight limelight;
   private static Compressor compressor;
   private static Hopper hopper;
+  private static I2CLights leds;
 
   private static Drivetrain dt;
   private static OI oi;
@@ -98,6 +101,7 @@ public class Robot extends TimedRobot {
     drivetrain = Drivetrain.getInstance();
     limelight = Limelight.getInstance();
     compressor = new Compressor();
+    leds = I2CLights.getInstance();
 
     oi = OI.getInstance();
 
@@ -133,6 +137,35 @@ public class Robot extends TimedRobot {
       SmartDashboard.putNumber("Module heading in degrees " + i, Wheel.ticksToDegreesAzimuth(dt.getWheels()[i].getInternalEncoderPos()));
       SmartDashboard.putNumber("Speed of wheel " + i, Wheel.TicksPer100msToFPSDW(dt.getWheels()[i].geDWSpeed()));
     }
+
+    // LED Code //
+    
+    
+    if (DriverStation.getInstance().isDisabled()) {
+      // Play red cylon pattern when robot is disabled
+      leds.cylon(255, 0, 0, Range.Hopper);
+
+    } else if(indexer.isBallEntering() | indexer.isBallExiting()) {
+      // Lights up solid white when balls in the indexer
+      leds.solid(128, 128, 128, Range.Hopper);
+
+    } else if(shooter.isShooterAtSpeed()) {
+      // Flashes white when shooter is up to speed
+      leds.fastBlink(128, 128, 128, Range.Hopper);
+
+    } else {
+      //rainbow
+      leds.rainbow();
+    }
+    
+    
+   
+    
+    
+
+
+
+
   }
 
   /** Adds autos to the selector

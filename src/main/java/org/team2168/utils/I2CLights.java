@@ -14,9 +14,11 @@ public class I2CLights {
 	private static final I2C.Port I2C_PORT = I2C.Port.kOnboard;
 	private static final int I2C_ADDRESS = 8;
 
+	private static byte[] data = new byte[8];
+
 
 	public enum Pattern {
-		Off(0), Solid(1), FastBlink(2), SlowBlink(3), Fade(4), Chase(5), Rainbow(6), ChaseAll(7), ChaseOut(8);
+		Off(0), Solid(1), FastBlink(2), SlowBlink(3), Fade(4), Chase(5), Rainbow(6), Cylon(7);
 
 		private final int val;
 
@@ -30,7 +32,7 @@ public class I2CLights {
 	}
 
 	public enum Range {
-		Intake, Shooter;
+		Hopper, Shooter;
 	}
 
 	private I2CLights() {
@@ -64,8 +66,8 @@ public class I2CLights {
 	 * @author Elijah
 	 */
 	public void writeLED(int r, int g, int b, Pattern pat, Range range) {
-		byte[] data = new byte[8];
-		if (range == Range.Intake) {
+		
+		if (range == Range.Hopper) {
 			data[0] = (byte) r;
 			data[1] = (byte) g;
 			data[2] = (byte) b;
@@ -86,7 +88,7 @@ public class I2CLights {
 	 *            Range of the LED's to turn off.
 	 * @author Elijah
 	 */
-	public void Off(Range range) {
+	public void off(Range range) {
 		writeLED(0, 0, 0, Pattern.Off, range);
 	}
 
@@ -103,7 +105,7 @@ public class I2CLights {
 	 *            LED range.
 	 * @author Elijah
 	 */
-	public void Solid(int r, int g, int b, Range range) {
+	public void solid(int r, int g, int b, Range range) {
 		writeLED(r, g, b, Pattern.Solid, range);
 	}
 
@@ -120,7 +122,7 @@ public class I2CLights {
 	 *            LED range.
 	 * @author Elijah
 	 */
-	public void FastBlink(int r, int g, int b, Range range) {
+	public void fastBlink(int r, int g, int b, Range range) {
 		writeLED(r, g, b, Pattern.FastBlink, range);
 	}
 
@@ -137,7 +139,7 @@ public class I2CLights {
 	 *            LED range.
 	 * @author Elijah
 	 */
-	public void SlowBlink(int r, int g, int b, Range range) {
+	public void slowBlink(int r, int g, int b, Range range) {
 		writeLED(r, g, b, Pattern.SlowBlink, range);
 	}
 
@@ -154,7 +156,7 @@ public class I2CLights {
 	 *            LED range.
 	 * @author Elijah
 	 */
-	public void Fade(int r, int g, int b, Range range) {
+	public void fade(int r, int g, int b, Range range) {
 		writeLED(r, g, b, Pattern.Fade, range);
 	}
 
@@ -172,7 +174,7 @@ public class I2CLights {
 	 *            LED range.
 	 * @author Elijah
 	 */
-	public void ChaseIn(int r, int g, int b, Range range) {
+	public void chaseIn(int r, int g, int b, Range range) {
 		writeLED(r, g, b, Pattern.Chase, range);
 	}
 
@@ -181,34 +183,15 @@ public class I2CLights {
 	 * 
 	 * @author Elijah
 	 */
-	public void Rainbow() {
-		writeLED(0, 0, 0, Pattern.Rainbow, Range.Intake);
+	public void rainbow() {
+		writeLED(0, 0, 0, Pattern.Rainbow, Range.Hopper);
 		writeLED(0, 0, 0, Pattern.Rainbow, Range.Shooter);
 	}
 
-	/**
-	 * Chases in red green and blue on range.
-	 * 
-	 * @param range
-	 */
-	public void ChaseAll(Range range) {
-		writeLED(0, 0, 0, Pattern.ChaseAll, range);
+	public void cylon(int r, int g, int b, Range range) {
+		writeLED(r, g, b, Pattern.Cylon, range);
+	
 	}
 
-	/**
-	 * Makes the lights chase out from the middle of the range in the color chosen.
-	 * 
-	 * @param r
-	 *            Red value from 0 - 255.
-	 * @param g
-	 *            Green value from 0 - 255.
-	 * @param b
-	 *            Blue value form 0 -255.
-	 * @param range
-	 *            LED range.
-	 * @author Elijah
-	 */
-	public void ChaseOut(int r, int g, int b, Range range) {
-		writeLED(r, g, b, Pattern.ChaseOut, range);
-	}
+	
 }
