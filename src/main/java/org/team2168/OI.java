@@ -202,11 +202,12 @@ public class OI {
     // driverJoystick.ButtonLeftStick().whenReleased(new DriveWithJoystick());
 
     driverJoystick.ButtonA().whenPressed(new RunFlashlight(1.0));
-    driverJoystick.ButtonA().whenReleased(new RunFlashlight(-0.5));
+		driverJoystick.ButtonA().whenReleased(new RunFlashlight(-0.5));
 
     //When the red button on the handle of the controller is pressed get ready to go under the trench. Lower everything.
     // driverJoystick.ButtonLeftBumper().whileHeld(new DisengageColorWheel());
-    driverJoystick.ButtonLeftBumper().whenPressed(new MoveToFiringLocation(Shooter.FiringLocation.WALL));
+		driverJoystick.ButtonLeftBumper().whenPressed(new MoveToFiringLocation(Shooter.FiringLocation.WALL));
+		driverJoystick.ButtonB().whenPressed(new ZeroGyro());
 
     /*************************************************************************
      * Operator Joystick *
