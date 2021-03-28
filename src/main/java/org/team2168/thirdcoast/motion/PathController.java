@@ -26,8 +26,8 @@ public class PathController implements Runnable {
   // timestep
   private static final double DT = 0.02;
 
-  private static final double MIN_VEL = 0.07; // TODO: set min velocity
-  private static final double MIN_START = 0.07;
+  private static final double MIN_VEL = 0.0; // 0.07 x max motor output
+  private static final double MIN_START = 0.2; // 0.07 x max motor output
   //  private static final double RATE_CAP = 0.35;
   //  private static final RateLimit rateLimit = new RateLimit(0.015);
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -96,7 +96,7 @@ public class PathController implements Runnable {
         double currentProgress = iteration / (double) trajectory.length();
 
         double segmentVelocity = segment.velocity;
-        if (currentProgress < percentToDone && segment.velocity < MIN_START) {
+        if (segment.velocity < MIN_START) {
           segmentVelocity = MIN_START;
         }
 
