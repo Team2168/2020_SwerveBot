@@ -1,17 +1,18 @@
 package org.team2168.thirdcoast.motion;
 
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.team2168.subsystems.Drivetrain;
-import org.team2168.thirdcoast.util.Setpoint;
 import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.team2168.subsystems.Drivetrain;
 import org.team2168.thirdcoast.swerve.SwerveDrive;
 import org.team2168.thirdcoast.swerve.Wheel;
+import org.team2168.thirdcoast.util.Setpoint;
+import org.team2168.utils.consoleprinter.ConsolePrinter;
+
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PathController implements Runnable {
 
@@ -121,6 +122,12 @@ public class PathController implements Runnable {
         DRIVE.drive(forward, strafe, yaw);
         SmartDashboard.putNumber("Auto commanded fwd speed normalized", forward);
         SmartDashboard.putNumber("Auto commanded fwd speed FPS", forward * maxVelocityFtSec);
+        ConsolePrinter.putNumber("PathController calculated fwd normalized", () -> {return forward;}, false, true);
+        ConsolePrinter.putNumber("PathController calculated fwd FPS", () -> {return forward * maxVelocityFtSec;}, false, true);
+        ConsolePrinter.putNumber("PathController calculated strafe normalized", () -> {return strafe;}, false, true);
+        ConsolePrinter.putNumber("PathController calculated strafe FPS", () -> {return strafe;}, false, true);
+        ConsolePrinter.putNumber("PathController calculated yaw normalized", () -> {return yaw;}, false, true);
+        ConsolePrinter.putNumber("PathController calculated yaw degrees", () -> {return yaw * 360;}, false, true);
         iteration++;
         break;
       case STOPPING:

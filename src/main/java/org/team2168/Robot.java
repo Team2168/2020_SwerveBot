@@ -98,7 +98,7 @@ public class Robot extends TimedRobot {
 
     oi = OI.getInstance();
 
-    ConsolePrinter.init();
+    ConsolePrinter.setRate(20);
     ConsolePrinter.startThread();
 
     pushRobotSelectInit();
@@ -122,6 +122,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SmartDashboard.putNumber("Gyro heading", dt.getHeading());
+    ConsolePrinter.putNumber("Gyro heading", () -> {return dt.getHeading();}, false, true);
     for (int i = 0; i < dt.getWheels().length; i++) {
       SmartDashboard.putNumber("Abs position module " + i, dt.getWheels()[i].getAzimuthAbsolutePosition());
       SmartDashboard.putNumber("Int position module " + i, dt.getWheels()[i].getInternalEncoderPos());
@@ -130,6 +131,15 @@ public class Robot extends TimedRobot {
       SmartDashboard.putNumber("Speed of wheel (FPS) " + i, Wheel.TicksPer100msToFPSDW(dt.getWheels()[i].getDWSpeed()));
       SmartDashboard.putData(Scheduler.getInstance());
     }
+
+    ConsolePrinter.putNumber("Actual yaw 0", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[0].getInternalEncoderPos());}, false, true);
+    ConsolePrinter.putNumber("Actual speed 0", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[0].getDWSpeed());}, false, true);
+    ConsolePrinter.putNumber("Actual yaw 1", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[1].getInternalEncoderPos());}, false, true);
+    ConsolePrinter.putNumber("Actual speed 1", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[1].getDWSpeed());}, false, true);
+    ConsolePrinter.putNumber("Actual yaw 2", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[2].getInternalEncoderPos());}, false, true);
+    ConsolePrinter.putNumber("Actual speed 2", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[2].getDWSpeed());}, false, true);
+    ConsolePrinter.putNumber("Actual yaw 3", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[3].getInternalEncoderPos());}, false, true);
+    ConsolePrinter.putNumber("Actual speed 3", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[3].getDWSpeed());}, false, true);
   }
 
   /** Adds autos to the selector
