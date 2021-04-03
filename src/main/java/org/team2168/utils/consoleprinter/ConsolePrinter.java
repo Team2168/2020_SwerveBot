@@ -37,7 +37,7 @@ public class ConsolePrinter {
 	private static LinkedHashSet<String> dashboardKeys;
 	private static LinkedHashSet<String> fileKeys;
 
-	private static final boolean PRINT_SD_DEBUG_DATA = false;
+	private static final boolean ENABLE_FILE_LOGGING = true;
 
 	private ConsolePrinter() {
 		data = new HashMap<String, Loggable>();
@@ -235,7 +235,7 @@ public class ConsolePrinter {
 		String key;
 		String output = "";
 
-		if (PRINT_SD_DEBUG_DATA) {
+		if (ENABLE_FILE_LOGGING) {
 			i = fileKeys.iterator();
 			// Build string
 			while (i.hasNext()) {
@@ -257,7 +257,7 @@ public class ConsolePrinter {
 
 		try 
 		{
-			if (PRINT_SD_DEBUG_DATA) 
+			if (ENABLE_FILE_LOGGING) 
 			{
 				i = fileKeys.iterator();
 				// Build string
