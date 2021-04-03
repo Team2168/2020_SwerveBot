@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 
 public class DriveWithLimelight2 extends Command {
   private static final double P = -0.015;
-  private static final double I = -0.0;
+  private static final double I = -0.1;
   private static final double D = -0.0;  
   private static final double MINIMUM_COMMAND = 0.05;
 
@@ -35,7 +35,8 @@ public class DriveWithLimelight2 extends Command {
   protected void initialize() {
     oi = OI.getInstance();
     calculator.setTolerance(0.25);
-    calculator.setIntegratorRange(-0.50, 0.50);
+    calculator.setIntegratorRange(-0.15, 0.15 );
+    
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -43,11 +44,13 @@ public class DriveWithLimelight2 extends Command {
   protected void execute() {
     var error = lime.getXOffset();
     var steering_adjust = 0.0;
-    if (error > 1.0) {
-      steering_adjust = calculator.calculate(error) - MINIMUM_COMMAND;
-    } else if (error < 1.0) {
-      steering_adjust = calculator.calculate(error) + MINIMUM_COMMAND;
-    }
+    // if (error > 1.0) {
+    //   steering_adjust = calculator.calculate(error) + MINIMUM_COMMAND;
+    // } else if (error < 1.0) {
+    //   steering_adjust = calculator.calculate(error) - MINIMUM_COMMAND;
+    // }
+
+    steering_adjust = calculator.calculate(error) + MINIMUM_COMMAND;
     // var steering_adjust = calculator.calculate(error);
     dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), steering_adjust);
   }
