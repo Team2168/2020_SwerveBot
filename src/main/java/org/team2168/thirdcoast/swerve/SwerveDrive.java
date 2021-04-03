@@ -96,6 +96,15 @@ public class SwerveDrive {
     logger.debug("width = {}", width);
     logger.debug("enableGyroLogging = {}", config.gyroLoggingEnabled);
     logger.debug("gyroRateCorrection = {}", kGyroRateCorrection);
+
+    ConsolePrinter.putNumber("Commanded yaw 0", () -> {return wa[0];}, false, true);
+    ConsolePrinter.putNumber("Commanded speed 0", () -> {return ws[0];}, false, true);
+    ConsolePrinter.putNumber("Commanded yaw 1", () -> {return wa[1];}, false, true);
+    ConsolePrinter.putNumber("Commanded speed 1", () -> {return ws[1];}, false, true);
+    ConsolePrinter.putNumber("Commanded yaw 2", () -> {return wa[2];}, false, true);
+    ConsolePrinter.putNumber("Commanded speed 2", () -> {return ws[2];}, false, true);
+    ConsolePrinter.putNumber("Commanded yaw 3", () -> {return wa[3];}, false, true);
+    ConsolePrinter.putNumber("Commanded speed 3", () -> {return ws[3];}, false, true);
   }
 
   /**
@@ -187,15 +196,6 @@ public class SwerveDrive {
       wheels[i].set(wa[i], ws[i]);
       // SmartDashboard.putNumber("Commanded position (percent of a rotation) module " + i, wa[i]);
     }
-
-    ConsolePrinter.putNumber("Commanded yaw 0", () -> {return wa[0];}, false, true);
-    ConsolePrinter.putNumber("Commanded speed 0", () -> {return ws[0];}, false, true);
-    ConsolePrinter.putNumber("Commanded yaw 1", () -> {return wa[1];}, false, true);
-    ConsolePrinter.putNumber("Commanded speed 1", () -> {return ws[1];}, false, true);
-    ConsolePrinter.putNumber("Commanded yaw 2", () -> {return wa[2];}, false, true);
-    ConsolePrinter.putNumber("Commanded speed 2", () -> {return ws[2];}, false, true);
-    ConsolePrinter.putNumber("Commanded yaw 3", () -> {return wa[3];}, false, true);
-    ConsolePrinter.putNumber("Commanded speed 3", () -> {return ws[3];}, false, true);
   }
 
   /**

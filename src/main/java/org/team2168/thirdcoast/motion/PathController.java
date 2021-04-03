@@ -46,6 +46,11 @@ public class PathController implements Runnable {
   private double yawError;
   private boolean isDriftOut;
 
+  private double yaw;
+  private double forward;
+  private double strafe;
+
+
   public PathController(String pathName, double yawDelta, boolean isDriftOut) {
     this.yawDelta = yawDelta;
     this.isDriftOut = isDriftOut;
@@ -53,6 +58,13 @@ public class PathController implements Runnable {
     File csvFile = new File(Filesystem.getDeployDirectory().getPath() + "/paths/output/" + pathName + ".pf1.csv");
 
     trajectory = new Trajectory(csvFile);
+
+    ConsolePrinter.putNumber("PathController calculated fwd normalized", () -> {return forward;}, false, true);
+    ConsolePrinter.putNumber("PathController calculated fwd FPS", () -> {return forward * maxVelocityFtSec;}, false, true);
+    ConsolePrinter.putNumber("PathController calculated strafe normalized", () -> {return strafe;}, false, true);
+    ConsolePrinter.putNumber("PathController calculated strafe FPS", () -> {return strafe;}, false, true);
+    ConsolePrinter.putNumber("PathController calculated yaw normalized", () -> {return yaw;}, false, true);
+    ConsolePrinter.putNumber("PathController calculated yaw degrees", () -> {return yaw * 360;}, false, true);
   }
 
   public void start() {
@@ -103,8 +115,8 @@ public class PathController implements Runnable {
 
         double setpointVelocity = segmentVelocity / maxVelocityFtSec;
 
-        double forward = Math.cos(segment.heading) * setpointVelocity;
-        double strafe = Math.sin(segment.heading) * setpointVelocity;
+        forward = Math.cos(segment.heading) * setpointVelocity;
+        strafe = Math.sin(segment.heading) * setpointVelocity;
 
         if (currentProgress > percentToDone && segment.velocity < MIN_VEL) {
           state = States.STOPPING;
@@ -113,7 +125,7 @@ public class PathController implements Runnable {
         setpointPos = setpoint.getSetpoint(currentProgress);
 
         yawError = setpointPos - DRIVE.getHeading();
-        double yaw;
+        //double yaw;
 
         yaw = yawError * yawKp;
 
@@ -122,12 +134,7 @@ public class PathController implements Runnable {
         DRIVE.drive(forward, strafe, yaw);
         SmartDashboard.putNumber("Auto commanded fwd speed normalized", forward);
         SmartDashboard.putNumber("Auto commanded fwd speed FPS", forward * maxVelocityFtSec);
-        ConsolePrinter.putNumber("PathController calculated fwd normalized", () -> {return forward;}, false, true);
-        ConsolePrinter.putNumber("PathController calculated fwd FPS", () -> {return forward * maxVelocityFtSec;}, false, true);
-        ConsolePrinter.putNumber("PathController calculated strafe normalized", () -> {return strafe;}, false, true);
-        ConsolePrinter.putNumber("PathController calculated strafe FPS", () -> {return strafe;}, false, true);
-        ConsolePrinter.putNumber("PathController calculated yaw normalized", () -> {return yaw;}, false, true);
-        ConsolePrinter.putNumber("PathController calculated yaw degrees", () -> {return yaw * 360;}, false, true);
+        
         iteration++;
         break;
       case STOPPING:
