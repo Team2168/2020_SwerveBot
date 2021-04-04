@@ -1,6 +1,7 @@
 
 package org.team2168;
 
+import org.team2168.commands.drivetrain.TurnWithConstant;
 import org.team2168.commands.drivetrain.ZeroEncoders;
 import org.team2168.commands.drivetrain.ZeroGyro;
 import org.team2168.commands.limelight.DriveWithLimelight;
@@ -103,6 +104,8 @@ public class OI {
 		driverJoystick.ButtonB().whileHeld(new DriveWithLimelight2());
 		testJoystick.ButtonBack().whenPressed(new ZeroGyro());
 		testJoystick.ButtonStart().whenPressed(new ZeroEncoders());
+		driverJoystick.ButtonLeftDPad().whileHeld(new TurnWithConstant(-0.1));
+		driverJoystick.ButtonRightDPad().whileHeld(new TurnWithConstant(0.1));
 	}
 	
 	/**

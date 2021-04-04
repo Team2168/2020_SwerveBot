@@ -12,31 +12,37 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.controller.PIDController;
 
 public class DriveWithLimelight2 extends Command {
-  private static final double P = -0.015;
-  private static final double I = -0.1;
-  private static final double D = -0.0;  
+  private static final double P = 0.032;
+  private static final double I = 0.090;
+  // private static final double I = 0.0;
+  // private static final double D = 0.002;  
+  private static final double D = 0.00;  
   private static final double MINIMUM_COMMAND = 0.05;
+  private static final double MAX_INTEGRATOR = 0.09;
+  private static final double DEADZONE = 0.25;
+  
 
-  private PIDController calculator = null; // so that the integrator works
+  private PIDController pid;
   private Drivetrain dt;
   private Limelight lime;
   private OI oi;
+
   public DriveWithLimelight2() {
     dt = Drivetrain.getInstance();
     lime = Limelight.getInstance();
-    calculator = new PIDController(P, I, D);
+    pid = new PIDController(P, I, D);
 
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(dt);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    oi = OI.getInstance();
-    calculator.setTolerance(0.25);
-    calculator.setIntegratorRange(-0.15, 0.15 );
-    
+    oi = OI.getInstance(); // prevents a loop; oi constructs drivewithlimelight2 when constructed
+    pid.setTolerance(DEADZONE);
+    pid.setIntegratorRange(-MAX_INTEGRATOR, MAX_INTEGRATOR);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -44,21 +50,19 @@ public class DriveWithLimelight2 extends Command {
   protected void execute() {
     var error = lime.getXOffset();
     var steering_adjust = 0.0;
-    // if (error > 1.0) {
-    //   steering_adjust = calculator.calculate(error) + MINIMUM_COMMAND;
-    // } else if (error < 1.0) {
-    //   steering_adjust = calculator.calculate(error) - MINIMUM_COMMAND;
-    // }
+    if (error < -DEADZONE) {
+      steering_adjust = pid.calculate(error) - MINIMUM_COMMAND;
+    } else if (error > DEADZONE) {
+      steering_adjust = pid.calculate(error) + MINIMUM_COMMAND;
+    }
 
-    steering_adjust = calculator.calculate(error) + MINIMUM_COMMAND;
-    // var steering_adjust = calculator.calculate(error);
-    dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), steering_adjust);
+    dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), -steering_adjust);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return pid.atSetpoint();
   }
 
   // Called once after isFinished returns true
