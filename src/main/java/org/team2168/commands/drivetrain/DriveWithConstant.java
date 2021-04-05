@@ -13,11 +13,11 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class DriveWithConstant extends Command {
   private Drivetrain dt;
-  private int forward;
-  private int strafe;
-  private int azimuth;
+  private double forward;
+  private double strafe;
+  private double azimuth;
 
-  public DriveWithConstant(int forward, int strafe, int azimuth) {
+  public DriveWithConstant(double forward, double strafe, double azimuth) {
     dt = Drivetrain.getInstance();
     this.forward = forward;
     this.strafe = strafe;
