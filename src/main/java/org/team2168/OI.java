@@ -1,17 +1,40 @@
 
 package org.team2168;
 
+import org.team2168.commands.auto.robotFunctions.FinishFiring;
+import org.team2168.commands.auto.robotFunctions.FireBalls;
+import org.team2168.commands.climber.Climb;
+import org.team2168.commands.climber.DisengageRatchet;
+import org.team2168.commands.climber.DriveClimberWithTestJoystickUnSafe;
+import org.team2168.commands.climber.EngageRatchet;
+import org.team2168.commands.climber.PrepareToClimb;
+import org.team2168.commands.climber.ResetClimberPosition;
+import org.team2168.commands.drivetrain.DriveWithConstant;
 import org.team2168.commands.drivetrain.ZeroEncoders;
 import org.team2168.commands.drivetrain.ZeroGyro;
-import org.team2168.commands.flashlight.*;
-import org.team2168.commands.hood_adjust.*;
+import org.team2168.commands.flashlight.RunFlashlight;
+import org.team2168.commands.hood_adjust.MoveToBackTrench;
+import org.team2168.commands.hood_adjust.MoveToFiringLocation;
+import org.team2168.commands.hood_adjust.MoveToFrontTrench;
+import org.team2168.commands.hood_adjust.MoveToWLNoShoot;
+import org.team2168.commands.hood_adjust.MoveToWall;
+import org.team2168.commands.hood_adjust.MoveToWallNoShoot;
+import org.team2168.commands.hood_adjust.MoveToWhiteLine;
 import org.team2168.commands.hopper.DriveHopperWithConstant;
-import org.team2168.commands.indexer.*;
-import org.team2168.commands.intakeMotor.*;
-import org.team2168.commands.intakePivot.*;
-import org.team2168.commands.shooter.*;
-import org.team2168.commands.auto.robotFunctions.*;
-import org.team2168.commands.climber.*;
+import org.team2168.commands.indexer.DriveIndexerWithConstant;
+import org.team2168.commands.intakeMotor.DriveIntakeWithConstant;
+import org.team2168.commands.intakeMotor.IntakeBallStart;
+import org.team2168.commands.intakeMotor.IntakeBallStop;
+import org.team2168.commands.intakePivot.ExtendIntakePneumatic;
+import org.team2168.commands.intakePivot.RetractIntakePneumatic;
+import org.team2168.commands.limelight.DriveWithLimelight;
+import org.team2168.commands.limelight.ToggleLimelightPipeline;
+import org.team2168.commands.shooter.BumpDownShooterSpeed;
+import org.team2168.commands.shooter.BumpUpShooterSpeed;
+import org.team2168.commands.shooter.BumpZeroShooterSpeed;
+import org.team2168.commands.shooter.DriveShooterWithConstant;
+import org.team2168.commands.shooter.DriveToXSpeed;
+import org.team2168.subsystems.Limelight;
 import org.team2168.subsystems.Shooter;
 import org.team2168.utils.F310;
 import org.team2168.utils.LinearInterpolator;
@@ -203,6 +226,7 @@ public class OI {
 
     driverJoystick.ButtonA().whenPressed(new RunFlashlight(1.0));
 		driverJoystick.ButtonA().whenReleased(new RunFlashlight(-0.5));
+	driverJoystick.ButtonX().whileHeld(new DriveWithLimelight());
 
     //When the red button on the handle of the controller is pressed get ready to go under the trench. Lower everything.
     // driverJoystick.ButtonLeftBumper().whileHeld(new DisengageColorWheel());
@@ -252,7 +276,11 @@ public class OI {
 
     testJoystick.ButtonX().whenPressed(new ResetClimberPosition());
     testJoystick.ButtonY().whenPressed(new PrepareToClimb());
-    testJoystick.ButtonA().whenPressed(new Climb());
+	testJoystick.ButtonA().whenPressed(new Climb());
+
+	testJoystick.ButtonB().whenPressed(new ToggleLimelightPipeline(Limelight.PIPELINE_DRIVE_WITH_LIMELIGHT));
+	testJoystick.ButtonLeftDPad().whileHeld(new DriveWithConstant(0.0, 0.0, -0.08));
+	testJoystick.ButtonRightDPad().whileHeld(new DriveWithConstant(0.0, 0.0, 0.08));
 
     testJoystick.ButtonUpDPad().whenPressed(new EngageRatchet());
     testJoystick.ButtonDownDPad().whenPressed(new DisengageRatchet());
