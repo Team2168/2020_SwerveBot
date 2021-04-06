@@ -5,8 +5,8 @@ import org.team2168.commands.drivetrain.TurnWithConstant;
 import org.team2168.commands.drivetrain.ZeroEncoders;
 import org.team2168.commands.drivetrain.ZeroGyro;
 import org.team2168.commands.limelight.DriveWithLimelight;
-import org.team2168.commands.limelight.TurnWithLimelight;
-import org.team2168.commands.limelight.DriveWithLimelight2;
+import org.team2168.commands.limelight.ToggleLimelightPipeline;
+import org.team2168.subsystem.Limelight;
 import org.team2168.utils.F310;
 import org.team2168.utils.LinearInterpolator;
 
@@ -100,12 +100,13 @@ public class OI {
 		joystickChooser.setDefaultOption("Flight Joystick", "flight");
     joystickChooser.addOption("F310 Joystick", "F310");
 
-		driverJoystick.ButtonA().whileHeld(new TurnWithLimelight());
-		driverJoystick.ButtonB().whileHeld(new DriveWithLimelight2());
+		driverJoystick.ButtonA().whileHeld(new DriveWithLimelight());
 		testJoystick.ButtonBack().whenPressed(new ZeroGyro());
 		testJoystick.ButtonStart().whenPressed(new ZeroEncoders());
 		driverJoystick.ButtonLeftDPad().whileHeld(new TurnWithConstant(-0.1));
 		driverJoystick.ButtonRightDPad().whileHeld(new TurnWithConstant(0.1));
+
+		testJoystick.ButtonA().whenPressed(new ToggleLimelightPipeline(Limelight.PIPELINE_DRIVE_WITH_LIMELIGHT));
 	}
 	
 	/**

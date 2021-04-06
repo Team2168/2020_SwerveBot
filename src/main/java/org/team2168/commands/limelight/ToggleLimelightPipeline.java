@@ -7,57 +7,42 @@
 
 package org.team2168.commands.limelight;
 
+import org.team2168.subsystem.Limelight;
+
 import edu.wpi.first.wpilibj.command.Command;
 
-import org.team2168.OI;
-import org.team2168.subsystem.Drivetrain;
-import org.team2168.subsystem.Limelight;
-import org.team2168.utils.LinearInterpolator;
-
-public class TurnWithLimelight extends Command {
-private Drivetrain dt;
-private Limelight lime;
-private OI oi;
-private LinearInterpolator scalar;
-private static final double MAX_SPEED = 0.25;
-private static final double RAMP = 7.00;
-private static final double RAMP_MAX = 0.10;
-private static final double DEADZONE = 0.50;
-private static double[][] scaling = {
-  {-27.00, -MAX_SPEED},
-  {-RAMP, -MAX_SPEED},
-  {-DEADZONE, 0},
-  {DEADZONE, 0},
-  {RAMP, MAX_SPEED},
-  {27.00, MAX_SPEED}
-};
-
-  public TurnWithLimelight() {
-    dt = Drivetrain.getInstance();
+public class ToggleLimelightPipeline extends Command {
+  private Limelight lime;
+  private int pipeline;
+  private boolean isFinished = false;
+  public ToggleLimelightPipeline(int pipeline) {
     lime = Limelight.getInstance();
-    scalar = new LinearInterpolator(scaling);
+    this.pipeline = pipeline;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(dt);
     requires(lime);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    oi = OI.getInstance();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), scalar.interpolate(lime.getXOffset()));
+    if (lime.getPipeline() == pipeline) {
+      lime.pauseLimelight();
+    } else {
+      lime.setPipeline(pipeline);
+      isFinished = true; // so that it continues execution and isn't overriden by the default command
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return isFinished;
   }
 
   // Called once after isFinished returns true

@@ -5,64 +5,94 @@
 package org.team2168.commands.limelight;
 
 import org.team2168.OI;
-import org.team2168.subsystem.Drivetrain;
 import org.team2168.subsystem.Limelight;
-import org.team2168.utils.LinearInterpolator;
+import org.team2168.subsystem.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveWithLimelight extends Command {
-  private static final double MAX_SPEED = 0.35;
-  private static final double MIN_SPEED = 0.10;
-  private static final double DEADZONE = 0.35;
-  private static final double LOW_POINT = 0.45;
-  private static double[][] scaling = {
-    {-27.00, -MAX_SPEED},
-    // {-LOW_POINT, -MIN_SPEED},
-    {-DEADZONE, 0},
-    {DEADZONE, 0},
-    // {LOW_POINT, MIN_SPEED},
-    {27.00, MAX_SPEED}
-  };
+  private static final double P = 0.035;
+  private static final double I = 0.98;  // I don't think there's a reason there would be steady-state error - nothing is resisting the setpoint
+  private static final double D = 0.0038;
+  private static final double MINIMUM_COMMAND = 0.05;
+  private static final double MAX_INTEGRATOR = 0.1;
+  private static final double DEADZONE = 0.40;
 
-  private Limelight lime;
+  private static final boolean useNTValues = false; // used for debugging because pid tuning is painful and compile-test-compile is stupid for 3 constants
+  
+
+  private PIDController pid;
   private Drivetrain dt;
+  private Limelight lime;
   private OI oi;
-  private LinearInterpolator limeInterpolator;
 
   public DriveWithLimelight() {
-    lime = Limelight.getInstance();
     dt = Drivetrain.getInstance();
-    limeInterpolator = new LinearInterpolator(scaling);
+    lime = Limelight.getInstance();
+    if (useNTValues)
+      System.out.println("********** WARNING: GETTING TURNWITHLIMELIGHT GAINS FROM NETWORKTABLES **********");
 
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(lime);
     requires(dt);
+    requires(lime);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // OI contains a DriveWithLimelight constructor, so if this was in the constructor it creates an infinite loop and never finishes constructing OI
-    oi = OI.getInstance();
+    lime.setToDriveWithLimelight();
+    // TODO make this a helper class
+    if (useNTValues) {
+      if (!SmartDashboard.containsKey("turn_limelight_P"))
+        SmartDashboard.putNumber("turn_limelight_P", P);
+      if (!SmartDashboard.containsKey("turn_limelight_I"))
+        SmartDashboard.putNumber("turn_limelight_I", I);
+      if (!SmartDashboard.containsKey("turn_limelight_D"))
+        SmartDashboard.putNumber("turn_limelight_D", D);
+
+      double ntP = (double) SmartDashboard.getNumber("turn_limelight_P", P);
+      double ntI = (double) SmartDashboard.getNumber("turn_limelight_I", I);
+      double ntD = (double) SmartDashboard.getNumber("turn_limelight_D", D);
+      pid = new PIDController(ntP, ntI, ntD);
+      
+    } else {
+      pid = new PIDController(P, I, D);
+    }
+    oi = OI.getInstance(); // prevents a loop; oi constructs drivewithlimelight2 when constructed
+    pid.setTolerance(DEADZONE);
+    pid.setIntegratorRange(-MAX_INTEGRATOR, MAX_INTEGRATOR);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    dt.drive(oi.getDriverJoystickYValue(), limeInterpolator.interpolate(lime.getXOffset()), 0.0);
+    double error = lime.getPosition();
+    double steering_adjust = 0.0;
+    if (error < -DEADZONE) {
+      steering_adjust = pid.calculate(error) - MINIMUM_COMMAND;
+    } else if (error > DEADZONE) {
+      steering_adjust = pid.calculate(error) + MINIMUM_COMMAND;
     }
+// 
+    // dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), -steering_adjust);
+    dt.drive(0.0, 0.0, -steering_adjust);
+  }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return pid.atSetpoint();
+    // return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {}
+  protected void end() {
+    // lime.pauseLimelight();
+  }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
