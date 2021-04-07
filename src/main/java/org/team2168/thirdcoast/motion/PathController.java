@@ -28,7 +28,8 @@ public class PathController implements Runnable {
   private static final double DT = 0.02;
 
   private static final double MIN_VEL = 0.0; // 0.07 x max motor output
-  private static final double MIN_START = 0.2; // 0.07 x max motor output
+  //private static final double MIN_START = 0.2; // 0.07 x max motor output
+  private static final double MIN_START = 0.3;
   //  private static final double RATE_CAP = 0.35;
   //  private static final RateLimit rateLimit = new RateLimit(0.015);
   private final Logger logger = LoggerFactory.getLogger(this.getClass());

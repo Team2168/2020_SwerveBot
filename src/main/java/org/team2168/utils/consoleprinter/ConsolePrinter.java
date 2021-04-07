@@ -37,7 +37,7 @@ public class ConsolePrinter {
 	private static LinkedHashSet<String> dashboardKeys;
 	private static LinkedHashSet<String> fileKeys;
 
-	private static final boolean ENABLE_FILE_LOGGING = true;
+	private static final boolean ENABLE_FILE_LOGGING = false;
 
 	private ConsolePrinter() {
 		data = new HashMap<String, Loggable>();
