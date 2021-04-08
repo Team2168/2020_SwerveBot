@@ -5,12 +5,12 @@
 package org.team2168.commands.limelight;
 
 import org.team2168.OI;
-import org.team2168.subsystems.Limelight;
 import org.team2168.subsystems.Drivetrain;
+import org.team2168.subsystems.Limelight;
+import org.team2168.utils.smartdashboarddatatypes.SmartDashboardDouble;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveWithLimelight extends Command {
   private static final double P = 0.035;
@@ -28,11 +28,17 @@ public class DriveWithLimelight extends Command {
   private Limelight lime;
   private OI oi;
 
+  private SmartDashboardDouble p;
+  private SmartDashboardDouble i;
+  private SmartDashboardDouble d;
+
   public DriveWithLimelight() {
     dt = Drivetrain.getInstance();
     lime = Limelight.getInstance();
-    if (useNTValues)
-      System.out.println("********** WARNING: GETTING TURNWITHLIMELIGHT GAINS FROM NETWORKTABLES **********");
+
+    p = new SmartDashboardDouble("turn_limelight_P", P, useNTValues);
+    i = new SmartDashboardDouble("turn_limelight_I", I, useNTValues);
+    d = new SmartDashboardDouble("turn_limelight_D", D, useNTValues);
 
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -44,24 +50,8 @@ public class DriveWithLimelight extends Command {
   @Override
   protected void initialize() {
     lime.setToDriveWithLimelight();
-    // TODO make this a helper class
-    if (useNTValues) {
-      if (!SmartDashboard.containsKey("turn_limelight_P"))
-        SmartDashboard.putNumber("turn_limelight_P", P);
-      if (!SmartDashboard.containsKey("turn_limelight_I"))
-        SmartDashboard.putNumber("turn_limelight_I", I);
-      if (!SmartDashboard.containsKey("turn_limelight_D"))
-        SmartDashboard.putNumber("turn_limelight_D", D);
-
-      double ntP = (double) SmartDashboard.getNumber("turn_limelight_P", P);
-      double ntI = (double) SmartDashboard.getNumber("turn_limelight_I", I);
-      double ntD = (double) SmartDashboard.getNumber("turn_limelight_D", D);
-      pid = new PIDController(ntP, ntI, ntD);
-      
-    } else {
-      pid = new PIDController(P, I, D);
-    }
-    oi = OI.getInstance(); // prevents a loop; oi constructs drivewithlimelight2 when constructed
+    pid = new PIDController(p.get(), i.get(), d.get());
+    oi = OI.getInstance(); // prevents a loop; oi constructs DriveWithLimelight when constructed
     pid.setTolerance(DEADZONE);
     pid.setIntegratorRange(-MAX_INTEGRATOR, MAX_INTEGRATOR);
   }
