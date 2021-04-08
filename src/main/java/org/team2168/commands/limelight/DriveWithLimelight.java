@@ -36,9 +36,9 @@ public class DriveWithLimelight extends Command {
     dt = Drivetrain.getInstance();
     lime = Limelight.getInstance();
 
-    p = new SmartDashboardDouble("turn_limelight_P", P, useNTValues);
-    i = new SmartDashboardDouble("turn_limelight_I", I, useNTValues);
-    d = new SmartDashboardDouble("turn_limelight_D", D, useNTValues);
+    p = new SmartDashboardDouble("turn_limelight_P", P);
+    i = new SmartDashboardDouble("turn_limelight_I", I);
+    d = new SmartDashboardDouble("turn_limelight_D", D);
 
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -50,7 +50,10 @@ public class DriveWithLimelight extends Command {
   @Override
   protected void initialize() {
     lime.setToDriveWithLimelight();
-    pid = new PIDController(p.get(), i.get(), d.get());
+    if (useNTValues)
+      pid = new PIDController(p.get(), i.get(), d.get());
+    else
+      pid = new PIDController(P, I, D);
     oi = OI.getInstance(); // prevents a loop; oi constructs DriveWithLimelight when constructed
     pid.setTolerance(DEADZONE);
     pid.setIntegratorRange(-MAX_INTEGRATOR, MAX_INTEGRATOR);
