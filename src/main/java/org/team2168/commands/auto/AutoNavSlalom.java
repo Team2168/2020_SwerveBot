@@ -14,6 +14,8 @@ public class AutoNavSlalom extends CommandGroup {
    * AutoNav path 2: Slalom
    */
   public AutoNavSlalom() {
-    addSequential(new PathCommand("slalom", 0));
+    addSequential(new PathCommand("slalom1", 0));
+    addSequential(new PathCommand("slalom2", 0));
+    addSequential(new PathCommand("slalom3", 0));
   }
 }
