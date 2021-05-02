@@ -65,6 +65,7 @@ public class Robot extends TimedRobot {
 
   static boolean autoMode;
   public static final boolean ENABLE_BUTTON_BOX = true;
+  public static boolean enableAzimuth = true;
   private static boolean lastCallHoodButtonA = false;
   private MoveToFiringLocation moveHood;
 
@@ -206,6 +207,9 @@ public class Robot extends TimedRobot {
       moveHood = new MoveToFiringLocation(Shooter.FiringLocation.WALL);
       moveHood.start();
     }
+
+    if (oi.driverJoystick.isPressedButtonRightStick())
+      enableAzimuth = !enableAzimuth;
 
     lastCallHoodButtonA = buttonBox2_buttonA;
     Scheduler.getInstance().run();
