@@ -7,29 +7,23 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * This is useful in situations like tuning PID, where a SmartDashboardDouble would be used instead of
  * a normal double to avoid having to recompile to change a variable.
  */
-public class SmartDashboardDouble {
+public class SmartDashboardDouble extends SmartDashboardObject<Double> {
     private String key;
 
-    public SmartDashboardDouble(String key, double value) {
-        this.key = key;
-
-        if (!SmartDashboard.containsKey(key))
-            SmartDashboard.putNumber(key, value);
+    public SmartDashboardDouble(String key, Double value) {
+        super(key, value);
     }
 
     public SmartDashboardDouble(String key) {
         this(key, 0.0);
     }
 
-    public double get() {
-        return (double) SmartDashboard.getNumber(key, 0.0);
+    public Double get() {
+        return (Double) SmartDashboard.getNumber(key, 0.0);
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void set(double value) {
+    public void set(Double value) {
         SmartDashboard.putNumber(key, value);
     }
+
 }
