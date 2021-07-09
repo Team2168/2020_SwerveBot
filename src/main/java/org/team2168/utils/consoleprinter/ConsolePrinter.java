@@ -13,18 +13,19 @@ import java.util.TimeZone;
 import java.util.TimerTask;
 import java.util.function.Supplier;
 
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
  * This class sends data out to log file and the SmartDashboard at a periodic
  * rate.
- * 
+ *
  * Usage Example: ConsolePrinter.init(); //get instance of printer
  * ConsolePrinter.setRate(100); //set rate to 100ms
  * ConsolePrinter.putBoolean("isBallPresent", Robot::ballPresent, true, false);
  * ConsolePrinter.putNumber("Encoder", Shooter::getRightPosition, true, false);
- * 
+ *
  * ConsolePrinter.startThread(); //begin logging data
  */
 public class ConsolePrinter {
@@ -37,7 +38,7 @@ public class ConsolePrinter {
 	private static LinkedHashSet<String> dashboardKeys;
 	private static LinkedHashSet<String> fileKeys;
 
-	private static final boolean PRINT_SD_DEBUG_DATA = false;
+	private static final boolean ENABLE_FILE_LOGGING = false;
 
 	private ConsolePrinter() {
 		data = new HashMap<String, Loggable>();
@@ -53,7 +54,7 @@ public class ConsolePrinter {
 
 	/**
 	 * Gets a console printer instance.
-	 * 
+	 *
 	 * @return the console printer
 	 */
 	public static void init() {
@@ -65,7 +66,7 @@ public class ConsolePrinter {
 
 	/**
 	 * Sets the rate of periodic logging to the dashboard and log file.
-	 * 
+	 *
 	 * @param ms
 	 *            the rate in milliseconds
 	 */
@@ -76,7 +77,7 @@ public class ConsolePrinter {
 	/**
 	 * Add a key/value pair to the set of data that will be reported to the
 	 * dashboard and/or logged to file.
-	 * 
+	 *
 	 * @param key
 	 *            the name identifying the data
 	 * @param value
@@ -119,7 +120,7 @@ public class ConsolePrinter {
 	/**
 	 * Add a key/value pair to the set of data that will be reported to the
 	 * dashboard and/or logged to file.
-	 * 
+	 *
 	 * @param key
 	 *            the name identifying the data
 	 * @param value
@@ -142,7 +143,7 @@ public class ConsolePrinter {
 	/**
 	 * Add a key/value pair to the set of data that will be reported to the
 	 * dashboard and/or logged to file.
-	 * 
+	 *
 	 * @param key
 	 *            the name identifying the data
 	 * @param value
@@ -165,7 +166,7 @@ public class ConsolePrinter {
 	/**
 	 * Add a key/value pair to the set of data that will be reported to the
 	 * dashboard and/or logged to file.
-	 * 
+	 *
 	 * @param key
 	 *            the name identifying the data
 	 * @param value
@@ -192,6 +193,8 @@ public class ConsolePrinter {
 	 * show up in the header line of the TSV file.
 	 */
 	public static void startThread() {
+    String logPath = Filesystem.getDeployDirectory().getPath() + "/Logs/";
+
 		if (started) {
 			return;
 		}
@@ -201,7 +204,7 @@ public class ConsolePrinter {
 		executor.schedule(new ConsolePrintTask(), 0L, ConsolePrinter.period);
 
 		try {
-			File file = new File("/home/lvuser/Logs");
+			File file = new File(logPath);
 			if (!file.exists()) {
 				if (file.mkdir()) {
 					System.out.println("Log Directory is created!");
@@ -212,7 +215,7 @@ public class ConsolePrinter {
 			Date date = new Date();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 			dateFormat.setTimeZone(TimeZone.getTimeZone("EST5EDT"));
-			log = new PrintWriter("/home/lvuser/Logs/" + dateFormat.format(date) + "-Log.txt", "UTF-8");
+			log = new PrintWriter(logPath + dateFormat.format(date) + "-Log.txt", "UTF-8");
 			log.println(dataFileHeader());
 			log.flush();
 		} catch (FileNotFoundException e) {
@@ -225,8 +228,7 @@ public class ConsolePrinter {
 		catch (Throwable throwable)
 		{
 			throwable.printStackTrace();
-		}	
-		
+		}
 
 	}
 
@@ -235,7 +237,7 @@ public class ConsolePrinter {
 		String key;
 		String output = "";
 
-		if (PRINT_SD_DEBUG_DATA) {
+		if (ENABLE_FILE_LOGGING) {
 			i = fileKeys.iterator();
 			// Build string
 			while (i.hasNext()) {
@@ -255,10 +257,8 @@ public class ConsolePrinter {
 		String key;
 		String output = "";
 
-		try 
-		{
-			if (PRINT_SD_DEBUG_DATA) 
-			{
+		try {
+			if (ENABLE_FILE_LOGGING) {
 				i = fileKeys.iterator();
 				// Build string
 				while (i.hasNext()) {
@@ -287,9 +287,9 @@ public class ConsolePrinter {
 	public static void dataToDashboard() {
 		Iterator<String> i = dashboardKeys.iterator();
 		String key = "";
-		try 
+		try
 		{
-			while (i.hasNext()) 
+			while (i.hasNext())
 			{
 				key = i.next();
 				data.get(key).put(key);
