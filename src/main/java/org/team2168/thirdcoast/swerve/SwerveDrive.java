@@ -129,6 +129,14 @@ public class SwerveDrive {
   }
 
   /**
+   * Get the current DriveMode of the wheel modules.
+   * @return the drive mode of the 0th wheel module (they're likely all the same)
+   */
+  public DriveMode getDriveMode() {
+    return wheels[0].getDriveMode();
+  }
+
+  /**
    * Set all four wheels to specified values.
    *
    * @param azimuth -0.5 to 0.5 rotations, measured clockwise with zero being the robot
@@ -325,6 +333,7 @@ public class SwerveDrive {
     CLOSED_LOOP,
     TELEOP,
     TRAJECTORY,
-    AZIMUTH
+    AZIMUTH,
+    MANUAL_AZIMUTH_TEST
   }
 }
