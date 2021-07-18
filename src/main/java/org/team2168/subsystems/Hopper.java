@@ -13,7 +13,7 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import org.team2168.RobotMap;
-import org.team2168.commands.hopper.DriveHopperWithJoystick;
+import org.team2168.commands.hopper.DriveBalancerWithJoystick;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -67,6 +67,6 @@ public class Hopper extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    //setDefaultCommand(new DriveHopperWithJoystick());
+    setDefaultCommand(new DriveBalancerWithJoystick());
   }
 }

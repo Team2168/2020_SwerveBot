@@ -374,6 +374,16 @@ public class OI {
 	}
 
 	/**
+		 * Balancer joystick value
+		 * 
+		 * @return
+		 */
+		public double getBalancerJoystickValue()
+		{
+			return balancerInterpolator.interpolate(buttonBox2.getLeftStickRaw_X());
+		}
+
+	/**
 	 * Hopper joystick value
 	 *
 	 * @return
