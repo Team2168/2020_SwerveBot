@@ -10,6 +10,7 @@ package org.team2168;
 import org.team2168.commands.drivetrain.DoNothing;
 import org.team2168.commands.drivetrain.SwerveDriveTestsPathCommandGroup;
 import org.team2168.commands.hood_adjust.MoveToFiringLocation;
+import org.team2168.commands.shooter.ShooterAtSpeedIndicator;
 import org.team2168.subsystems.Climber;
 import org.team2168.subsystems.Drivetrain;
 import org.team2168.subsystems.HoodAdjust;
@@ -183,6 +184,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     autoMode = false;
     dt.setDriveMode(DriveMode.TELEOP);
+    Scheduler.getInstance().add(new ShooterAtSpeedIndicator()); // starts the indicator
   }
 
   /**
