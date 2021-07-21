@@ -113,14 +113,18 @@ class WheelTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"0, 2767, -2767"})
+  @CsvSource({"0, 2767, -2767, false", "4095, 20, 4075, false", "2168, 4095, -1927, false",
+              "0, 2767, -2767, true", "4095, 20, -4115, true", "2168, 4095, -6263, true",
+              "0, -2767, 2767, true", "4095, -20, -4075, true", "2168, -4095, 1927, true"})
   void setAzimuthZero(
-      int encoderPosition, int zero, int setpoint, @Mock TalonFXSensorCollection sensorCollection) {
-    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
-    when(azimuthTalon.getSelectedSensorPosition(1)).thenReturn((double) encoderPosition);
-    when(azimuthTalon.getSensorCollection()).thenReturn(sensorCollection);
+      int encoderPosition, int zero, int setpoint, boolean absoluteEncoderInverted, @Mock TalonFXSensorCollection sensorCollection) {
+    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, absoluteEncoderInverted);
+    // when(azimuthTalon.getSelectedSensorPosition(1)).thenReturn((double) encoderPosition);
+    // when(azimuthTalon.getSensorCollection()).thenReturn(sensorCollection);
+    when(externalEncoder.getValue()).thenReturn(encoderPosition);
 
     wheel.setAzimuthZero(zero);
+    setpoint = setpoint * (int)(AZIMUTH_GEAR_RATIO / 2);
     verify(azimuthTalon).setSelectedSensorPosition(setpoint, 0, 10);
   }
 
@@ -129,18 +133,17 @@ class WheelTest {
    * 12 bit number (value 0 - 4095).
    */
 
-  // @ParameterizedTest
-  // @CsvSource({"0, 0, false", "2048, 2048, false", "4095, 4095, false",
-  //             "0, 0, true", "2048, -2048, true", "4095, -4095, true",})
-  // void getAzimuthAbsolutePosition( Integer encoderPosition, int absolutePosition,
-  //     boolean inverted, @Mock TalonFXSensorCollection sensorCollection) {
-
-  //   Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, inverted);
-  //   // when(azimuthTalon.getSelectedSensorPosition()).thenReturn((double) encoderPosition);
-  //   // when(externalEncoder.getValue().thenReturn(encoderPosition));
-  //   when(azimuthTalon.getSensorCollection()).thenReturn(sensorCollection);
-  //   assertThat(wheel.getAzimuthAbsolutePosition()).isEqualTo(absolutePosition);
-  // }
+  @ParameterizedTest
+  @CsvSource({"0, 0, false", "2048, 2048, false", "4095, 4095, false",
+              "0, 0, true", "2048, -2048, true", "4095, -4095, true",})
+  void getAzimuthAbsolutePosition(Integer encoderPosition, int absolutePosition,
+      boolean inverted, @Mock TalonFXSensorCollection sensorCollection) {
+    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, inverted);
+    // when(azimuthTalon.getSelectedSensorPosition()).thenReturn((double) encoderPosition);
+    when(externalEncoder.getValue()).thenReturn(encoderPosition);
+    // when(azimuthTalon.getSensorCollection()).thenReturn(sensorCollection);
+    assertThat(wheel.getAzimuthAbsolutePosition()).isEqualTo(absolutePosition);
+  }
 
   @Test
   void getAzimuthTalon() {
