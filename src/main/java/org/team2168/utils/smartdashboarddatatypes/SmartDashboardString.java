@@ -6,8 +6,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * SmartDashboardString is a helper class for getting values from Smart Dashboard
  */
 public class SmartDashboardString extends SmartDashboardObject<String> {
-    private String key;
-
     public SmartDashboardString(String key, String value) {
         super(key, value);
     }

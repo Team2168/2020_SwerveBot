@@ -3,8 +3,6 @@ package org.team2168.utils.smartdashboarddatatypes;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SmartDashboardBoolean extends SmartDashboardObject<Boolean> {
-    private String key;
-
     public SmartDashboardBoolean(String key, Boolean value) {
         super(key, value);
     }
