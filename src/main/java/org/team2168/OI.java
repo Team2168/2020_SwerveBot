@@ -224,7 +224,7 @@ public class OI {
 
     driverJoystick.ButtonA().whenPressed(new RunFlashlight(1.0));
 		driverJoystick.ButtonA().whenReleased(new RunFlashlight(-0.5));
-		if (joystickChooser.getSelected().equals("flight") {
+		if (joystickChooser.getSelected().equals("flight")) {
 			driverJoystick.ButtonX().whileHeld(new DriveWithLimelight());
 		}
 		else {
