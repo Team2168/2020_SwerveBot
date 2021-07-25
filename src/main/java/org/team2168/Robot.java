@@ -230,8 +230,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Auto Chooser", autoChooser);
     autonomousCommand = (Command) autoChooser.getSelected();
 
-    // TODO: put this on a test joystick
-    if (oi.driverJoystick.isPressedButtonStart()) {
+    if (oi.testJoystick.isPressedButtonStart()) {
       dt.saveAzimuthPositions();
     }
   }
