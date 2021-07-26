@@ -105,11 +105,14 @@ public class Drivetrain extends Subsystem {
                 new AnalogInput(RobotMap.SWERVE_ENCODER_AI[i]), ABSOLUTE_ENCODER_INVERTED[i]);
             _wheels[i] = wheel;
 
+            // set the value of the internal encoder's current position to that of the external encoder,
+            // taking into account the gear ratio & difference in resolution, as well as the saved zero
+            Preferences prefs = Preferences.getInstance();
+            _wheels[i].setAzimuthZero(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
+
             SmartDashboard.putNumber("Abs position on init, module " + i, wheel.getAzimuthAbsolutePosition());
             SmartDashboard.putNumber("Internal position on init, module " + i, wheel.getAzimuthPosition());
         }
-        //initializeAzimuthPosition(); // set the value of the internal encoder's current position to that of the external encoder,
-                                     // taking into account the gear ratio & difference in resolution, as well as the saved zero
 
         SwerveDriveConfig config = new SwerveDriveConfig();
         config.wheels = _wheels;

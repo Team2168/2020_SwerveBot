@@ -186,9 +186,9 @@ public class Wheel {
     // Errors.check(err, logger);
     System.out.println("zero: " + zero);
     System.out.println("current pos: " + getAzimuthAbsolutePosition());
-    azimuthTalon.setSelectedSensorPosition(externalToInternalTicks(azimuthSetpoint), PRIMARY_PID, 10);
-    azimuthTalon.set(MotionMagic, azimuthSetpoint);
-    System.out.println("SETPOINT: " + azimuthSetpoint);
+    azimuthTalon.setSelectedSensorPosition(externalToInternalTicks(-azimuthSetpoint), PRIMARY_PID, 10);
+    azimuthTalon.set(MotionMagic, -azimuthSetpoint);
+    System.out.println("SETPOINT: " + -azimuthSetpoint);
   }
 
   /**
