@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * a normal double to avoid having to recompile to change a variable.
  */
 public class SmartDashboardDouble extends SmartDashboardObject<Double> {
-    private String key;
-
     public SmartDashboardDouble(String key, Double value) {
         super(key, value);
     }
