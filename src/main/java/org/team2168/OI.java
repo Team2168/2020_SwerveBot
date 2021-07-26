@@ -174,10 +174,8 @@ public class OI {
       buttonBox1.ButtonX().whenPressed(new BumpZeroShooterSpeed());
 
       buttonBox1.ButtonY().whenPressed(new DriveToXSpeed(Shooter.FiringLocation.BACK_TRENCH));
-      // buttonBox1.ButtonLeftBumper().whenPressed(new DriveHopperWithConstant(-1.0));// Temporary value
-      buttonBox1.ButtonLeftBumper().whenPressed(new DriveIndexerWithConstant(-1.0));
-      // buttonBox1.ButtonLeftBumper().whenReleased(new DriveHopperWithConstant(0.0));
-      buttonBox1.ButtonLeftBumper().whenReleased(new DriveIndexerWithConstant(0.0));
+      buttonBox1.ButtonLeftBumper().whenPressed(new DriveHopperWithConstant(-1.0));// Temporary value
+      buttonBox1.ButtonLeftBumper().whenReleased(new DriveHopperWithConstant(0.0));
       buttonBox1.ButtonRightBumper().whenPressed(new MoveToWallNoShoot());
       // buttonBox1.ButtonRightBumper().whenPressed(new DisengageColorWheel());
 
