@@ -268,8 +268,9 @@ public class OI {
     // testJoystick.ButtonStart().whenPressed(new DefaultTrenchAuto());
     // testJoystick.ButtonBack().whenPressed(new OppositeTrenchAuto());
 
-		testJoystick.ButtonBack().whenPressed(new ZeroGyro());
-    testJoystick.ButtonStart().whenPressed(new ZeroEncoders());
+	// for zeroing while the robot is enabled
+	// testJoystick.ButtonBack().whenPressed(new ZeroGyro());
+    // testJoystick.ButtonStart().whenPressed(new ZeroEncoders());
 
     testJoystick.ButtonX().whenPressed(new ResetClimberPosition());
     testJoystick.ButtonY().whenPressed(new PrepareToClimb());
