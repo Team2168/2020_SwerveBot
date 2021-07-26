@@ -133,6 +133,14 @@ public class Robot extends TimedRobot {
       SmartDashboard.putNumber("Module heading in degrees " + i, Wheel.ticksToDegreesAzimuth(dt.getWheels()[i].getInternalEncoderPos()));
       SmartDashboard.putNumber("Speed of wheel " + i, Wheel.TicksPer100msToFPSDW(dt.getWheels()[i].geDWSpeed()));
     }
+
+    // zeroing on test joystick
+    if (oi.testJoystick.isPressedButtonStart()) {
+      dt.saveAzimuthPositions();
+    }
+    if (oi.testJoystick.isPressedButtonBack()) {
+      dt.zeroGyro();
+    }
   }
 
   /** Adds autos to the selector
@@ -229,11 +237,6 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
     autonomousCommand = (Command) autoChooser.getSelected();
-
-    // TODO: put this on a test joystick
-    if (oi.driverJoystick.isPressedButtonStart()) {
-      dt.saveAzimuthPositions();
-    }
   }
 
   /**
