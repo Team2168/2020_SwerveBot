@@ -7,8 +7,9 @@
 
 package org.team2168;
 
-import org.team2168.commands.drivetrain.DoNothing;
-import org.team2168.commands.drivetrain.SwerveDriveTestsPathCommandGroup;
+import org.team2168.commands.auto.DoNothing;
+import org.team2168.commands.auto.SwerveDriveTestsPathCommandGroup;
+import org.team2168.commands.auto.DriveStraight;
 import org.team2168.commands.hood_adjust.MoveToFiringLocation;
 import org.team2168.subsystems.Climber;
 import org.team2168.subsystems.Drivetrain;
@@ -147,7 +148,8 @@ public class Robot extends TimedRobot {
    */
   public void autoSelectInit() {
     autoChooser.setDefaultOption("Do Nothing", new DoNothing());
-    autoChooser.addOption("Drive Straight", new SwerveDriveTestsPathCommandGroup());
+    autoChooser.addOption("Test Command", new SwerveDriveTestsPathCommandGroup());
+    autoChooser.addOption("Drive Straight", new DriveStraight());
     // autoChooser.setDefaultOption("Drive Straight", new DriveXDistance(60.0));
     // autoChooser.addOption("Near Trench Auto ", new NearTrenchAuto());
     // autoChooser.addOption("Opposite Trench Auto", new OppositeTrenchAuto());
