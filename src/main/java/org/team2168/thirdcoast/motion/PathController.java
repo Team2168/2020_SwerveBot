@@ -96,7 +96,7 @@ public class PathController implements Runnable {
 
         double currentAngle = DRIVE.getHeading();
         setpoint = new Setpoint(currentAngle, yawDelta, percentToDone);
-
+        System.out.println("iteration, forward, strafe, yaw, segmentVelocity, setpointVelocity");
         logInit();
         state = States.RUNNING;
         break;
@@ -131,7 +131,7 @@ public class PathController implements Runnable {
         yaw = yawError * yawKp;
 
         if (forward > 1d || strafe > 1d) logger.warn("forward = {} strafe = {}", forward, strafe);
-        // System.out.println(iteration + "," + forward + "," + strafe + "," + yaw + "," + segmentVelocity + "," + setpointVelocity);
+        System.out.println(iteration + "," + forward + "," + strafe + "," + yaw + "," + segmentVelocity + "," + setpointVelocity);
         DRIVE.drive(forward, strafe, yaw);
         SmartDashboard.putNumber("Auto commanded fwd speed normalized", forward);
         SmartDashboard.putNumber("Auto commanded fwd speed FPS", forward * maxVelocityFtSec);
