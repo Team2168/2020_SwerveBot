@@ -29,7 +29,7 @@ public class PathController implements Runnable {
 
   private static final double MIN_VEL = 0.0; // 0.07 x max motor output
   //private static final double MIN_START = 0.2; // 0.07 x max motor output
-  private static final double MIN_START = 1.0;
+  private static final double MIN_START = 1.0/12.0; // ft/s
   //  private static final double RATE_CAP = 0.35;
   //  private static final RateLimit rateLimit = new RateLimit(0.015);
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -86,7 +86,7 @@ public class PathController implements Runnable {
       case STARTING:
         logState();
         double ticksPerSecMax = Wheel.getDriveSetpointMax() * 10.0;
-        maxVelocityFtSec = ticksPerSecMax / TICKS_PER_FOOT;
+        maxVelocityFtSec = ticksPerSecMax / TICKS_PER_FOOT; //~15.8 ft/s
         iteration = 0;
         DRIVE.setDriveMode(SwerveDrive.DriveMode.CLOSED_LOOP);
 
@@ -131,11 +131,11 @@ public class PathController implements Runnable {
         yaw = yawError * yawKp;
 
         if (forward > 1d || strafe > 1d) logger.warn("forward = {} strafe = {}", forward, strafe);
-
+        // System.out.println(iteration + "," + forward + "," + strafe + "," + yaw + "," + segmentVelocity + "," + setpointVelocity);
         DRIVE.drive(forward, strafe, yaw);
         SmartDashboard.putNumber("Auto commanded fwd speed normalized", forward);
         SmartDashboard.putNumber("Auto commanded fwd speed FPS", forward * maxVelocityFtSec);
-        
+
         iteration++;
         break;
       case STOPPING:
