@@ -2,9 +2,9 @@
   "lengthUnit": "Foot",
   "timeStep": 0.02,
   "maxVelocity": 15.0,
-  "maxAcceleration": 1.0,
-  "maxJerk": 2.0,
+  "maxAcceleration": 15.0,
+  "maxJerk": 20.0,
   "wheelBase": 0.0,
-  "gameName": "2021 Skills Challenge",
+  "gameName": "Infinite Recharge",
   "outputDir": "../src/main/deploy/paths"
 }
