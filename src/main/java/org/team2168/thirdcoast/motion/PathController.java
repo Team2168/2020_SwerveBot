@@ -133,7 +133,7 @@ public class PathController implements Runnable {
         if (forward > 1d || strafe > 1d) logger.warn("forward = {} strafe = {}", forward, strafe);
 
         DRIVE.drive(forward, strafe, yaw);
-        System.out.println(iteration + "," + forward + "," + strafe + "," + yaw + "," + segmentVelocity + "," + setpointVelocity);
+        //System.out.println(iteration + "," + forward + "," + strafe + "," + yaw + "," + segmentVelocity + "," + setpointVelocity);
         SmartDashboard.putNumber("Auto commanded fwd speed normalized", forward);
         SmartDashboard.putNumber("Auto commanded fwd speed FPS", forward * maxVelocityFtSec);
         

@@ -9,11 +9,13 @@ package org.team2168.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class DoNothing extends CommandGroup {
+public class AutoNavSlalom extends CommandGroup {
   /**
-   * Does nothing
+   * AutoNav path 2: Slalom
    */
-  public DoNothing() {
-    // does nothing lol
+  public AutoNavSlalom() {
+    addSequential(new PathCommand("slalom1", 0));
+    addSequential(new PathCommand("slalom2", 0));
+    addSequential(new PathCommand("slalom3", 0));
   }
 }

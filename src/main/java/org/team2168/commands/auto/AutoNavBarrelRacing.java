@@ -5,15 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.team2168.commands.drivetrain;
+package org.team2168.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class DoNothing extends CommandGroup {
+public class AutoNavBarrelRacing extends CommandGroup {
   /**
-   * Does nothing
+   * AutoNav path 1: Barrel Racing
    */
-  public DoNothing() {
-    // does nothing lol
+  public AutoNavBarrelRacing() {
+    addSequential(new PathCommand("barrel-racing", 0));
   }
 }

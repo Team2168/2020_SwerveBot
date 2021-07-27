@@ -3,8 +3,8 @@ package org.team2168.subsystems;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -17,7 +17,7 @@ import org.team2168.thirdcoast.swerve.*;
 
 public class Drivetrain extends Subsystem {
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
-    private final boolean[] DRIVE_INVERTED = {false, false, false, false};
+    private final boolean[] DRIVE_INVERTED = {false , false, false, false};
     private final boolean[] ABSOLUTE_ENCODER_INVERTED = {false, false, false, false};
     private SwerveDrive _sd;
     private final boolean ENABLE_CURRENT_LIMIT = true;
@@ -86,15 +86,15 @@ public class Drivetrain extends Subsystem {
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
 
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
-            TalonFX azimuthTalon = new TalonFX(RobotMap.AZIMUTH_TALON_ID[i]);
+            WPI_TalonFX azimuthTalon = new WPI_TalonFX(RobotMap.AZIMUTH_TALON_ID[i]);
             azimuthTalon.configFactoryDefault();
             azimuthTalon.setInverted(false);
             azimuthTalon.setSensorPhase(false);
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
             azimuthTalon.setNeutralMode(NeutralMode.Coast);
-
-            TalonFX driveTalon = new TalonFX(RobotMap.DRIVE_TALON_ID[i]);
+            
+            WPI_TalonFX driveTalon = new WPI_TalonFX(RobotMap.DRIVE_TALON_ID[i]);
             driveTalon.configFactoryDefault();
             driveTalon.setInverted(DRIVE_INVERTED[i]);
             driveTalon.configAllSettings(driveConfig);

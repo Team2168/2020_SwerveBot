@@ -9,11 +9,11 @@ package org.team2168.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class DoNothing extends CommandGroup {
+public class GalacticSearchARed extends CommandGroup {
   /**
-   * Does nothing
+   * The Galactic Search A: Red path
    */
-  public DoNothing() {
-    // does nothing lol
+  public GalacticSearchARed() {
+    addSequential(new PathCommand("gs-a-red", 0));
   }
 }
