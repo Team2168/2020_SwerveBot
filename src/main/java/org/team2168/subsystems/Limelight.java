@@ -25,11 +25,14 @@ public class Limelight extends Subsystem {
   private static LimelightSensor limelight;
   private static Limelight _instance = null;
 
-  private static final int PIPELINE_FORWARD_BLUE = 0;
-  private static final int PIPELINE_FORWARD_RED = 2;
-  private static final int PIPELINE_BACK_TRENCH_BLUE = 1;
-  private static final int PIPELINE_BACK_TRENCH_RED = 3;
-  private static final int PIPELINE_DRIVER_VIEW = 4;
+  /* Public so they can be used elsewhere; idk if this is good design but I need it for right now because
+  not every ll pipeline is correlated to a shooter speed anymore and I don't want to overhaul the whole subsystem :/ */
+  public static final int PIPELINE_FORWARD_BLUE = 0;
+  public static final int PIPELINE_FORWARD_RED = 2;
+  public static final int PIPELINE_BACK_TRENCH_BLUE = 1;
+  public static final int PIPELINE_BACK_TRENCH_RED = 3;
+  public static final int PIPELINE_DRIVER_VIEW = 4;
+  public static final int PIPELINE_DRIVE_WITH_LIMELIGHT = 9;
 
 
 
@@ -39,7 +42,7 @@ public class Limelight extends Subsystem {
     //set up limelight
     limelight = new LimelightSensor();
     limelight.setCamMode(0);
-    limelight.setPipeline(PIPELINE_DRIVER_VIEW);
+    limelight.setPipeline(PIPELINE_DRIVE_WITH_LIMELIGHT);
     isLimelightEnabled = false;
   }
 
@@ -53,10 +56,12 @@ public class Limelight extends Subsystem {
     return _instance;
   }
 
+  // TODO ambiguous name; should be more explicit, like getXOffset
   public double getPosition() {
     return limelight.getPos();
   }
 
+  // TODO unbind setting pipeline from setting the shooter speed :/
   public void enableLimelight(FiringLocation firingLocation) {
     limelight.setCamMode(0);
     limelight.setLedMode(0);
@@ -120,6 +125,21 @@ public class Limelight extends Subsystem {
     isLimelightEnabled = true;
   }
 
+  public void setPipeline(int pipeline) {
+    limelight.setPipeline(pipeline);
+  }
+
+  public int getPipeline() {
+    return limelight.getPipeline();
+  }
+
+  // TODO strange hack; remove once pipeline setting is fixed
+  public void setToDriveWithLimelight() {
+    limelight.setLedMode(0);
+    limelight.setCamMode(0);
+    setPipeline(PIPELINE_DRIVE_WITH_LIMELIGHT);
+  }
+
   public void pauseLimelight()
   {
     limelight.setCamMode(1);
@@ -150,6 +170,6 @@ public class Limelight extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
-    setDefaultCommand(new UpdatePipeline());
+    // setDefaultCommand(new UpdatePipeline());
   }
 }

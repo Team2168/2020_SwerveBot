@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 
@@ -47,6 +48,7 @@ class WheelTest {
     Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
     int encoderStartingPosition = (int) Math.round(startPosition * INTERNAL_ENCODER_TICKS_PER_REV);
     when(azimuthTalon.getSelectedSensorPosition(0)).thenReturn((double) encoderStartingPosition);
+    wheel.setDriveMode(DriveMode.TELEOP);
     wheel.set(setpoint, 1.0);
 
     ArgumentCaptor<Double> argument = ArgumentCaptor.forClass(Double.class);
@@ -58,19 +60,26 @@ class WheelTest {
   @Test
   void zeroDriveLeavesAzimuthAlone() {
     Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
+    wheel.setDriveMode(DriveMode.TELEOP);
     wheel.set(0d, 0d);
-    // We are currently setting the control mode to velocity from the
-    // `setDriveMode(DriveMode.AZIMUTH);`  call in the Wheel constructor,
-    // should probably remove that, and just add to auto init or something.
     verify(driveTalon).set(PercentOutput, 0d);
     verify(azimuthTalon, never()).set((ControlMode) any(), anyDouble());
+  }
+
+  @Test
+  void zeroDriveMovesAzimuthInTestMode() {
+    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
+    wheel.setDriveMode(DriveMode.MANUAL_AZIMUTH_TEST);
+    wheel.set(0d, 0d);
+    verify(driveTalon).set(PercentOutput, 0d);
+    verify(azimuthTalon, times(1)).set((ControlMode) any(), anyDouble());
   }
 
   @Test
   void setAzimuthPosition() {
     Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
     wheel.setAzimuthPosition(2767);
-    verify(azimuthTalon).set(MotionMagic, 2767);
+    verify(azimuthTalon).set(MotionMagic, (int) (2767/AZIMUTH_GEAR_RATIO));
   }
 
   @Test
@@ -104,24 +113,35 @@ class WheelTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"0, 2767, -2767"})
+  @CsvSource({"0, 2767, -2767, false", "4095, 20, 4075, false", "2168, 4095, -1927, false",
+              "0, 2767, -2767, true", "4095, 20, -4115, true", "2168, 4095, -6263, true",
+              "0, -2767, 2767, true", "4095, -20, -4075, true", "2168, -4095, 1927, true"})
   void setAzimuthZero(
-      int encoderPosition, int zero, int setpoint, @Mock TalonFXSensorCollection sensorCollection) {
-    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
-    when(azimuthTalon.getSelectedSensorPosition(1)).thenReturn((double) encoderPosition);
-    when(azimuthTalon.getSensorCollection()).thenReturn(sensorCollection);
+      int encoderPosition, int zero, int setpoint, boolean absoluteEncoderInverted, @Mock TalonFXSensorCollection sensorCollection) {
+    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, absoluteEncoderInverted);
+    // when(azimuthTalon.getSelectedSensorPosition(1)).thenReturn((double) encoderPosition);
+    // when(azimuthTalon.getSensorCollection()).thenReturn(sensorCollection);
+    when(externalEncoder.getValue()).thenReturn(encoderPosition);
 
     wheel.setAzimuthZero(zero);
+    setpoint = setpoint * (int)(AZIMUTH_GEAR_RATIO / 2);
     verify(azimuthTalon).setSelectedSensorPosition(setpoint, 0, 10);
   }
 
+  /**
+   * The AnalogInput channel used to wire in the external encoder should return a
+   * 12 bit number (value 0 - 4095).
+   */
+
   @ParameterizedTest
-  @CsvSource({"2048, 2048", "6144, 2048", "63488, 2048", "-1045504, 3072"})
-  void getAzimuthAbsolutePosition(
-      int encoderPosition, int absolutePosition, @Mock TalonFXSensorCollection sensorCollection) {
-    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
-    when(azimuthTalon.getSelectedSensorPosition()).thenReturn((double) encoderPosition);
-    when(azimuthTalon.getSensorCollection()).thenReturn(sensorCollection);
+  @CsvSource({"0, 0, false", "2048, 2048, false", "4095, 4095, false",
+              "0, 0, true", "2048, -2048, true", "4095, -4095, true",})
+  void getAzimuthAbsolutePosition(Integer encoderPosition, int absolutePosition,
+      boolean inverted, @Mock TalonFXSensorCollection sensorCollection) {
+    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, inverted);
+    // when(azimuthTalon.getSelectedSensorPosition()).thenReturn((double) encoderPosition);
+    when(externalEncoder.getValue()).thenReturn(encoderPosition);
+    // when(azimuthTalon.getSensorCollection()).thenReturn(sensorCollection);
     assertThat(wheel.getAzimuthAbsolutePosition()).isEqualTo(absolutePosition);
   }
 
@@ -139,7 +159,7 @@ class WheelTest {
 
   // @Test
   // void getDriveSetpointMax() {
-  //   Wheel wheel = new Wheel(azimuthTalon, driveTalon, 2767.0);
+  //   Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
   //   assertThat(wheel.getDriveSetpointMax()).isEqualTo(2767.0);
   // }
 }

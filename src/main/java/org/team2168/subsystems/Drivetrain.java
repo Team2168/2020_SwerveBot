@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team2168.RobotMap;
 import org.team2168.commands.drivetrain.DriveWithJoystick;
 import org.team2168.thirdcoast.swerve.*;
+import org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode;
 
 public class Drivetrain extends Subsystem {
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
@@ -93,7 +94,7 @@ public class Drivetrain extends Subsystem {
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
             azimuthTalon.setNeutralMode(NeutralMode.Coast);
-            
+
             WPI_TalonFX driveTalon = new WPI_TalonFX(RobotMap.DRIVE_TALON_ID[i]);
             driveTalon.configFactoryDefault();
             driveTalon.setInverted(DRIVE_INVERTED[i]);
@@ -209,22 +210,26 @@ public class Drivetrain extends Subsystem {
      * taking difference in resolution and gear ratio into account, and then factors in the saved zero
      */
     public void initializeAzimuthPosition() {
-        int position;
-        Preferences prefs = Preferences.getInstance();
-        for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
-            position = _wheels[i].getAzimuthAbsolutePosition();
-            _wheels[i].setAzimuthInternalEncoderPosition(position - prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
-            System.out.println(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
-        }
+      int position;
+      Preferences prefs = Preferences.getInstance();
+      for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
+          position = _wheels[i].getAzimuthAbsolutePosition();
+          _wheels[i].setAzimuthInternalEncoderPosition(position - prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
+          System.out.println(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
+      }
     }
 
     public void setDriveMode(SwerveDrive.DriveMode mode) {
-        _sd.setDriveMode(mode);
-      }
+      _sd.setDriveMode(mode);
+    }
+
+    public DriveMode getDriveMode() {
+      return _sd.getDriveMode();
+    }
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new DriveWithJoystick());
+      setDefaultCommand(new DriveWithJoystick());
     }
 
 }

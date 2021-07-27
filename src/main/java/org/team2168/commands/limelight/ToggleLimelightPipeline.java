@@ -5,58 +5,54 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.team2168.commands.drivetrain;
+package org.team2168.commands.limelight;
 
-import org.team2168.subsystems.Drivetrain;
-import org.team2168.thirdcoast.swerve.SwerveDrive;
-import org.team2168.thirdcoast.swerve.Wheel;
-import org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode;
+import org.team2168.subsystems.Limelight;
 
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class DriveAzimuthWithConstant extends Command {
-  private Drivetrain dt;
-  DriveMode lastMode;
-
-  public DriveAzimuthWithConstant() {
-    dt = Drivetrain.getInstance();
-    requires(dt);
+public class ToggleLimelightPipeline extends Command {
+  private Limelight lime;
+  private int pipeline;
+  private boolean isFinished = false;
+  public ToggleLimelightPipeline(int pipeline) {
+    lime = Limelight.getInstance();
+    this.pipeline = pipeline;
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    requires(lime);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    SmartDashboard.putNumber("Azimuth 0", 0.0);
-    lastMode = dt.getDriveMode();
-    dt.setDriveMode(DriveMode.MANUAL_AZIMUTH_TEST);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double percent = SmartDashboard.getNumber("Azimuth 0", 0.0) / 360;
-    dt.getWheels()[0].set(percent, 0.0);
-    SmartDashboard.putNumber("Desired position", Wheel.externalToInternalTicks(Preferences.getInstance().getInt(SwerveDrive.getPreferenceKeyForWheel(0), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET)) + Wheel.degreesToTicksAzimuth(SmartDashboard.getNumber("Azimuth 0", 0.0)));
+    if (lime.getPipeline() == pipeline) {
+      lime.pauseLimelight();
+    } else {
+      lime.setPipeline(pipeline);
+      isFinished = true; // so that it continues execution and isn't overriden by the default command
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return isFinished;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    dt.setDriveMode(lastMode);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

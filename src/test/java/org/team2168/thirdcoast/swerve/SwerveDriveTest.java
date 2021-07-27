@@ -31,6 +31,8 @@ class SwerveDriveTest {
 
     @BeforeEach
     void setUp() {
+      config.width = 1.0;
+      config.length = 1.0;
       wheels = new Wheel[] {wheel0, wheel1, wheel2, wheel3};
       config.wheels = wheels;
       when(gyro.getState()).thenReturn(PigeonState.Ready);

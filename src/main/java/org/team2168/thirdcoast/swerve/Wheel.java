@@ -57,6 +57,7 @@ public class Wheel {
   private static final int PRIMARY_PID = 0;
   private static final int AUX_PID = 1; //the auxiliary pid loop on the CTRE motor controllers
   private AnalogInput externalEncoder;
+  private DriveMode driveMode;
 
   /**
    * This constructs a wheel with supplied azimuth and drive talons.
@@ -89,11 +90,12 @@ public class Wheel {
    * @param drive 0 to 1.0 in the direction of the wheel azimuth
    */
   public void set(double azimuth, double drive) {
-    // don't reset wheel azimuth direction to zero when returning to neutral
-    // if (drive == 0) {
-    //   driver.accept(0d);
-    //   return;
-    // }
+    // don't reset wheel azimuth direction to zero when returning to neutral speed
+    // unless we're trying to test the modules in the MANUAL_AZIMUTH_TEST mode
+    if (drive == 0 && driveMode != DriveMode.MANUAL_AZIMUTH_TEST) {
+      driver.accept(0d);
+      return;
+    }
     azimuth *= -INTERNAL_ENCODER_TICKS_PER_REV; // flip azimuth, hardware configuration dependent
 
     double azimuthPosition = azimuthTalon.getSelectedSensorPosition(PRIMARY_PID);
@@ -146,7 +148,10 @@ public class Wheel {
    * @param driveMode the desired drive mode
    */
   public void setDriveMode(DriveMode driveMode) {
-    switch (driveMode) {
+    this.driveMode = driveMode;
+
+    switch (this.driveMode) {
+      case MANUAL_AZIMUTH_TEST:
       case OPEN_LOOP:
       case TELEOP:
         driver = (setpoint) -> driveTalon.set(PercentOutput, setpoint);
@@ -157,6 +162,10 @@ public class Wheel {
         driver = (setpoint) -> driveTalon.set(Velocity, setpoint * DRIVE_SETPOINT_MAX);
         break;
     }
+  }
+
+  public DriveMode getDriveMode() {
+    return driveMode;
   }
 
   /**
