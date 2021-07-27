@@ -222,7 +222,12 @@ public class OI {
 
     driverJoystick.ButtonA().whenPressed(new RunFlashlight(1.0));
 		driverJoystick.ButtonA().whenReleased(new RunFlashlight(-0.5));
-	driverJoystick.ButtonX().whileHeld(new DriveWithLimelight());
+		if (joystickChooser.getSelected().equals("flight")) {
+			driverJoystick.ButtonX().whileHeld(new DriveWithLimelight());
+		}
+		else {
+			driverJoystick.ButtonRightBumper().whileHeld(new DriveWithLimelight());
+		}
 
     //When the red button on the handle of the controller is pressed get ready to go under the trench. Lower everything.
     // driverJoystick.ButtonLeftBumper().whileHeld(new DisengageColorWheel());
