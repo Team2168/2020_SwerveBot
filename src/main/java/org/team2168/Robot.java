@@ -144,15 +144,10 @@ public class Robot extends TimedRobot {
   /** Adds autos to the selector
    */
   public void autoSelectInit() {
-    autoChooser.setDefaultOption("Do Nothing", new DoNothing());
-    autoChooser.addOption("Drive Straight", new SwerveDriveTestsPathCommandGroup());
-    autoChooser.addOption("Galactic Search A Red", new GalacticSearchARed());
-    autoChooser.addOption("Galactic Search A Blue", new GalacticSearchABlue());
-    autoChooser.addOption("Galactic Search B Red", new GalacticSearchBRed());
-    autoChooser.addOption("Galactic Search B Blue", new GalacticSearchBBlue());
-    autoChooser.addOption("AutoNav Barrel Racing", new AutoNavBarrelRacing());
-    autoChooser.addOption("AutoNav Slalom", new AutoNavSlalom());
-    autoChooser.addOption("AutoNav Bounce", new AutoNavBounce());
+    autoChooser.addOption("Do Nothing", new DoNothing());
+    autoChooser.setDefaultOption("manual_Straight 4ft", new AutoStraightManualSegment());
+    autoChooser.addOption("drive straight 10ft fast", new SwerveDriveTestsPathCommandGroup());
+    autoChooser.addOption("opponents trench segment", new OpponentsTrench());
   }
 
   /**
