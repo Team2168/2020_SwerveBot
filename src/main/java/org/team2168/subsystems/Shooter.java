@@ -162,17 +162,17 @@ public class Shooter extends Subsystem {
          */
         // _motorOne.setSensorPhase(true);
 
-        if(Robot.isPracticeBot()) {
+        // if(Robot.isPracticeBot()) {
             _wallVel = WALL_VEL_PBOT;
             _whiteLineVel = WHITE_LINE_VEL_PBOT;
             _frontTrenchVel = FRONT_TRENCH_VEL_PBOT;
             _backTrenchVel = BACK_TRENCH_VEL_PBOT;
-        } else {
-            _wallVel = WALL_VEL;
-            _whiteLineVel = WHITE_LINE_VEL;
-            _frontTrenchVel = FRONT_TRENCH_VEL;
-            _backTrenchVel = BACK_TRENCH_VEL;
-        }
+        // } else {
+        //     _wallVel = WALL_VEL;
+        //     _whiteLineVel = WHITE_LINE_VEL;
+        //     _frontTrenchVel = FRONT_TRENCH_VEL;
+        //     _backTrenchVel = BACK_TRENCH_VEL;
+        // }
 
         _firingLocation = FiringLocation.WALL;
 

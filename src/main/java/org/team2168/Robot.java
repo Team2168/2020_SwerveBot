@@ -144,6 +144,7 @@ public class Robot extends TimedRobot {
     autoChooser.setDefaultOption("manual_Straight 4ft", new AutoStraightManualSegment());
     autoChooser.addOption("drive straight 10ft fast", new SwerveDriveTestsPathCommandGroup());
     autoChooser.addOption("opponents trench segment", new OpponentsTrench());
+    autoChooser.addOption("Yeehaw Auto", new YeehawAuto());
   }
 
   /**

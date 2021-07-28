@@ -329,10 +329,10 @@ public class OI {
 	 * @return a value from -0.5 to 0.5
 	 */
 	public double getDriverJoystickZValue() {
-		if (joystickChooser.getSelected().equals("flight"))
+		// if (joystickChooser.getSelected().equals("flight"))
 			return driverFlightStickZInterpolator.interpolate(driverJoystick.getRawAxis(2));
-		else
-			return driverJoystickZInterpolator.interpolate(driverJoystick.getRightStickRaw_X());
+		// else
+			// return driverJoystickZInterpolator.interpolate(driverJoystick.getRightStickRaw_X());
 	}
 
   public double getColorWheelJoystick() {

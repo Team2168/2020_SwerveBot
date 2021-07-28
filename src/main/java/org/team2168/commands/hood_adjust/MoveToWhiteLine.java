@@ -12,7 +12,6 @@ import org.team2168.commands.auto.Sleep;
 import org.team2168.commands.shooter.DriveToXSpeed;
 import org.team2168.subsystems.HoodAdjust;
 import org.team2168.subsystems.HoodAdjust.HoodPosition;
-import org.team2168.subsystems.Shooter.FiringLocation;
 import org.team2168.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -49,7 +48,7 @@ HoodAdjust pos = HoodAdjust.getInstance();
     // }
 
     //updated---allows for any possible position, allows retract pancake under load;
-    addParallel(new DriveToXSpeed(FiringLocation.WHITE_LINE));
+    addParallel(new DriveToXSpeed(Shooter.FiringLocation.WHITE_LINE));
     
     addSequential(new RetractShooterHardstop());
     addSequential(new Sleep(), 0.1);
