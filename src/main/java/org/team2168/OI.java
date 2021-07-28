@@ -3,6 +3,8 @@ package org.team2168;
 
 import org.team2168.commands.auto.robotFunctions.FinishFiring;
 import org.team2168.commands.auto.robotFunctions.FireBalls;
+import org.team2168.commands.auto.robotFunctions.FireBallsAuto;
+import org.team2168.commands.auto.robotFunctions.FireSingleBall;
 import org.team2168.commands.climber.Climb;
 import org.team2168.commands.climber.DisengageRatchet;
 import org.team2168.commands.climber.DriveClimberWithTestJoystickUnSafe;
@@ -288,7 +290,12 @@ public class OI {
     testJoystick.ButtonDownDPad().whenPressed(new DisengageRatchet());
 
     climberResetInterpolator = new LinearInterpolator(climberResetArray);
-    testJoystick.ButtonRightStick().whenPressed(new DriveClimberWithTestJoystickUnSafe());
+		testJoystick.ButtonRightStick().whenPressed(new DriveClimberWithTestJoystickUnSafe());
+		
+		testJoystick.ButtonLeftBumper().whenPressed(new FireBalls());
+		testJoystick.ButtonLeftBumper().whenReleased(new FinishFiring());
+		testJoystick.ButtonRightBumper().whenPressed(new FireSingleBall());
+		testJoystick.ButtonRightBumper().whenReleased(new FinishFiring());
 
     // testJoystick.ButtonB().whenPressed(new FireBalls());
     // testJoystick.ButtonB().whenReleased(new FinishFiring());
