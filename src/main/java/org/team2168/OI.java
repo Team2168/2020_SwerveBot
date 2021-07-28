@@ -3,7 +3,6 @@ package org.team2168;
 
 import org.team2168.commands.auto.robotFunctions.FinishFiring;
 import org.team2168.commands.auto.robotFunctions.FireBalls;
-import org.team2168.commands.auto.robotFunctions.FireBallsAuto;
 import org.team2168.commands.auto.robotFunctions.FireSingleBall;
 import org.team2168.commands.climber.Climb;
 import org.team2168.commands.climber.DisengageRatchet;
@@ -12,7 +11,6 @@ import org.team2168.commands.climber.EngageRatchet;
 import org.team2168.commands.climber.PrepareToClimb;
 import org.team2168.commands.climber.ResetClimberPosition;
 import org.team2168.commands.drivetrain.DriveWithConstant;
-import org.team2168.commands.drivetrain.ZeroEncoders;
 import org.team2168.commands.drivetrain.ZeroGyro;
 import org.team2168.commands.flashlight.RunFlashlight;
 import org.team2168.commands.hood_adjust.MoveToBackTrench;
@@ -23,7 +21,6 @@ import org.team2168.commands.hood_adjust.MoveToWall;
 import org.team2168.commands.hood_adjust.MoveToWallNoShoot;
 import org.team2168.commands.hood_adjust.MoveToWhiteLine;
 import org.team2168.commands.hopper.DriveHopperWithConstant;
-import org.team2168.commands.indexer.DriveIndexerWithConstant;
 import org.team2168.commands.intakeMotor.DriveIntakeWithConstant;
 import org.team2168.commands.intakeMotor.IntakeBallStart;
 import org.team2168.commands.intakeMotor.IntakeBallStop;
@@ -292,10 +289,10 @@ public class OI {
     climberResetInterpolator = new LinearInterpolator(climberResetArray);
 		testJoystick.ButtonRightStick().whenPressed(new DriveClimberWithTestJoystickUnSafe());
 		
-		testJoystick.ButtonLeftBumper().whenPressed(new FireBalls());
-		testJoystick.ButtonLeftBumper().whenReleased(new FinishFiring());
-		testJoystick.ButtonRightBumper().whenPressed(new FireSingleBall());
-		testJoystick.ButtonRightBumper().whenReleased(new FinishFiring());
+		// testJoystick.ButtonLeftBumper().whenPressed(new FireBalls());
+		// testJoystick.ButtonLeftBumper().whenReleased(new FinishFiring());
+		testJoystick.ButtonRightBumper().whileHeld(new FireSingleBall());
+		// testJoystick.ButtonRightBumper().whenReleased(new FinishFiring());
 
     // testJoystick.ButtonB().whenPressed(new FireBalls());
     // testJoystick.ButtonB().whenReleased(new FinishFiring());

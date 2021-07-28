@@ -39,5 +39,6 @@ public class FireSingleBall extends CommandGroup {
     addParallel(new DriveHopperWithConstant(1.0));
     addSequential(new DriveUntilBall(1.0));
     addSequential(new DriveUntilNoBall(1.0));
+    addSequential(new DriveHopperWithConstant(0), 0.1);
   }
 }
