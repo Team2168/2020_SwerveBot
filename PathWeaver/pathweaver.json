@@ -5,6 +5,6 @@
   "maxAcceleration": 10.0,
   "maxJerk": 2.0,
   "wheelBase": 0.0,
-  "gameName": "Infinite Recharge",
+  "gameName": "2021 Infinite Recharge",
   "outputDir": "../src/main/deploy/paths"
 }
