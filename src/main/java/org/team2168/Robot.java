@@ -17,13 +17,13 @@ import org.team2168.subsystems.Indexer;
 import org.team2168.subsystems.IntakeMotor;
 import org.team2168.subsystems.IntakePivot;
 import org.team2168.subsystems.Limelight;
+import org.team2168.subsystems.PBotJumper;
 import org.team2168.subsystems.Shooter;
 import org.team2168.thirdcoast.swerve.SwerveDrive.DriveMode;
 import org.team2168.utils.consoleprinter.ConsolePrinter;
 import org.team2168.thirdcoast.swerve.Wheel;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -45,8 +45,6 @@ public class Robot extends TimedRobot {
   private final SendableChooser<Command> autoChooser = new SendableChooser<Command>();
   public static int pushRobot;
   public static SendableChooser<Number> pushRobotChooser;
-  private static DigitalInput practiceBot;
-
   // Subsystems
   private static Climber climber;
   private static IntakeMotor intakeMotor;
@@ -77,8 +75,6 @@ public class Robot extends TimedRobot {
     ConsolePrinter.setRate(20);
 
     autoSelectInit();
-
-    practiceBot = new DigitalInput(RobotMap.PRACTICE_BOT_JUMPER);
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
     SmartDashboard.putString("Control Mode", "Joystick");
@@ -302,8 +298,7 @@ public class Robot extends TimedRobot {
    * TODO return jumper value from DIO 24
    */
   public static boolean isPracticeBot() {
-    // return true;
-    return !practiceBot.get();
+    return !PBotJumper.getInstance().get();
   }
 
   public static boolean isAutoMode() {
