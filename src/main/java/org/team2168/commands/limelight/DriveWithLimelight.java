@@ -22,7 +22,6 @@ public class DriveWithLimelight extends Command {
   public static final double DEADZONE = 0.40;
 
   private static final boolean useNTValues = false; // used for debugging because pid tuning is painful and compile-test-compile is stupid for 3 constants
-  
 
   private PIDController pid;
   private Drivetrain dt;
@@ -33,9 +32,19 @@ public class DriveWithLimelight extends Command {
   private SmartDashboardDouble i;
   private SmartDashboardDouble d;
 
-  public DriveWithLimelight() {
+  private double angularOffset = 0.0;
+
+  /**
+   *
+   * @param offset the angular position offset (degrees) from the limelights reported angle
+   *    to target reported by the getPosition() method. Positive values are clockwise.
+   *    Dumb way to handle when the center of the target isn't what you want to aim for
+   *    due to parallax of a goal with depth.
+   */
+  public DriveWithLimelight(double offset) {
     dt = Drivetrain.getInstance();
     lime = Limelight.getInstance();
+    angularOffset = offset;
 
     p = new SmartDashboardDouble("turn_limelight_P", P);
     i = new SmartDashboardDouble("turn_limelight_I", I);
@@ -45,6 +54,10 @@ public class DriveWithLimelight extends Command {
     // eg. requires(chassis);
     requires(dt);
     requires(lime);
+  }
+
+  public DriveWithLimelight() {
+    this(0.0);
   }
 
   // Called just before this Command runs the first time
@@ -66,12 +79,17 @@ public class DriveWithLimelight extends Command {
     double error = lime.getPosition();
     SmartDashboard.putNumber("Limelight Error", error);
     double steering_adjust = 0.0;
+
+    //Optionally set through constructor. Add in a fixed offset from the LL's
+    // reported target center.
+    error = error - angularOffset;
+
     if (error < -DEADZONE) {
       steering_adjust = pid.calculate(error) - MINIMUM_COMMAND;
     } else if (error > DEADZONE) {
       steering_adjust = pid.calculate(error) + MINIMUM_COMMAND;
     }
-// 
+
     // dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), -steering_adjust);
     dt.drive(0.0, 0.0, -steering_adjust);
   }
@@ -80,8 +98,6 @@ public class DriveWithLimelight extends Command {
   @Override
   protected boolean isFinished() {
     return Math.abs(lime.getPosition()) < DEADZONE;
-    
-    // return false;
   }
 
   // Called once after isFinished returns true
