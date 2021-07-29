@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<Command> autoChooser = new SendableChooser<Command>();
   public static int pushRobot;
   public static SendableChooser<Number> pushRobotChooser;
-  private static DigitalInput practiceBot;
+  private static DigitalInput practiceBot = new DigitalInput(RobotMap.PRACTICE_BOT_JUMPER);
 
   // Subsystems
   private static Climber climber;
@@ -73,12 +73,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // ConsolePrinter.init();
-    // ConsolePrinter.setRate(20);
-
-    autoSelectInit();
-
-    practiceBot = new DigitalInput(RobotMap.PRACTICE_BOT_JUMPER);
+    ConsolePrinter.init();
+    ConsolePrinter.setRate(20);
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
     SmartDashboard.putString("Control Mode", "Joystick");
