@@ -34,7 +34,7 @@ public class OppositeTrenchAutoNoPush extends CommandGroup {
 
     // stop intake and fire balls
     //addParallel(new IntakeBallStop());
-    addSequential(new FireBallsAuto(5), 2.0);
+    addSequential(new FireBallsAuto(5), 4.0);
     addSequential(new DriveHopperWithConstant(0.0), 0.1);
     addSequential(new DriveIntakeWithConstant(0.0), 0.0);
   }

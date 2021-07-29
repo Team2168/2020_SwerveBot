@@ -38,7 +38,7 @@ public class FiringRunHopperIntake extends CommandGroup {
     // arm.
     addSequential(new Sleep(), 0.1);
     addSequential(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
-    addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED_SLOW));
+    addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED));
 
   }
 }
