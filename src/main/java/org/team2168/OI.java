@@ -3,6 +3,7 @@ package org.team2168;
 
 import org.team2168.commands.auto.robotFunctions.FinishFiring;
 import org.team2168.commands.auto.robotFunctions.FireBalls;
+import org.team2168.commands.auto.robotFunctions.FireSingleBall;
 import org.team2168.commands.climber.Climb;
 import org.team2168.commands.climber.DisengageRatchet;
 import org.team2168.commands.climber.DriveClimberWithTestJoystickUnSafe;
@@ -10,7 +11,6 @@ import org.team2168.commands.climber.EngageRatchet;
 import org.team2168.commands.climber.PrepareToClimb;
 import org.team2168.commands.climber.ResetClimberPosition;
 import org.team2168.commands.drivetrain.DriveWithConstant;
-import org.team2168.commands.drivetrain.ZeroEncoders;
 import org.team2168.commands.drivetrain.ZeroGyro;
 import org.team2168.commands.flashlight.RunFlashlight;
 import org.team2168.commands.hood_adjust.MoveToBackTrench;
@@ -21,7 +21,6 @@ import org.team2168.commands.hood_adjust.MoveToWall;
 import org.team2168.commands.hood_adjust.MoveToWallNoShoot;
 import org.team2168.commands.hood_adjust.MoveToWhiteLine;
 import org.team2168.commands.hopper.DriveHopperWithConstant;
-import org.team2168.commands.indexer.DriveIndexerWithConstant;
 import org.team2168.commands.intakeMotor.DriveIntakeWithConstant;
 import org.team2168.commands.intakeMotor.IntakeBallStart;
 import org.team2168.commands.intakeMotor.IntakeBallStop;
@@ -222,11 +221,17 @@ public class OI {
 
     driverJoystick.ButtonA().whenPressed(new RunFlashlight(1.0));
 		driverJoystick.ButtonA().whenReleased(new RunFlashlight(-0.5));
-	driverJoystick.ButtonX().whileHeld(new DriveWithLimelight());
+		if (joystickChooser.getSelected().equals("flight")) {
+			driverJoystick.ButtonX().whileHeld(new DriveWithLimelight());
+		}
+		else {
+			driverJoystick.ButtonRightBumper().whileHeld(new DriveWithLimelight());
+		}
 
     //When the red button on the handle of the controller is pressed get ready to go under the trench. Lower everything.
     // driverJoystick.ButtonLeftBumper().whileHeld(new DisengageColorWheel());
-		driverJoystick.ButtonLeftBumper().whenPressed(new MoveToFiringLocation(Shooter.FiringLocation.WALL));
+    driverJoystick.ButtonLeftBumper().whenPressed(new MoveToFiringLocation(Shooter.FiringLocation.WALL));
+    driverJoystick.ButtonBack().whenPressed(new ZeroGyro()); //button 7 on flight stick, Back on F310
 
     /*************************************************************************
      * Operator Joystick *
@@ -266,23 +271,28 @@ public class OI {
     // testJoystick.ButtonStart().whenPressed(new DefaultTrenchAuto());
     // testJoystick.ButtonBack().whenPressed(new OppositeTrenchAuto());
 
-	// for zeroing while the robot is enabled
-	// testJoystick.ButtonBack().whenPressed(new ZeroGyro());
+  	// for zeroing while the robot is enabled
+	  // testJoystick.ButtonBack().whenPressed(new ZeroGyro());
     // testJoystick.ButtonStart().whenPressed(new ZeroEncoders());
 
     testJoystick.ButtonX().whenPressed(new ResetClimberPosition());
     testJoystick.ButtonY().whenPressed(new PrepareToClimb());
-	testJoystick.ButtonA().whenPressed(new Climb());
+    testJoystick.ButtonA().whenPressed(new Climb());
 
-	testJoystick.ButtonB().whenPressed(new ToggleLimelightPipeline(Limelight.PIPELINE_DRIVE_WITH_LIMELIGHT));
-	testJoystick.ButtonLeftDPad().whileHeld(new DriveWithConstant(0.0, 0.0, -0.08));
-	testJoystick.ButtonRightDPad().whileHeld(new DriveWithConstant(0.0, 0.0, 0.08));
+    testJoystick.ButtonB().whenPressed(new ToggleLimelightPipeline(Limelight.PIPELINE_DRIVE_WITH_LIMELIGHT));
+    testJoystick.ButtonLeftDPad().whileHeld(new DriveWithConstant(0.0, 0.0, -0.08));
+    testJoystick.ButtonRightDPad().whileHeld(new DriveWithConstant(0.0, 0.0, 0.08));
 
     testJoystick.ButtonUpDPad().whenPressed(new EngageRatchet());
     testJoystick.ButtonDownDPad().whenPressed(new DisengageRatchet());
 
     climberResetInterpolator = new LinearInterpolator(climberResetArray);
-    testJoystick.ButtonRightStick().whenPressed(new DriveClimberWithTestJoystickUnSafe());
+		testJoystick.ButtonRightStick().whenPressed(new DriveClimberWithTestJoystickUnSafe());
+		
+		// testJoystick.ButtonLeftBumper().whenPressed(new FireBalls());
+		// testJoystick.ButtonLeftBumper().whenReleased(new FinishFiring());
+		testJoystick.ButtonRightBumper().whileHeld(new FireSingleBall());
+		// testJoystick.ButtonRightBumper().whenReleased(new FinishFiring());
 
     // testJoystick.ButtonB().whenPressed(new FireBalls());
     // testJoystick.ButtonB().whenReleased(new FinishFiring());
@@ -373,7 +383,7 @@ public class OI {
 
 	/**
 		 * Balancer joystick value
-		 * 
+		 *
 		 * @return
 		 */
 		public double getBalancerJoystickValue()
