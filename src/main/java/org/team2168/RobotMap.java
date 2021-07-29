@@ -100,7 +100,7 @@ public class RobotMap {
 
 
 	// Relay Channels///////////////////////////////////////////////////////////
-
+  public static final int LED_RELAY_CHANNEL = 3;
 
 	/******************************************************************
 	 *                         Lights I2C                             *
