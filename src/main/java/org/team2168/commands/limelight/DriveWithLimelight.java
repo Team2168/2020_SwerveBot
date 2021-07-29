@@ -31,8 +31,14 @@ public class DriveWithLimelight extends Command {
   private SmartDashboardDouble p;
   private SmartDashboardDouble i;
   private SmartDashboardDouble d;
+  private boolean useJoystick;
 
   public DriveWithLimelight() {
+    this(false);
+  }
+  
+  public DriveWithLimelight(boolean useJoystick) {
+    this.useJoystick = useJoystick;
     dt = Drivetrain.getInstance();
     lime = Limelight.getInstance();
 
@@ -70,8 +76,10 @@ public class DriveWithLimelight extends Command {
       steering_adjust = pid.calculate(error) + MINIMUM_COMMAND;
     }
 // 
-    // dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), -steering_adjust);
-    dt.drive(0.0, 0.0, -steering_adjust);
+    if (useJoystick)
+      dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), -steering_adjust);
+    else
+      dt.drive(0.0, 0.0, -steering_adjust);
   }
 
   // Make this return true when this Command no longer needs to run execute()
