@@ -26,10 +26,10 @@ public class OppositeTrenchAutoNoPush extends CommandGroup {
     // start intake and drive to trench
     addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED));
     addParallel(new ExtendIntakePneumatic());
-    addSequential(new PathCommand("to_trench", 0.0));
+    addSequential(new PathCommand("to_opposite_trench", 0.0));
 
     // drive to shooting location
-    addSequential(new PathCommand("trench_to_shoot", 20.0));
+    addSequential(new PathCommand("opposite_trench_to_shoot", 20.0));
     addSequential(new DriveWithLimelight(), 5.0);
 
     // stop intake and fire balls
