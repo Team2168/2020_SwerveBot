@@ -5,19 +5,14 @@
 package org.team2168.commands.auto;
 
 import org.team2168.RobotMap;
-import org.team2168.commands.auto.robotFunctions.FireBalls;
 import org.team2168.commands.auto.robotFunctions.FireBallsAuto;
 import org.team2168.commands.hood_adjust.MoveToWhiteLine;
 import org.team2168.commands.hopper.DriveHopperWithConstant;
-import org.team2168.commands.indexer.DriveIndexerWithConstant;
 import org.team2168.commands.intakeMotor.DriveIntakeWithConstant;
 import org.team2168.commands.intakeMotor.IntakeBallStart;
 import org.team2168.commands.intakeMotor.IntakeBallStop;
 import org.team2168.commands.intakePivot.ExtendIntakePneumatic;
 import org.team2168.commands.limelight.DriveWithLimelight;
-import org.team2168.commands.shooter.DriveToXSpeed;
-import org.team2168.commands.shooter.WaitForShooterAtSpeed;
-import org.team2168.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
