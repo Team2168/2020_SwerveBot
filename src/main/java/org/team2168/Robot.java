@@ -148,11 +148,11 @@ public class Robot extends TimedRobot {
   /** Adds autos to the selector
    */
   public void autoSelectInit() {
-    autoChooser.addOption("Do Nothing", new DoNothing());
+    autoChooser.setDefaultOption("Do Nothing", new DoNothing());
     autoChooser.addOption("manual_Straight 4ft", new AutoStraightManualSegment());
     autoChooser.addOption("drive straight 10ft fast", new SwerveDriveTestsPathCommandGroup());
     autoChooser.addOption("opponents trench segment", new OpponentsTrench());
-    autoChooser.setDefaultOption("Opposite Trench (No Push)", new OppositeTrenchAutoNoPush());
+    autoChooser.addOption("Opposite Trench (No Push)", new OppositeTrenchAutoNoPush());
   }
 
   /**
