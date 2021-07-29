@@ -6,6 +6,7 @@ package org.team2168.commands.auto;
 
 import org.team2168.RobotMap;
 import org.team2168.commands.auto.robotFunctions.FireBallsAuto;
+import org.team2168.commands.hood_adjust.MoveToFrontTrench;
 import org.team2168.commands.hood_adjust.MoveToWhiteLine;
 import org.team2168.commands.hopper.DriveHopperWithConstant;
 import org.team2168.commands.intakeMotor.DriveIntakeWithConstant;
@@ -20,7 +21,7 @@ public class OppositeTrenchAutoNoPush extends CommandGroup {
   /** A recreation of an auto done by Team 9889 at the Texas Cup*/
   public OppositeTrenchAutoNoPush() {
     // start shooter
-    addParallel(new MoveToWhiteLine());
+    addParallel(new MoveToFrontTrench());
 
     // start intake and drive to trench
     addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED));
