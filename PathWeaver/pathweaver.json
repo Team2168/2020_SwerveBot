@@ -1,9 +1,9 @@
 {
   "lengthUnit": "Foot",
   "timeStep": 0.02,
-  "maxVelocity": 15.0,
-  "maxAcceleration": 10.0,
-  "maxJerk": 2.0,
+  "maxVelocity": 10.0,
+  "maxAcceleration": 4.0,
+  "maxJerk": 1.5,
   "wheelBase": 0.0,
   "gameName": "2021 Infinite Recharge",
   "outputDir": "../src/main/deploy/paths"
