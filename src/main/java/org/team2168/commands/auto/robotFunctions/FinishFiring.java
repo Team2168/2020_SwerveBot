@@ -7,6 +7,7 @@
 
 package org.team2168.commands.auto.robotFunctions;
 
+import org.team2168.RobotMap;
 import org.team2168.commands.hopper.DriveHopperWithConstant;
 import org.team2168.commands.indexer.DriveIndexerWithConstant;
 import org.team2168.commands.intakeMotor.DriveIntakeWithConstant;
@@ -36,7 +37,7 @@ public class FinishFiring extends CommandGroup {
     // arm.
 
     addParallel(new DriveIntakeWithConstant(0.0));
-    addParallel(new DriveIndexerWithConstant(1.0));
+    addParallel(new DriveIndexerWithConstant(RobotMap.INDEXER_SPEED));
     addSequential(new DriveHopperWithConstant(0.0), 0.5);
     addSequential(new DriveIndexerWithConstant(0.0));
   }

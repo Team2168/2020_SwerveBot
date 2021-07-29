@@ -9,11 +9,11 @@ package org.team2168.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class GalacticSearchABlue extends CommandGroup {
+public class AutoStraightManualSegment extends CommandGroup {
   /**
-   * The Galactic Search A: Blue path
+   * Manual Straight path
    */
-  public GalacticSearchABlue() {
-    addSequential(new PathCommand("gs-a-blue", 0));
+  public AutoStraightManualSegment() {
+    addSequential(new PathCommand("manual_path_straight", 0));
   }
 }

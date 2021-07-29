@@ -7,7 +7,9 @@
 
 package org.team2168.commands.auto.robotFunctions;
 
+import org.team2168.RobotMap;
 import org.team2168.commands.auto.Sleep;
+import org.team2168.commands.hopper.DriveHopperWithConstant;
 // import org.team2168.commands.hopper.DriveHopperWithConstant;
 import org.team2168.commands.intakeMotor.DriveIntakeWithConstant;
 
@@ -35,8 +37,8 @@ public class FiringRunHopperIntake extends CommandGroup {
     // a CommandGroup containing them would require both the chassis and the
     // arm.
     addSequential(new Sleep(), 0.1);
-    // addSequential(new DriveHopperWithConstant(0.9));
-    addParallel(new DriveIntakeWithConstant(0.2));
+    addSequential(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
+    addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED_SLOW));
 
   }
 }

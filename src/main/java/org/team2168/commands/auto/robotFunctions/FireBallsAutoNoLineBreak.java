@@ -7,6 +7,7 @@
 
 package org.team2168.commands.auto.robotFunctions;
 
+import org.team2168.RobotMap;
 // import org.team2168.commands.hopper.DriveHopperWithConstant;
 import org.team2168.commands.indexer.DriveIndexerWithConstant;
 import org.team2168.commands.indexer.DriveIndexerWithConstantNoStop;
@@ -38,9 +39,9 @@ public class FireBallsAutoNoLineBreak extends CommandGroup {
     // arm.
 
     addSequential(new WaitForShooterAtSpeed());
-    addSequential(new DriveIndexerWithConstantNoStop(1.0), 0.1);
-    addParallel(new DriveIndexerWithConstant(1.0));
+    addSequential(new DriveIndexerWithConstantNoStop(RobotMap.INDEXER_SPEED), 0.1);
+    addParallel(new DriveIndexerWithConstant(RobotMap.INDEXER_SPEED));
     // addParallel(new DriveHopperWithConstant(0.9));
-    addParallel(new DriveIntakeWithConstant(0.2));
+    addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED_SLOW));
   }
 }

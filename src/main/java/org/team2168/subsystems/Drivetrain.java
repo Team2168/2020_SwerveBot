@@ -72,7 +72,7 @@ public class Drivetrain extends Subsystem {
         azimuthConfig.motionAcceleration = Wheel.DPSToTicksPer100msAzimuth(7000); // 10_000;
         azimuthConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msAzimuth(700); // 800;
         driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
-        driveConfig.slot0.kP = 0.05;
+        driveConfig.slot0.kP = 0.35; //0.05
         driveConfig.slot0.kI = 0.0005;
         driveConfig.slot0.kD = 0.0;
         driveConfig.slot0.kF = 0.032;  // TODO: tune these

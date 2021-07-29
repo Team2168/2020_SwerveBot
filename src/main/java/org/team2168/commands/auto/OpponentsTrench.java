@@ -9,11 +9,11 @@ package org.team2168.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class AutoNavBarrelRacing extends CommandGroup {
+public class OpponentsTrench extends CommandGroup {
   /**
-   * AutoNav path 1: Barrel Racing
+   * Run path from opposite trench run to near firing location
    */
-  public AutoNavBarrelRacing() {
-    addSequential(new PathCommand("barrel-racing", 0));
+  public OpponentsTrench() {
+    addSequential(new PathCommand("opponents_trench", 0));
   }
 }

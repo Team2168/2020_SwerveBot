@@ -29,7 +29,7 @@ public class PathController implements Runnable {
 
   private static final double MIN_VEL = 0.0; // 0.07 x max motor output
   //private static final double MIN_START = 0.2; // 0.07 x max motor output
-  private static final double MIN_START = 1.0;
+  private static final double MIN_START = 1.0/12.0; // ft/s
   //  private static final double RATE_CAP = 0.35;
   //  private static final RateLimit rateLimit = new RateLimit(0.015);
   private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -51,7 +51,12 @@ public class PathController implements Runnable {
   private double forward;
   private double strafe;
 
-
+ /**
+  * 
+  * @param pathName
+  * @param yawDelta in degrees, positive being clockwise
+  * @param isDriftOut
+  */
   public PathController(String pathName, double yawDelta, boolean isDriftOut) {
     this.yawDelta = yawDelta;
     this.isDriftOut = isDriftOut;
@@ -86,7 +91,7 @@ public class PathController implements Runnable {
       case STARTING:
         logState();
         double ticksPerSecMax = Wheel.getDriveSetpointMax() * 10.0;
-        maxVelocityFtSec = ticksPerSecMax / TICKS_PER_FOOT;
+        maxVelocityFtSec = ticksPerSecMax / TICKS_PER_FOOT; //~15.8 ft/s
         iteration = 0;
         DRIVE.setDriveMode(SwerveDrive.DriveMode.CLOSED_LOOP);
 

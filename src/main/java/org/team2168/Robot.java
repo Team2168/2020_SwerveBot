@@ -73,8 +73,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    ConsolePrinter.init();
-    ConsolePrinter.setRate(20);
+    // ConsolePrinter.init();
+    // ConsolePrinter.setRate(20);
 
     autoSelectInit();
 
@@ -102,21 +102,21 @@ public class Robot extends TimedRobot {
     pushRobotSelectInit();
     autoSelectInit();
 
-    ConsolePrinter.putBoolean("isPracticeBot", ()->{return isPracticeBot();}, true, false);
-    // SmartDashboard.putData("Push Robot Chooser", pushRobotChooser);
-    ConsolePrinter.putString("AutoName", () -> {return Robot.getAutoName();}, true, false);
+    // ConsolePrinter.putBoolean("isPracticeBot", ()->{return isPracticeBot();}, true, false);
+    // // SmartDashboard.putData("Push Robot Chooser", pushRobotChooser);
+    // ConsolePrinter.putString("AutoName", () -> {return Robot.getAutoName();}, true, false);
 
-    ConsolePrinter.putNumber("Actual yaw 0", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[0].getInternalEncoderPos());}, false, true);
-    ConsolePrinter.putNumber("Actual speed 0", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[0].getDWSpeed());}, false, true);
-    ConsolePrinter.putNumber("Actual yaw 1", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[1].getInternalEncoderPos());}, false, true);
-    ConsolePrinter.putNumber("Actual speed 1", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[1].getDWSpeed());}, false, true);
-    ConsolePrinter.putNumber("Actual yaw 2", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[2].getInternalEncoderPos());}, false, true);
-    ConsolePrinter.putNumber("Actual speed 2", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[2].getDWSpeed());}, false, true);
-    ConsolePrinter.putNumber("Actual yaw 3", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[3].getInternalEncoderPos());}, false, true);
-    ConsolePrinter.putNumber("Actual speed 3", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[3].getDWSpeed());}, false, true);
-    ConsolePrinter.putNumber("Gyro heading", () -> {return dt.getHeading();}, false, true);
+    // ConsolePrinter.putNumber("Actual yaw 0", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[0].getInternalEncoderPos());}, false, true);
+    // ConsolePrinter.putNumber("Actual speed 0", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[0].getDWSpeed());}, false, true);
+    // ConsolePrinter.putNumber("Actual yaw 1", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[1].getInternalEncoderPos());}, false, true);
+    // ConsolePrinter.putNumber("Actual speed 1", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[1].getDWSpeed());}, false, true);
+    // ConsolePrinter.putNumber("Actual yaw 2", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[2].getInternalEncoderPos());}, false, true);
+    // ConsolePrinter.putNumber("Actual speed 2", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[2].getDWSpeed());}, false, true);
+    // ConsolePrinter.putNumber("Actual yaw 3", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[3].getInternalEncoderPos());}, false, true);
+    // ConsolePrinter.putNumber("Actual speed 3", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[3].getDWSpeed());}, false, true);
+    // ConsolePrinter.putNumber("Gyro heading", () -> {return dt.getHeading();}, false, true);
 
-    ConsolePrinter.startThread();
+    //ConsolePrinter.startThread();
     // drivetrain.setDefaultBrakeMode();
   }
 
@@ -156,7 +156,7 @@ public class Robot extends TimedRobot {
     autoChooser.setDefaultOption("manual_Straight 4ft", new AutoStraightManualSegment());
     autoChooser.addOption("drive straight 10ft fast", new SwerveDriveTestsPathCommandGroup());
     autoChooser.addOption("opponents trench segment", new OpponentsTrench());
-    autoChooser.addOption("Yeehaw Auto", new YeehawAuto());
+    autoChooser.addOption("Opposite Trench (No Push)", new OppositeTrenchAutoNoPush());
   }
 
   /**
@@ -306,7 +306,6 @@ public class Robot extends TimedRobot {
    * TODO return jumper value from DIO 24
    */
   public static boolean isPracticeBot() {
-    // return true;
     return !practiceBot.get();
   }
 

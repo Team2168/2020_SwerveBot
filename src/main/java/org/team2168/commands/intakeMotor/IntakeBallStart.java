@@ -7,7 +7,7 @@
 
 package org.team2168.commands.intakeMotor;
 
-import org.team2168.commands.auto.Sleep;
+import org.team2168.RobotMap;
 import org.team2168.commands.intakePivot.ExtendIntakePneumatic;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -15,8 +15,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class IntakeBallStart extends CommandGroup {
   
   public IntakeBallStart() {
-    addParallel(new DriveIntakeWithConstant(0.95));//TODO set
+    addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED));
     addSequential(new ExtendIntakePneumatic());
-    addSequential(new Sleep(), 0.0);
   }
 }

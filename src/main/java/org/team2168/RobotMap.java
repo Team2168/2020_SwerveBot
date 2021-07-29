@@ -117,4 +117,15 @@ public class RobotMap {
 	 *                         PBOT DIFFERENCES  PARAMETERS                  *
 	 *************************************************************************/
 
+	 
+	/*************************************************************************
+	 *                      				   SPEEDS              							    *
+	 *************************************************************************/
+	public static final double HOPPER_SPEED = 0.7;
+	public static final double INDEXER_SPEED = 1.0;
+	public static final double INTAKE_SPEED = 1.0;
+	public static final double INTAKE_SPEED_SLOW = 0.2;
+	public static final double SHOOTER_SPEED = 1.0;
+
+
 }

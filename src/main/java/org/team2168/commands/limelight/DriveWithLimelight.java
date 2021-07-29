@@ -13,12 +13,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.controller.PIDController;
 
 public class DriveWithLimelight extends Command {
-  private static final double P = 0.035;
-  private static final double I = 0.98;  // I don't think there's a reason there would be steady-state error - nothing is resisting the setpoint
-  private static final double D = 0.0038;
+  public static final double P = 0.035;
+  public static final double I = 0.98;  // I don't think there's a reason there would be steady-state error - nothing is resisting the setpoint
+  public static final double D = 0.0038;
   private static final double MINIMUM_COMMAND = 0.05;
-  private static final double MAX_INTEGRATOR = 0.1;
-  private static final double DEADZONE = 0.40;
+  public static final double MAX_INTEGRATOR = 0.1;
+  public static final double DEADZONE = 0.40;
 
   private static final boolean useNTValues = false; // used for debugging because pid tuning is painful and compile-test-compile is stupid for 3 constants
   
