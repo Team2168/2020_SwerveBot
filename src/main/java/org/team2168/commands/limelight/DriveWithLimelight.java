@@ -11,9 +11,10 @@ import org.team2168.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveWithLimelight extends Command {
-  public static final double P = 0.035;
+  public static final double P = 0.025;
   public static final double I = 0.98;  // I don't think there's a reason there would be steady-state error - nothing is resisting the setpoint
   public static final double D = 0.0038;
   private static final double MINIMUM_COMMAND = 0.05;
@@ -63,6 +64,7 @@ public class DriveWithLimelight extends Command {
   @Override
   protected void execute() {
     double error = lime.getPosition();
+    SmartDashboard.putNumber("Limelight Error", error);
     double steering_adjust = 0.0;
     if (error < -DEADZONE) {
       steering_adjust = pid.calculate(error) - MINIMUM_COMMAND;
@@ -77,7 +79,8 @@ public class DriveWithLimelight extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return pid.atSetpoint();
+    return Math.abs(lime.getPosition()) < DEADZONE;
+    
     // return false;
   }
 
