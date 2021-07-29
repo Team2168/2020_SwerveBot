@@ -7,7 +7,8 @@
 
 package org.team2168;
 
-import org.team2168.commands.auto.*;
+import org.team2168.commands.drivetrain.DoNothing;
+import org.team2168.commands.drivetrain.SwerveDriveTestsPathCommandGroup;
 import org.team2168.commands.hood_adjust.MoveToFiringLocation;
 import org.team2168.subsystems.Climber;
 import org.team2168.subsystems.Drivetrain;
@@ -55,12 +56,13 @@ public class Robot extends TimedRobot {
   private static Indexer indexer;
   private static Shooter shooter;
   private static HoodAdjust hoodAdjust;
-  private static Drivetrain dt;
+  private static Drivetrain drivetrain;
   private static Limelight limelight;
   private static Compressor compressor;
   private static Hopper hopper;
   private static Relay toggleLEDs;
 
+  private static Drivetrain dt;
   private static OI oi;
 
   static boolean autoMode;
@@ -76,7 +78,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     ConsolePrinter.init();
-    ConsolePrinter.setRate(20);
 
     autoSelectInit();
 
@@ -96,30 +97,24 @@ public class Robot extends TimedRobot {
     shooter = Shooter.getInstance();
     hoodAdjust = HoodAdjust.getInstance();
     hopper = Hopper.getInstance();
+    drivetrain = Drivetrain.getInstance();
     limelight = Limelight.getInstance();
     compressor = new Compressor();
     toggleLEDs = new Relay(RobotMap.LED_RELAY_CHANNEL);
 
     oi = OI.getInstance();
 
+    ConsolePrinter.init();
+    ConsolePrinter.startThread();
+
     pushRobotSelectInit();
     autoSelectInit();
 
     ConsolePrinter.putBoolean("isPracticeBot", ()->{return isPracticeBot();}, true, false);
+    SmartDashboard.putData("Autonomous Mode Chooser", autoChooser);
     // SmartDashboard.putData("Push Robot Chooser", pushRobotChooser);
     ConsolePrinter.putString("AutoName", () -> {return Robot.getAutoName();}, true, false);
 
-    ConsolePrinter.putNumber("Actual yaw 0", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[0].getInternalEncoderPos());}, false, true);
-    ConsolePrinter.putNumber("Actual speed 0", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[0].getDWSpeed());}, false, true);
-    ConsolePrinter.putNumber("Actual yaw 1", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[1].getInternalEncoderPos());}, false, true);
-    ConsolePrinter.putNumber("Actual speed 1", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[1].getDWSpeed());}, false, true);
-    ConsolePrinter.putNumber("Actual yaw 2", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[2].getInternalEncoderPos());}, false, true);
-    ConsolePrinter.putNumber("Actual speed 2", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[2].getDWSpeed());}, false, true);
-    ConsolePrinter.putNumber("Actual yaw 3", () -> {return Wheel.ticksToDegreesAzimuth(dt.getWheels()[3].getInternalEncoderPos());}, false, true);
-    ConsolePrinter.putNumber("Actual speed 3", () -> {return Wheel.TicksPer100msToFPSDW(dt.getWheels()[3].getDWSpeed());}, false, true);
-    ConsolePrinter.putNumber("Gyro heading", () -> {return dt.getHeading();}, false, true);
-
-    ConsolePrinter.startThread();
     // drivetrain.setDefaultBrakeMode();
   }
 
@@ -139,18 +134,26 @@ public class Robot extends TimedRobot {
       SmartDashboard.putNumber("Int position module " + i, dt.getWheels()[i].getInternalEncoderPos());
       SmartDashboard.putNumber("Probably incorrect module heading in degrees " + i, Wheel.ticksToDegreesAzimuth(dt.getWheels()[i].getAzimuthPosition()));
       SmartDashboard.putNumber("Module heading in degrees " + i, Wheel.ticksToDegreesAzimuth(dt.getWheels()[i].getInternalEncoderPos()));
-      SmartDashboard.putNumber("Speed of wheel (FPS) " + i, Wheel.TicksPer100msToFPSDW(dt.getWheels()[i].getDWSpeed()));
-      SmartDashboard.putData(Scheduler.getInstance());
+      SmartDashboard.putNumber("Speed of wheel " + i, Wheel.TicksPer100msToFPSDW(dt.getWheels()[i].geDWSpeed()));
+    }
+
+    // zeroing on test joystick
+    if (oi.testJoystick.isPressedButtonStart()) {
+      dt.saveAzimuthPositions();
+    }
+    if (oi.testJoystick.isPressedButtonBack()) {
+      dt.zeroGyro();
     }
   }
 
   /** Adds autos to the selector
    */
   public void autoSelectInit() {
-    autoChooser.addOption("Do Nothing", new DoNothing());
-    autoChooser.setDefaultOption("manual_Straight 4ft", new AutoStraightManualSegment());
-    autoChooser.addOption("drive straight 10ft fast", new SwerveDriveTestsPathCommandGroup());
-    autoChooser.addOption("opponents trench segment", new OpponentsTrench());
+    autoChooser.setDefaultOption("Do Nothing", new DoNothing());
+    autoChooser.addOption("Drive Straight", new SwerveDriveTestsPathCommandGroup());
+    // autoChooser.setDefaultOption("Drive Straight", new DriveXDistance(60.0));
+    // autoChooser.addOption("Near Trench Auto ", new NearTrenchAuto());
+    // autoChooser.addOption("Opposite Trench Auto", new OppositeTrenchAuto());
   }
 
   /**
@@ -240,11 +243,6 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
     autonomousCommand = (Command) autoChooser.getSelected();
-
-    // TODO: put this on a test joystick
-    if (oi.driverJoystick.isPressedButtonStart()) {
-      dt.saveAzimuthPositions();
-    }
   }
 
   /**
