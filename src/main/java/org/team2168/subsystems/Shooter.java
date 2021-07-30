@@ -16,6 +16,7 @@ import org.team2168.RobotMap;
 import org.team2168.commands.shooter.DriveShooterWithJoystick;
 import org.team2168.utils.consoleprinter.ConsolePrinter;
 
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Shooter extends Subsystem {
@@ -96,7 +97,6 @@ public class Shooter extends Subsystem {
     private final double WHITE_LINE_VEL_PBOT = 2950.0;
     private final double FRONT_TRENCH_VEL_PBOT = 3350.0;
     private final double BACK_TRENCH_VEL_PBOT = 4500.0;
-
 
     private static double _wallVel;
     private static double _whiteLineVel;
@@ -182,7 +182,7 @@ public class Shooter extends Subsystem {
         ConsolePrinter.putNumber("Shooter Error", () -> {return getError();}, true, false);
         ConsolePrinter.putNumber("Shooter Motor Output Percent", () -> {return _motorOne.getMotorOutputPercent();}, true, false);
         ConsolePrinter.putNumber("Velocity Adjust", () -> {return velocityAdjustment;}, true, false);
-        ConsolePrinter.putBoolean("Shooter at speed", () -> {return (Math.abs(getError()) < 50.0);}, true, false);
+        ConsolePrinter.putBoolean("Shooter at speed", () -> {return optimalSpeed();}, true, false);
         //ConsolePrinter.putNumber("Shooter Setpoint", () -> {return ticks_per_100ms_to_revs_per_minute( _motorOne.getClosedLoopTarget());}, true, false);
     }
 
@@ -291,5 +291,13 @@ public class Shooter extends Subsystem {
 
     public void initDefaultCommand() {
         setDefaultCommand(new DriveShooterWithJoystick());
+    }
+
+    /**
+     *
+     * @return true if the shooter wheel is t its target speed +/- some tolerance
+     */
+    public boolean optimalSpeed(){
+      return (Math.abs(getError()) < 50.0);
     }
 }

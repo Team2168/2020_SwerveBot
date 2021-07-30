@@ -222,11 +222,17 @@ public class OI {
 
     driverJoystick.ButtonA().whenPressed(new RunFlashlight(1.0));
 		driverJoystick.ButtonA().whenReleased(new RunFlashlight(-0.5));
-	driverJoystick.ButtonX().whileHeld(new DriveWithLimelight());
+		if (joystickChooser.getSelected().equals("flight")) {
+			driverJoystick.ButtonX().whileHeld(new DriveWithLimelight());
+		}
+		else {
+			driverJoystick.ButtonRightBumper().whileHeld(new DriveWithLimelight());
+		}
 
     //When the red button on the handle of the controller is pressed get ready to go under the trench. Lower everything.
     // driverJoystick.ButtonLeftBumper().whileHeld(new DisengageColorWheel());
-		driverJoystick.ButtonLeftBumper().whenPressed(new MoveToFiringLocation(Shooter.FiringLocation.WALL));
+    driverJoystick.ButtonLeftBumper().whenPressed(new MoveToFiringLocation(Shooter.FiringLocation.WALL));
+    driverJoystick.ButtonBack().whenPressed(new ZeroGyro()); //button 7 on flight stick, Back on F310
 
     /*************************************************************************
      * Operator Joystick *
@@ -266,17 +272,17 @@ public class OI {
     // testJoystick.ButtonStart().whenPressed(new DefaultTrenchAuto());
     // testJoystick.ButtonBack().whenPressed(new OppositeTrenchAuto());
 
-	// for zeroing while the robot is enabled
-	// testJoystick.ButtonBack().whenPressed(new ZeroGyro());
+  	// for zeroing while the robot is enabled
+	  // testJoystick.ButtonBack().whenPressed(new ZeroGyro());
     // testJoystick.ButtonStart().whenPressed(new ZeroEncoders());
 
     testJoystick.ButtonX().whenPressed(new ResetClimberPosition());
     testJoystick.ButtonY().whenPressed(new PrepareToClimb());
-	testJoystick.ButtonA().whenPressed(new Climb());
+    testJoystick.ButtonA().whenPressed(new Climb());
 
-	testJoystick.ButtonB().whenPressed(new ToggleLimelightPipeline(Limelight.PIPELINE_DRIVE_WITH_LIMELIGHT));
-	testJoystick.ButtonLeftDPad().whileHeld(new DriveWithConstant(0.0, 0.0, -0.08));
-	testJoystick.ButtonRightDPad().whileHeld(new DriveWithConstant(0.0, 0.0, 0.08));
+    testJoystick.ButtonB().whenPressed(new ToggleLimelightPipeline(Limelight.PIPELINE_DRIVE_WITH_LIMELIGHT));
+    testJoystick.ButtonLeftDPad().whileHeld(new DriveWithConstant(0.0, 0.0, -0.08));
+    testJoystick.ButtonRightDPad().whileHeld(new DriveWithConstant(0.0, 0.0, 0.08));
 
     testJoystick.ButtonUpDPad().whenPressed(new EngageRatchet());
     testJoystick.ButtonDownDPad().whenPressed(new DisengageRatchet());
@@ -373,7 +379,7 @@ public class OI {
 
 	/**
 		 * Balancer joystick value
-		 * 
+		 *
 		 * @return
 		 */
 		public double getBalancerJoystickValue()
