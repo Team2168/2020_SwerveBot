@@ -11,6 +11,7 @@ import org.team2168.commands.climber.EngageRatchet;
 import org.team2168.commands.climber.PrepareToClimb;
 import org.team2168.commands.climber.ResetClimberPosition;
 import org.team2168.commands.drivetrain.DriveWithConstant;
+import org.team2168.commands.drivetrain.DriveWithFixedAzimuth;
 import org.team2168.commands.drivetrain.ZeroGyro;
 import org.team2168.commands.flashlight.RunFlashlight;
 import org.team2168.commands.hood_adjust.MoveToBackTrench;
@@ -40,6 +41,7 @@ import org.team2168.utils.LinearInterpolator;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -232,6 +234,11 @@ public class OI {
     // driverJoystick.ButtonLeftBumper().whileHeld(new DisengageColorWheel());
     driverJoystick.ButtonLeftBumper().whenPressed(new MoveToFiringLocation(Shooter.FiringLocation.WALL));
     driverJoystick.ButtonBack().whenPressed(new ZeroGyro()); //button 7 on flight stick, Back on F310
+
+    // Rotate the chassis to fixed headings while still allowing the operator o control x & y from sticks
+    new JoystickButton(driverJoystick, 10).whileHeld(new DriveWithFixedAzimuth(0.0, true)); // face shooter towards goal (button 10 on flight stick)
+    new JoystickButton(driverJoystick, 11).whileHeld(new DriveWithFixedAzimuth(90.0, true)); // face shooter towards right side of field (button 11 on flight stick)
+    new JoystickButton(driverJoystick, 9).whileHeld(new DriveWithFixedAzimuth(65.0, true)); // align for climb (button 9 on flight stick)
 
     /*************************************************************************
      * Operator Joystick *
