@@ -31,7 +31,7 @@ public class DriveWithLimelight extends Command {
   private SmartDashboardDouble p;
   private SmartDashboardDouble i;
   private SmartDashboardDouble d;
-
+  private boolean useJoystick;
   private double angularOffset = 0.0;
 
   /**
@@ -40,11 +40,14 @@ public class DriveWithLimelight extends Command {
    *    to target reported by the getPosition() method. Positive values are clockwise.
    *    Dumb way to handle when the center of the target isn't what you want to aim for
    *    due to parallax of a goal with depth.
+   * @param useJoystick true to allow driving the robot with the in X/Y while the limelight controls yaw,
+   *    otherwise sit still while rotating
    */
-  public DriveWithLimelight(double offset) {
+  public DriveWithLimelight(double offset, boolean useJoystick) {
     dt = Drivetrain.getInstance();
     lime = Limelight.getInstance();
     angularOffset = offset;
+    this.useJoystick = useJoystick;
 
     p = new SmartDashboardDouble("turn_limelight_P", P);
     i = new SmartDashboardDouble("turn_limelight_I", I);
@@ -56,8 +59,31 @@ public class DriveWithLimelight extends Command {
     requires(lime);
   }
 
+  /**
+   *
+   * @param offset the angular position offset (degrees) from the limelights reported angle
+   *    to target reported by the getPosition() method. Positive values are clockwise.
+   *    Dumb way to handle when the center of the target isn't what you want to aim for
+   *    due to parallax of a goal with depth.
+   */
+  public DriveWithLimelight(double offset) {
+    this(offset, false);
+  }
+
+  /**
+   *
+   * @param useJoystick true to allow driving the robot with the in X/Y while the limelight controls yaw,
+   *    otherwise sit still while rotating
+   */
+  public DriveWithLimelight(boolean useJoystick) {
+    this(0.0, useJoystick);
+  }
+
+  /**
+   * Sits still and rotates the chassis to center the limelight target in the cameras view.
+   */
   public DriveWithLimelight() {
-    this(0.0);
+    this(0.0, false);
   }
 
   // Called just before this Command runs the first time
@@ -89,9 +115,11 @@ public class DriveWithLimelight extends Command {
     } else if (error > DEADZONE) {
       steering_adjust = pid.calculate(error) + MINIMUM_COMMAND;
     }
-
-    // dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), -steering_adjust);
-    dt.drive(0.0, 0.0, -steering_adjust);
+//
+    if (useJoystick)
+      dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), -steering_adjust);
+    else
+      dt.drive(0.0, 0.0, -steering_adjust);
   }
 
   // Make this return true when this Command no longer needs to run execute()
