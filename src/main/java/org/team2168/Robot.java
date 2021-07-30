@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.Relay;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -59,6 +60,7 @@ public class Robot extends TimedRobot {
   private static Limelight limelight;
   private static Compressor compressor;
   private static Hopper hopper;
+  private static Relay toggleLEDs;
 
   private static Drivetrain dt;
   private static OI oi;
@@ -98,6 +100,7 @@ public class Robot extends TimedRobot {
     drivetrain = Drivetrain.getInstance();
     limelight = Limelight.getInstance();
     compressor = new Compressor();
+    toggleLEDs = new Relay(RobotMap.LED_RELAY_CHANNEL);
 
     oi = OI.getInstance();
 
@@ -181,6 +184,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     autoMode = true;
+    setShooterAtSpeedLEDs();
     Scheduler.getInstance().run();
   }
 
@@ -216,6 +220,8 @@ public class Robot extends TimedRobot {
     }
 
     lastCallHoodButtonA = buttonBox2_buttonA;
+
+    setShooterAtSpeedLEDs();
     Scheduler.getInstance().run();
   }
 
@@ -294,6 +300,16 @@ public class Robot extends TimedRobot {
         break;
     }
     return retVal;
+  }
+
+  public void setShooterAtSpeedLEDs() {
+    if (shooter.optimalSpeed()) {
+      // Turn on GREEN LEDs
+      toggleLEDs.set(Relay.Value.kForward);
+  } else {
+      //Turn on RED LEDs
+      toggleLEDs.set(Relay.Value.kReverse);
+    }
   }
 
   /**
