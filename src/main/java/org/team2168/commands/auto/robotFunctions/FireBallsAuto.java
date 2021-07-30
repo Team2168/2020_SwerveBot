@@ -8,6 +8,7 @@
 package org.team2168.commands.auto.robotFunctions;
 
 import org.team2168.RobotMap;
+import org.team2168.commands.hopper.DriveHopperWithConstant;
 // import org.team2168.commands.hopper.DriveHopperWithConstant;
 import org.team2168.commands.indexer.DriveIndexerWithConstant;
 import org.team2168.commands.indexer.DriveUntilBall;
@@ -39,14 +40,15 @@ public class FireBallsAuto extends CommandGroup {
     // a CommandGroup containing them would require both the chassis and the
     // arm.
     addSequential(new WaitForShooterAtSpeed());
-    addParallel(new FiringRunHopperIntake());
+    // addParallel(new FiringRunHopperIntake());
+    addParallel(new DriveHopperWithConstant(1.0));
     // addSequential(new WaitForLineBreaks(1.0, numBalls));
     for (int i = 0; i<numBalls; i++) {
       addSequential(new DriveUntilBall(RobotMap.INDEXER_SPEED));
       addSequential(new DriveUntilNoBall(RobotMap.INDEXER_SPEED));
     }
-    // addParallel(new DriveIndexerWithConstant(0.0), 0.0);
+    //addParallel(new DriveIndexerWithConstant(0.0), 0.0);
     // // addParallel(new DriveHopperWithConstant(0.0), 0.0);
-    // addParallel(new DriveIntakeWithConstant(0.0), 0.0);
+    //addParallel(new DriveIntakeWithConstant(0.0), 0.0);
   }
 }
