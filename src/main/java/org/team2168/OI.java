@@ -12,6 +12,7 @@ import org.team2168.commands.climber.PrepareToClimb;
 import org.team2168.commands.climber.ResetClimberPosition;
 import org.team2168.commands.drivetrain.DriveWithConstant;
 import org.team2168.commands.drivetrain.DriveWithFixedAzimuth;
+import org.team2168.commands.drivetrain.DriveWithJoystick;
 import org.team2168.commands.drivetrain.ZeroEncoders;
 import org.team2168.commands.drivetrain.ZeroGyro;
 import org.team2168.commands.flashlight.RunFlashlight;
@@ -237,9 +238,12 @@ public class OI {
     driverJoystick.ButtonBack().whenPressed(new ZeroGyro()); //button 7 on flight stick, Back on F310
 
     // Rotate the chassis to fixed headings while still allowing the operator o control x & y from sticks
-    new JoystickButton(driverJoystick, 12).whileHeld(new DriveWithFixedAzimuth(0.0, true)); // face shooter towards goal (button 12 on flight stick)
-    new JoystickButton(driverJoystick, 11).whileHeld(new DriveWithFixedAzimuth(90.0, true)); // face shooter towards right side of field (button 11 on flight stick)
-    new JoystickButton(driverJoystick, 9).whileHeld(new DriveWithFixedAzimuth(65.0, true)); // align for climb (button 9 on flight stick)
+    new JoystickButton(driverJoystick, 12).whenPressed(new DriveWithFixedAzimuth(0.0, true)); // face shooter towards goal (button 12 on flight stick)
+    new JoystickButton(driverJoystick, 12).whenReleased(new DriveWithJoystick());
+    new JoystickButton(driverJoystick, 11).whenPressed(new DriveWithFixedAzimuth(90.0, true)); // face shooter towards right side of field (button 11 on flight stick)
+    new JoystickButton(driverJoystick, 11).whenReleased(new DriveWithJoystick());
+    new JoystickButton(driverJoystick, 9).whenPressed(new DriveWithFixedAzimuth(65.0, true)); // align for climb (button 9 on flight stick)
+    new JoystickButton(driverJoystick, 9).whenReleased(new DriveWithJoystick());
 
     /*************************************************************************
      * Operator Joystick *
