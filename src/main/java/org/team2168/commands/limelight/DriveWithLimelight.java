@@ -89,7 +89,7 @@ public class DriveWithLimelight extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    lime.setToDriveWithLimelight();
+    lime.enableLimelight();
     if (useNTValues)
       pid = new PIDController(p.get(), i.get(), d.get());
     else
@@ -125,14 +125,17 @@ public class DriveWithLimelight extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Math.abs(lime.getPosition()) < DEADZONE;
+    return (Math.abs(lime.getPosition()) < DEADZONE) && !useJoystick; 
+    /* Don't finish if using a joystick, because this command is bound to a button hold.
+    * The command would start again and immediately exit, and because the limelight is enabled & disabled at
+    * the beginning and end of the command, the limelight toggles to be rate limited.
+    */
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    // lime.pauseLimelight();
-    lime.setLedMode(1);
+    lime.pauseLimelight();
   }
 
   // Called when another command which requires one or more of the same

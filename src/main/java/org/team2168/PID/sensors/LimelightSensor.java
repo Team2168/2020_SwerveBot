@@ -154,7 +154,14 @@ public class LimelightSensor implements PIDSensorInterface
         
     }
 
-    public void setCamMode(int camModeNumber)
+    /**
+     * Sets the limelight camera mode
+     * @param camModeNumber an integer for the camera mode
+     * <ul>
+     *  <li>0 - Vision processing </li>
+     *  <li>1 - Driver camera (More exposure, no vision processing)</li>
+     */
+    private void setCamMode(int camModeNumber)
     {
         if(camModeNumber >= 0 && camModeNumber <= 2)
         {
@@ -172,6 +179,21 @@ public class LimelightSensor implements PIDSensorInterface
             //     System.out.println("Connection to Limelight not established. Check ethernet connectors.");
             // }
         }
+    }
+
+    /**
+     * Sets the mode of the camera
+     * @param doVisionProcessing Whether or not to do vision processing.
+     * If set to false, the Limelight will act as a driver camera
+     */
+    public void enableVisionProcessing(boolean doVisionProcessing) {
+        if (!connectionEstablished())
+            return;
+
+        else if (!variablesInstantiated)
+            instantiateLocalVariables();
+
+        camMode.setNumber(doVisionProcessing? 0 : 1);
     }
 
     public int getCamMode()
@@ -242,10 +264,12 @@ public class LimelightSensor implements PIDSensorInterface
     /**
      * Sets the LED mode
      * @param ledNumber is an int from 0 to 3
-     *                  0 - use the LED Mode set in the current pipeline
-     *                  1 - force off
-     *                  2 - force blink
-     *                  3 - force on
+     * <ol>
+     *   <li>use the LED Mode set in the current pipeline</li>
+     *   <li>force off</li>
+     *   <li>force blink</li>
+     *   <li>force on</li>
+     * </ol>
      */
     public void setLedMode(int ledNumber)
     {
