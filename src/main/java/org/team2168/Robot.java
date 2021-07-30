@@ -156,6 +156,7 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("drive straight 10ft fast", new SwerveDriveTestsPathCommandGroup());
     autoChooser.addOption("opponents trench segment", new OpponentsTrench());
     autoChooser.addOption("Opposite Trench (No Push)", new OppositeTrenchAutoNoPush());
+    autoChooser.addOption("Opposite Trench Extended (No Push)", new OppositeTrenchAutoExtendedNoPush());
   }
 
   /**

@@ -10,6 +10,7 @@ package org.team2168.commands.auto;
 import org.team2168.RobotMap;
 import org.team2168.commands.auto.robotFunctions.FireBalls;
 import org.team2168.commands.auto.robotFunctions.FireBallsAuto;
+import org.team2168.commands.drivetrain.DriveWithFixedAzimuth;
 import org.team2168.commands.flashlight.RunFlashlight;
 import org.team2168.commands.hood_adjust.MoveToFrontTrench;
 import org.team2168.commands.hood_adjust.MoveToWhiteLine;
@@ -45,8 +46,21 @@ public class OppositeTrenchAutoExtendedNoPush extends CommandGroup {
 
     // stop intake and fire balls
     //addParallel(new IntakeBallStop());
-    addSequential(new FireBallsAuto(5));
+    addSequential(new FireBallsAuto(5), 5.0);
     //addSequential(new FireBalls());
+
+    // drive around into rendezvous, turn and extend intake, and drive to pick up balls
+    addSequential(new PathCommand("opposite_trench_to_rendezvous", 0.0));
+    addSequential(new DriveWithFixedAzimuth(135.0, false));
+    addSequential(new ExtendIntakePneumatic());
+    addSequential(new PathCommand("opposite_trench_to_rendezvous2", 0.0));
+
+    // drive back, turn, and shoot
+    addSequential(new PathCommand("opposite_trench_to_rendezvous_3", 0.0));
+    addSequential(new DriveWithFixedAzimuth(0.0, false));
+    addSequential(new DriveWithLimelight(), 5.0);
+    addSequential(new FireBallsAuto(5), 5.0);
+    
     addSequential(new DriveHopperWithConstant(0.0), 0.1);
     addSequential(new DriveIntakeWithConstant(0.0), 0.0);
   }
