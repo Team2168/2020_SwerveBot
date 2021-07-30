@@ -42,6 +42,7 @@ public class Limelight extends Subsystem {
     //set up limelight
     limelight = new LimelightSensor();
     limelight.setCamMode(0);
+    limelight.setLedMode(1);
     limelight.setPipeline(PIPELINE_DRIVE_WITH_LIMELIGHT);
     isLimelightEnabled = false;
   }

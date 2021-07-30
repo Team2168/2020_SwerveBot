@@ -132,6 +132,7 @@ public class DriveWithLimelight extends Command {
   @Override
   protected void end() {
     // lime.pauseLimelight();
+    lime.setLedMode(1);
   }
 
   // Called when another command which requires one or more of the same
