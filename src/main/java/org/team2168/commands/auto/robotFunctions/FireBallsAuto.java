@@ -41,13 +41,13 @@ public class FireBallsAuto extends CommandGroup {
     // arm.
     addSequential(new WaitForShooterAtSpeed());
     // addParallel(new FiringRunHopperIntake());
-    addParallel(new DriveHopperWithConstant(1.0));
+    addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
     // addSequential(new WaitForLineBreaks(1.0, numBalls));
     for (int i = 0; i<numBalls; i++) {
       addSequential(new DriveUntilBall(RobotMap.INDEXER_SPEED));
       addSequential(new DriveUntilNoBall(RobotMap.INDEXER_SPEED));
     }
-    //addParallel(new DriveIndexerWithConstant(0.0), 0.0);
+    addParallel(new DriveIndexerWithConstant(0.0), 0.0);
     // // addParallel(new DriveHopperWithConstant(0.0), 0.0);
     //addParallel(new DriveIntakeWithConstant(0.0), 0.0);
   }
