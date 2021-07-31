@@ -29,13 +29,15 @@ public class OurTrench extends CommandGroup {
 
 
     addSequential(new DriveWithLimelight());
-    addSequential(new FireBallsAuto(3), 3);
+    addParallel(new RetractIntakePneumatic());
+    addSequential(new FireBallsAuto(5), 3);
 
     addSequential(new DriveWithFixedAzimuth(0.0));
 
     addSequential(new MoveToFiringLocation(Shooter.FiringLocation.WALL)); // needs to be sequential so the robot doesn't ram into the color wheel
 
     // These could be one path, but this way you don't have to deal with weird turnarounds
+    addParallel(new ExtendIntakePneumatic());
     addSequential(new PathCommand("our_trench.2", 0));
     addSequential(new PathCommand("our_trench.3", 0));
     
