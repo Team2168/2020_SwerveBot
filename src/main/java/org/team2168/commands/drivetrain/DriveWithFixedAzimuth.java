@@ -15,6 +15,9 @@ public class DriveWithFixedAzimuth extends Command {
   public static final double P = 0.025;
   public static final double I = 0.98;
   public static final double D = 0.0038;
+  public static final double P_W_JOYSTICK = 0.001;
+  public static final double I_W_JOYSTICK = 0.0;
+  public static final double D_W_JOYSTICK = 0.0038;
   private static final double MINIMUM_COMMAND = 0.05;
   public static final double MAX_INTEGRATOR = 0.1;
   public static final double DEADZONE = 0.40;
@@ -43,9 +46,15 @@ public class DriveWithFixedAzimuth extends Command {
     targetAzimuth = azimuth;
     this.useJoystick = useJoystick;
 
-    p = new SmartDashboardDouble("turn_limelight_P", P);
-    i = new SmartDashboardDouble("turn_limelight_I", I);
-    d = new SmartDashboardDouble("turn_limelight_D", D);
+    if (useJoystick) {
+      p = new SmartDashboardDouble("turn_limelight_P", P_W_JOYSTICK);
+      i = new SmartDashboardDouble("turn_limelight_I", I_W_JOYSTICK);
+      d = new SmartDashboardDouble("turn_limelight_D", D_W_JOYSTICK);
+    } else {
+      p = new SmartDashboardDouble("turn_limelight_P", P);
+      i = new SmartDashboardDouble("turn_limelight_I", I);
+      d = new SmartDashboardDouble("turn_limelight_D", D);
+    }
 
     requires(dt);
   }
