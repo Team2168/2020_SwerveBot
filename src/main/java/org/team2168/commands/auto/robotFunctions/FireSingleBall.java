@@ -8,6 +8,7 @@
 package org.team2168.commands.auto.robotFunctions;
 
 import org.team2168.commands.hopper.DriveHopperWithConstant;
+import org.team2168.commands.indexer.DriveIndexerWithConstant;
 import org.team2168.commands.indexer.DriveUntilBall;
 import org.team2168.commands.indexer.DriveUntilNoBall;
 import org.team2168.commands.shooter.WaitForShooterAtSpeed;
@@ -39,6 +40,7 @@ public class FireSingleBall extends CommandGroup {
     addParallel(new DriveHopperWithConstant(1.0));
     addSequential(new DriveUntilBall(1.0));
     addSequential(new DriveUntilNoBall(1.0));
+    addSequential(new DriveIndexerWithConstant(0.0));
     addSequential(new DriveHopperWithConstant(0), 0.1);
   }
 }

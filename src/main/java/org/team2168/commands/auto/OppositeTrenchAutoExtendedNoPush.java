@@ -15,6 +15,7 @@ import org.team2168.commands.flashlight.RunFlashlight;
 import org.team2168.commands.hood_adjust.MoveToFrontTrench;
 import org.team2168.commands.hood_adjust.MoveToWhiteLine;
 import org.team2168.commands.hopper.DriveHopperWithConstant;
+import org.team2168.commands.indexer.DriveIndexerWithConstant;
 import org.team2168.commands.indexer.DriveUntilBall;
 import org.team2168.commands.indexer.DriveUntilNoBall;
 import org.team2168.commands.intakeMotor.DriveIntakeWithConstant;
@@ -51,6 +52,7 @@ public class OppositeTrenchAutoExtendedNoPush extends CommandGroup {
     addSequential(new WaitForShooterAtSpeed());
     addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
     addSequential(new FireFiveBalls(), 3.0);
+    addParallel(new DriveIndexerWithConstant(0.0), 0.0);
     addParallel(new DriveHopperWithConstant(0.0), 0.0);
     addParallel(new DriveIntakeWithConstant(0.0), 0.0);
 
@@ -66,6 +68,7 @@ public class OppositeTrenchAutoExtendedNoPush extends CommandGroup {
     addParallel(new RetractIntakePneumatic());
     addSequential(new FireFiveBalls(), 5.0);
     
+    addSequential(new DriveIndexerWithConstant(0.0), 0.0);
     addSequential(new DriveHopperWithConstant(0.0), 0.1);
     addSequential(new DriveIntakeWithConstant(0.0), 0.0);
   }

@@ -47,7 +47,7 @@ public class FireBallsAuto extends CommandGroup {
       addSequential(new DriveUntilBall(RobotMap.INDEXER_SPEED));
       addSequential(new DriveUntilNoBall(RobotMap.INDEXER_SPEED));
     }
-    //addParallel(new DriveIndexerWithConstant(0.0), 0.0);
+    addParallel(new DriveIndexerWithConstant(0.0), 0.0);
     // // addParallel(new DriveHopperWithConstant(0.0), 0.0);
     //addParallel(new DriveIntakeWithConstant(0.0), 0.0);
   }
