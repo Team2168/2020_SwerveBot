@@ -101,6 +101,9 @@ public class Robot extends TimedRobot {
     pushRobotSelectInit();
     autoSelectInit();
 
+    // I am making REALLY REALLY sure the limelight isn't on
+    limelight.pauseLimelight();
+
     // ConsolePrinter.putBoolean("isPracticeBot", ()->{return isPracticeBot();}, true, false);
     // // SmartDashboard.putData("Push Robot Chooser", pushRobotChooser);
     // ConsolePrinter.putString("AutoName", () -> {return Robot.getAutoName();}, true, false);
@@ -170,6 +173,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    limelight.enableLimelight();
     dt.zeroGyro();
     autoMode = true;
     dt.setDriveMode(DriveMode.AZIMUTH);
@@ -194,6 +198,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
+    limelight.pauseLimelight();
     autoMode = false;
     dt.setDriveMode(DriveMode.TELEOP);
   }
@@ -232,6 +237,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     autoMode = false;
+    limelight.pauseLimelight();
   }
 
   /**

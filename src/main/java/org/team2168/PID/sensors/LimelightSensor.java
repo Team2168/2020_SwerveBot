@@ -40,7 +40,7 @@ public class LimelightSensor implements PIDSensorInterface
         /**
          * Check networkTable to verify network connectivity of Limelight
          */
-        
+
         networkTable = NetworkTableInstance.getDefault().getTable("limelight");
         variablesInstantiated = false;
 
@@ -104,7 +104,7 @@ public class LimelightSensor implements PIDSensorInterface
         {
             this.currentPosition = 0.0;
         }
-        
+
         return this.currentPosition;
     }
 
@@ -150,8 +150,8 @@ public class LimelightSensor implements PIDSensorInterface
         {
             return defaultValues;
         }
-        
-        
+
+
     }
 
     /**
@@ -210,7 +210,7 @@ public class LimelightSensor implements PIDSensorInterface
         else
         {
             //System.out.println("Connection to Limelight not established. Check ethernet connectors.");
-            return -1; 
+            return -1;
         }
     }
 
@@ -237,7 +237,7 @@ public class LimelightSensor implements PIDSensorInterface
             // }
         }
     }
-    
+
     /**
      * Returns the current pipeline number
      * @return is an int from 0 to 9
@@ -258,18 +258,18 @@ public class LimelightSensor implements PIDSensorInterface
             //System.out.println("Connection to Limelight not established. Check ethernet connectors.");
             return -1;
         }
-        
+
     }
 
     /**
      * Sets the LED mode
      * @param ledNumber is an int from 0 to 3
-     * <ol>
-     *   <li>use the LED Mode set in the current pipeline</li>
-     *   <li>force off</li>
-     *   <li>force blink</li>
-     *   <li>force on</li>
-     * </ol>
+     * <ul>
+     *   <li>0 - use the LED Mode set in the current pipeline</li>
+     *   <li>1 - force off</li>
+     *   <li>2 - force blink</li>
+     *   <li>3 - force on</li>
+     * </ul>
      */
     public void setLedMode(int ledNumber)
     {
@@ -300,7 +300,7 @@ public class LimelightSensor implements PIDSensorInterface
     private void instantiateLocalVariables()
     {
         SmartDashboard.putBoolean("IsLimeLightPresent", true);
-            
+
         // Variables to get data from Limelight
         tx = networkTable.getEntry("tx");
         ta = networkTable.getEntry("ta");
