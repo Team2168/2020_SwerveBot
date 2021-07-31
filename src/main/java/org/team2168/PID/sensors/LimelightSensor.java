@@ -264,12 +264,12 @@ public class LimelightSensor implements PIDSensorInterface
     /**
      * Sets the LED mode
      * @param ledNumber is an int from 0 to 3
-     * <ol>
-     *   <li>use the LED Mode set in the current pipeline</li>
-     *   <li>force off</li>
-     *   <li>force blink</li>
-     *   <li>force on</li>
-     * </ol>
+     * <ul>
+     *   <li>0 - use the LED Mode set in the current pipeline</li>
+     *   <li>1 - force off</li>
+     *   <li>2 - force blink</li>
+     *   <li>3 - force on</li>
+     * </ul>
      */
     public void setLedMode(int ledNumber)
     {

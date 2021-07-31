@@ -9,6 +9,7 @@ import org.team2168.subsystems.Limelight;
 import org.team2168.utils.smartdashboarddatatypes.SmartDashboardDouble;
 import org.team2168.subsystems.Drivetrain;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -135,6 +136,7 @@ public class DriveWithLimelight extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    if (DriverStation.getInstance().isOperatorControl())
     lime.pauseLimelight();
   }
 
