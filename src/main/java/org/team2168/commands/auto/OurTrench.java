@@ -23,7 +23,7 @@ public class OurTrench extends CommandGroup {
   public OurTrench() {
     addParallel(new MoveToFrontTrench()); // extend hood
     addParallel(new ExtendIntakePneumatic());
-    addParallel(new DriveIntakeWithConstant(1.0));  // use RobotMap.INTAKE_SPEED
+    addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED));
 
     addSequential(new PathCommand("our_trench.1", -10));  // drive to front of trench
 
