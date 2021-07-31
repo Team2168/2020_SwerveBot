@@ -23,6 +23,7 @@ import org.team2168.commands.hood_adjust.MoveToWLNoShoot;
 import org.team2168.commands.hood_adjust.MoveToWall;
 import org.team2168.commands.hood_adjust.MoveToWallNoShoot;
 import org.team2168.commands.hood_adjust.MoveToWhiteLine;
+import org.team2168.commands.hopper.DriveBalancerWithJoystick;
 import org.team2168.commands.hopper.DriveHopperWithConstant;
 import org.team2168.commands.intakeMotor.DriveIntakeWithConstant;
 import org.team2168.commands.intakeMotor.IntakeBallStart;
@@ -213,7 +214,9 @@ public class OI {
       buttonBox2.ButtonBack().whenPressed(new DriveToXSpeed(0.0)); //Stop shooter and lower hood
       buttonBox2.ButtonBack().whenPressed(new MoveToWLNoShoot());
       buttonBox2.ButtonStart().whenPressed(new Climb());
-      //right stick--auto balance
+
+      //cancel the drive hopper w/ constant command by starting the balancer one
+      buttonBox2.ButtonX().whenPressed(new DriveBalancerWithJoystick()); // pushing in on the balancer joystick
     }
 
     /*************************************************************************
