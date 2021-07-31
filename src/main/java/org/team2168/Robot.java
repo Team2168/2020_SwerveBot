@@ -8,6 +8,7 @@
 package org.team2168;
 
 import org.team2168.commands.auto.*;
+import org.team2168.commands.drivetrain.DriveWithJoystick;
 import org.team2168.commands.hood_adjust.MoveToFiringLocation;
 import org.team2168.subsystems.Climber;
 import org.team2168.subsystems.Drivetrain;
@@ -201,6 +202,7 @@ public class Robot extends TimedRobot {
     limelight.pauseLimelight();
     autoMode = false;
     dt.setDriveMode(DriveMode.TELEOP);
+    Scheduler.getInstance().removeAll();
   }
 
   /**
