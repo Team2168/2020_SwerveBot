@@ -3,6 +3,7 @@ package org.team2168;
 
 import org.team2168.commands.auto.robotFunctions.FinishFiring;
 import org.team2168.commands.auto.robotFunctions.FireBalls;
+import org.team2168.commands.auto.robotFunctions.FireSingleBall;
 import org.team2168.commands.climber.Climb;
 import org.team2168.commands.climber.DisengageRatchet;
 import org.team2168.commands.climber.DriveClimberWithTestJoystickUnSafe;
@@ -10,6 +11,8 @@ import org.team2168.commands.climber.EngageRatchet;
 import org.team2168.commands.climber.PrepareToClimb;
 import org.team2168.commands.climber.ResetClimberPosition;
 import org.team2168.commands.drivetrain.DriveWithConstant;
+import org.team2168.commands.drivetrain.DriveWithFixedAzimuth;
+import org.team2168.commands.drivetrain.DriveWithJoystick;
 import org.team2168.commands.drivetrain.ZeroEncoders;
 import org.team2168.commands.drivetrain.ZeroGyro;
 import org.team2168.commands.flashlight.RunFlashlight;
@@ -21,7 +24,6 @@ import org.team2168.commands.hood_adjust.MoveToWall;
 import org.team2168.commands.hood_adjust.MoveToWallNoShoot;
 import org.team2168.commands.hood_adjust.MoveToWhiteLine;
 import org.team2168.commands.hopper.DriveHopperWithConstant;
-import org.team2168.commands.indexer.DriveIndexerWithConstant;
 import org.team2168.commands.intakeMotor.DriveIntakeWithConstant;
 import org.team2168.commands.intakeMotor.IntakeBallStart;
 import org.team2168.commands.intakeMotor.IntakeBallStop;
@@ -41,6 +43,7 @@ import org.team2168.utils.LinearInterpolator;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -234,6 +237,14 @@ public class OI {
     driverJoystick.ButtonLeftBumper().whenPressed(new MoveToFiringLocation(Shooter.FiringLocation.WALL));
     driverJoystick.ButtonBack().whenPressed(new ZeroGyro()); //button 7 on flight stick, Back on F310
 
+    // Rotate the chassis to fixed headings while still allowing the operator o control x & y from sticks
+    new JoystickButton(driverJoystick, 12).whenPressed(new DriveWithFixedAzimuth(0.0, true)); // face shooter towards goal (button 12 on flight stick)
+    new JoystickButton(driverJoystick, 12).whenReleased(new DriveWithJoystick());
+    new JoystickButton(driverJoystick, 11).whenPressed(new DriveWithFixedAzimuth(90.0, true)); // face shooter towards right side of field (button 11 on flight stick)
+    new JoystickButton(driverJoystick, 11).whenReleased(new DriveWithJoystick());
+    new JoystickButton(driverJoystick, 9).whenPressed(new DriveWithFixedAzimuth(65.0, true)); // align for climb (button 9 on flight stick)
+    new JoystickButton(driverJoystick, 9).whenReleased(new DriveWithJoystick());
+
     /*************************************************************************
      * Operator Joystick *
      *************************************************************************/
@@ -288,7 +299,12 @@ public class OI {
     testJoystick.ButtonDownDPad().whenPressed(new DisengageRatchet());
 
     climberResetInterpolator = new LinearInterpolator(climberResetArray);
-    testJoystick.ButtonRightStick().whenPressed(new DriveClimberWithTestJoystickUnSafe());
+		testJoystick.ButtonRightStick().whenPressed(new DriveClimberWithTestJoystickUnSafe());
+
+		// testJoystick.ButtonLeftBumper().whenPressed(new FireBalls());
+		// testJoystick.ButtonLeftBumper().whenReleased(new FinishFiring());
+		testJoystick.ButtonRightBumper().whileHeld(new FireSingleBall());
+		// testJoystick.ButtonRightBumper().whenReleased(new FinishFiring());
 
     // testJoystick.ButtonB().whenPressed(new FireBalls());
     // testJoystick.ButtonB().whenReleased(new FinishFiring());
