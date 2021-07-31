@@ -24,10 +24,10 @@ public class OppositeTrenchAutoNoPush extends CommandGroup {
   /** A recreation of an auto done by Team 9889 at the Texas Cup*/
   public OppositeTrenchAutoNoPush() {
     // start shooter
-    addParallel(new MoveToFrontTrench());
+    addParallel(new MoveToWhiteLine());
 
     // start intake and drive to trench
-    addParallel(new RunFlashlight(1.0));
+    // addParallel(new RunFlashlight(1.0));
     addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED));
     addParallel(new ExtendIntakePneumatic());
     addSequential(new PathCommand("to_opposite_trench", 0.0));
@@ -35,7 +35,7 @@ public class OppositeTrenchAutoNoPush extends CommandGroup {
     addSequential(new RetractIntakePneumatic());
 
     // drive to shooting location
-    addSequential(new PathCommand("opposite_trench_to_shoot", 20.0));
+    addSequential(new PathCommand("opponents_trench.2", 20.0));
     addSequential(new DriveWithLimelight(), 5.0);
 
     // stop intake and fire balls
