@@ -57,12 +57,13 @@ public class OppositeTrenchAutoExtendedNoPush extends CommandGroup {
     // extend intake and drive into rendezvous to pick up balls
     addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED));
     addSequential(new ExtendIntakePneumatic());
-    addSequential(new PathCommand("opposite_trench_to_rendezvous2", 65.0));
+    addSequential(new PathCommand("opposite_trench_to_rendezvous2", 70.0));
 
     // back up, turn, and shoot
     addSequential(new PathCommand("opposite_trench_to_rendezvous3", 0.0));
     addSequential(new DriveWithLimelight(), 5.0);
     addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
+    addParallel(new RetractIntakePneumatic());
     addSequential(new FireFiveBalls(), 5.0);
     
     addSequential(new DriveHopperWithConstant(0.0), 0.1);

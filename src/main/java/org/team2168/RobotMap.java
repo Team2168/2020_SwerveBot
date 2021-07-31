@@ -121,7 +121,7 @@ public class RobotMap {
 	/*************************************************************************
 	 *                      				   SPEEDS              							    *
 	 *************************************************************************/
-	public static final double HOPPER_SPEED = 0.5;
+	public static final double HOPPER_SPEED = 0.64;
 	public static final double INDEXER_SPEED = 1.0;
 	public static final double INTAKE_SPEED = 1.0;
 	public static final double INTAKE_SPEED_SLOW = 0.2;
