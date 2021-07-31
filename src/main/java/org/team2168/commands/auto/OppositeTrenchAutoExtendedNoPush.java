@@ -48,20 +48,23 @@ public class OppositeTrenchAutoExtendedNoPush extends CommandGroup {
     addSequential(new DriveWithLimelight(), 5.0);
 
     // stop intake and fire balls
-    addSequential(new FireFiveBalls(), 4.0);
+    addSequential(new WaitForShooterAtSpeed());
+    addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
+    addSequential(new FireFiveBalls(), 3.0);
+    addParallel(new DriveHopperWithConstant(0.0), 0.0);
+    addParallel(new DriveIntakeWithConstant(0.0), 0.0);
 
-    // drive around into rendezvous, turn and extend intake, and drive to pick up balls
-    addSequential(new PathCommand("opposite_trench_to_rendezvous", 0.0));
-    addSequential(new DriveWithFixedAzimuth(135.0, false));
+    // drive around into rendezvous, extend intake, and drive to pick up balls
+    addSequential(new PathCommand("opposite_trench_to_rendezvous", 65.0));
     addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED));
     addSequential(new ExtendIntakePneumatic());
-    addSequential(new PathCommand("opposite_trench_to_rendezvous2", 0.0));
+    addSequential(new PathCommand("opposite_trench_to_rendezvous2", 65.0));
 
-    // drive back, turn, and shoot
-    addSequential(new PathCommand("opposite_trench_to_rendezvous_3", 0.0));
-    addSequential(new DriveWithFixedAzimuth(0.0, false));
+    // back up, turn, and shoot
+    addSequential(new PathCommand("opposite_trench_to_rendezvous3", 0.0));
     addSequential(new DriveWithLimelight(), 5.0);
-    addSequential(new FireBallsAuto(5), 5.0);
+    addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
+    addSequential(new FireFiveBalls(), 5.0);
     
     addSequential(new DriveHopperWithConstant(0.0), 0.1);
     addSequential(new DriveIntakeWithConstant(0.0), 0.0);
@@ -70,13 +73,9 @@ public class OppositeTrenchAutoExtendedNoPush extends CommandGroup {
 
 class FireFiveBalls extends CommandGroup {
   public FireFiveBalls() {
-    addSequential(new WaitForShooterAtSpeed());
-    addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
     for (int i = 0; i<5; i++) {
       addSequential(new DriveUntilBall(RobotMap.INDEXER_SPEED));
       addSequential(new DriveUntilNoBall(RobotMap.INDEXER_SPEED));
     }
-    addParallel(new DriveHopperWithConstant(0.0), 0.0);
-    addParallel(new DriveIntakeWithConstant(0.0), 0.0);
   }
 }
