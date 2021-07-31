@@ -41,7 +41,9 @@ public class Limelight extends Subsystem {
   private Limelight() {
     //set up limelight
     limelight = new LimelightSensor();
-    limelight.setCamMode(0);
+    // limelight.setCamMode(0);
+    limelight.enableVisionProcessing(true);
+    limelight.setLedMode(1);
     limelight.setPipeline(PIPELINE_DRIVE_WITH_LIMELIGHT);
     isLimelightEnabled = false;
   }
@@ -56,72 +58,19 @@ public class Limelight extends Subsystem {
     return _instance;
   }
 
-  // TODO ambiguous name; should be more explicit, like getXOffset
+  /**
+   * Gets x position of limelight
+   * @return x position, in degrees
+   */
   public double getPosition() {
     return limelight.getPos();
   }
 
-  // TODO unbind setting pipeline from setting the shooter speed :/
-  public void enableLimelight(FiringLocation firingLocation) {
-    limelight.setCamMode(0);
-    limelight.setLedMode(0);
-    // if(Robot.driverstation.isFMSAttached())
-    // {
-      // if(Robot.onBlueAlliance())
-      // {
-      //   limelight.setPipeline(3);
-      // }
-      // else
-      // {
-      //   limelight.setPipeline(2);
-      // }
-      switch (firingLocation) {
-        case WALL : 
-          if(Robot.onBlueAlliance())
-          {
-            limelight.setPipeline(PIPELINE_FORWARD_BLUE); //TODO deal with this--we can't see from wall??
-          }
-          else
-          {
-            limelight.setPipeline(PIPELINE_FORWARD_RED);
-          }
-          break;
-        case WHITE_LINE :
-          if(Robot.onBlueAlliance())
-          {
-            limelight.setPipeline(PIPELINE_FORWARD_BLUE);
-          }
-          else
-          {
-            limelight.setPipeline(PIPELINE_FORWARD_RED);
-          }
-          break;
-        case FRONT_TRENCH : 
-          if(Robot.onBlueAlliance())
-          {
-            limelight.setPipeline(PIPELINE_FORWARD_BLUE);
-          }
-          else
-          {
-            limelight.setPipeline(PIPELINE_FORWARD_RED);
-          }
-          break;
-        case BACK_TRENCH: 
-          if(Robot.onBlueAlliance())
-          {
-            limelight.setPipeline(PIPELINE_BACK_TRENCH_BLUE);
-          }
-          else
-          {
-            limelight.setPipeline(PIPELINE_BACK_TRENCH_RED);
-          }
-          break;
-      }
-    // }
-    // else
-    // {
-    //   limelight.setPipeline(0);
-    // }
+  public void enableLimelight() {
+    // limelight.setCamMode(0);
+    limelight.enableVisionProcessing(true);
+    limelight.setLedMode(0); // set to current pipeline setting
+    setPipeline(PIPELINE_DRIVE_WITH_LIMELIGHT);
     isLimelightEnabled = true;
   }
 
@@ -133,18 +82,11 @@ public class Limelight extends Subsystem {
     return limelight.getPipeline();
   }
 
-  // TODO strange hack; remove once pipeline setting is fixed
-  public void setToDriveWithLimelight() {
-    limelight.setLedMode(0);
-    limelight.setCamMode(0);
-    setPipeline(PIPELINE_DRIVE_WITH_LIMELIGHT);
-  }
-
   public void pauseLimelight()
   {
-    limelight.setCamMode(1);
-    limelight.setLedMode(1);
-    limelight.setPipeline(PIPELINE_DRIVER_VIEW);
+    // limelight.setCamMode(1);
+    limelight.enableVisionProcessing(false);
+    limelight.setLedMode(1); // force off
     isLimelightEnabled = false;
 
   }
@@ -155,13 +97,15 @@ public class Limelight extends Subsystem {
 
 
   /**
-   * Sets the LED mode
-   * @param ledNumber is an int from 0 to 3
-   *                  0 - use the LED Mode set in the current pipeline
-   *                  1 - force off
-   *                  2 - force blink
-   *                  3 - force on
-   */
+  * Sets the LED mode
+  * @param ledNumber is an int from 0 to 3
+  * <ol>
+  *   <li>use the LED Mode set in the current pipeline</li>
+  *   <li>force off</li>
+  *   <li>force blink</li>
+  *   <li>force on</li>
+  * </ol>
+  */
   public void setLedMode(int ledNumber) {
     limelight.setLedMode(ledNumber);
   }

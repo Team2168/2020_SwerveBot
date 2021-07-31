@@ -22,7 +22,6 @@ public class DriveWithLimelight extends Command {
   public static final double DEADZONE = 0.40;
 
   private static final boolean useNTValues = false; // used for debugging because pid tuning is painful and compile-test-compile is stupid for 3 constants
-  
 
   private PIDController pid;
   private Drivetrain dt;
@@ -32,10 +31,23 @@ public class DriveWithLimelight extends Command {
   private SmartDashboardDouble p;
   private SmartDashboardDouble i;
   private SmartDashboardDouble d;
+  private boolean useJoystick;
+  private double angularOffset = 0.0;
 
-  public DriveWithLimelight() {
+  /**
+   *
+   * @param offset the angular position offset (degrees) from the limelights reported angle
+   *    to target reported by the getPosition() method. Positive values are clockwise.
+   *    Dumb way to handle when the center of the target isn't what you want to aim for
+   *    due to parallax of a goal with depth.
+   * @param useJoystick true to allow driving the robot with the in X/Y while the limelight controls yaw,
+   *    otherwise sit still while rotating
+   */
+  public DriveWithLimelight(double offset, boolean useJoystick) {
     dt = Drivetrain.getInstance();
     lime = Limelight.getInstance();
+    angularOffset = offset;
+    this.useJoystick = useJoystick;
 
     p = new SmartDashboardDouble("turn_limelight_P", P);
     i = new SmartDashboardDouble("turn_limelight_I", I);
@@ -47,10 +59,37 @@ public class DriveWithLimelight extends Command {
     requires(lime);
   }
 
+  /**
+   *
+   * @param offset the angular position offset (degrees) from the limelights reported angle
+   *    to target reported by the getPosition() method. Positive values are clockwise.
+   *    Dumb way to handle when the center of the target isn't what you want to aim for
+   *    due to parallax of a goal with depth.
+   */
+  public DriveWithLimelight(double offset) {
+    this(offset, false);
+  }
+
+  /**
+   *
+   * @param useJoystick true to allow driving the robot with the in X/Y while the limelight controls yaw,
+   *    otherwise sit still while rotating
+   */
+  public DriveWithLimelight(boolean useJoystick) {
+    this(0.0, useJoystick);
+  }
+
+  /**
+   * Sits still and rotates the chassis to center the limelight target in the cameras view.
+   */
+  public DriveWithLimelight() {
+    this(0.0, false);
+  }
+
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    lime.setToDriveWithLimelight();
+    lime.enableLimelight();
     if (useNTValues)
       pid = new PIDController(p.get(), i.get(), d.get());
     else
@@ -66,32 +105,43 @@ public class DriveWithLimelight extends Command {
     double error = lime.getPosition();
     SmartDashboard.putNumber("Limelight Error", error);
     double steering_adjust = 0.0;
+
+    //Optionally set through constructor. Add in a fixed offset from the LL's
+    // reported target center.
+    error = error - angularOffset;
+
     if (error < -DEADZONE) {
       steering_adjust = pid.calculate(error) - MINIMUM_COMMAND;
     } else if (error > DEADZONE) {
       steering_adjust = pid.calculate(error) + MINIMUM_COMMAND;
     }
-// 
-    // dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), -steering_adjust);
-    dt.drive(0.0, 0.0, -steering_adjust);
+//
+    if (useJoystick)
+      dt.drive(oi.getDriverJoystickYValue(), oi.getDriverJoystickXValue(), -steering_adjust);
+    else
+      dt.drive(0.0, 0.0, -steering_adjust);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Math.abs(lime.getPosition()) < DEADZONE;
-    
-    // return false;
+    return (Math.abs(lime.getPosition()) < DEADZONE) && !useJoystick; 
+    /* Don't finish if using a joystick, because this command is bound to a button hold.
+    * The command would start again and immediately exit, and because the limelight is enabled & disabled at
+    * the beginning and end of the command, the limelight toggles to be rate limited.
+    */
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    // lime.pauseLimelight();
+    lime.pauseLimelight();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {}
+  protected void interrupted() {
+    end();
+  }
 }
