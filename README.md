@@ -1,6 +1,15 @@
 # 2020_SwerveBot
-Repo for development of field oriented swerve chassis tests
 
+Repo for development of code for a field oriented swerve chassis.  
+This repo name is a bit of a misnomer - it's our [2020 Robot code](https://github.com/Team2168/2020_Main_Robot) + the code for a swerve chassis.
+
+![image](https://user-images.githubusercontent.com/1295877/129284494-767e60de-8bb3-4bbc-adeb-453a15b0275b.png)
+
+Our swerve code was largely lifted [from 2767](https://github.com/strykeforce), don't consider it a reference implementation. We are still learning :)
+
+## Subsystems
+
+These are mostly the same as the 2020 robot, see the [2020 repo](https://github.com/Team2168/2020_Main_Robot#robot-subsystems) for a breakdown of subsystem capabilities until we get better documentation added here.
 
 ## Unit Tests
 
