@@ -2,12 +2,16 @@ package org.team2168.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
+import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,7 +22,7 @@ import org.team2168.thirdcoast.swerve.*;
 public class Drivetrain extends Subsystem {
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
     private final boolean[] DRIVE_INVERTED = {false , false, false, false};
-    private final boolean[] ABSOLUTE_ENCODER_INVERTED = {false, false, false, false};
+    private final boolean[] ABSOLUTE_ENCODER_INVERTED = {true, true, true, true};
     private SwerveDrive _sd;
     private final boolean ENABLE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_CURRENT_LIMIT = 40; // amps
@@ -52,6 +56,7 @@ public class Drivetrain extends Subsystem {
      * @return a configured SwerveDrive
      */
     private SwerveDrive configSwerve() {
+        CANCoderConfiguration cancoderConfig = new CANCoderConfiguration();
         TalonFXConfiguration azimuthConfig = new TalonFXConfiguration();
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
         SupplyCurrentLimitConfiguration talonCurrentLimit;
@@ -59,18 +64,21 @@ public class Drivetrain extends Subsystem {
         talonCurrentLimit = new SupplyCurrentLimitConfiguration(ENABLE_CURRENT_LIMIT,
         CONTINUOUS_CURRENT_LIMIT, TRIGGER_THRESHOLD_LIMIT, TRIGGER_THRESHOLD_TIME);
 
-        // TODO: Set up gear ratios, at least for the driveTalon
-        // TODO: Check if we need to set/configure any canifier settings
+        cancoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
+        cancoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
 
-        azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+        azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
+        azimuthConfig.remoteFilter0.remoteSensorSource = RemoteSensorSource.CANCoder;
+        //azimuthConfig.remoteFilter0.remoteSensorDeviceID set in loop. unique per device
         azimuthConfig.slot0.kP = 0.5;
-        azimuthConfig.slot0.kI = 0.0;
+        azimuthConfig.slot0.kI = 0.005;
         azimuthConfig.slot0.kD = 0.0;
         azimuthConfig.slot0.kF = 0.0;
-        azimuthConfig.slot0.integralZone = 0;
+        azimuthConfig.slot0.integralZone = 50;
         azimuthConfig.slot0.allowableClosedloopError = 0; //Wheel.degreesToTicksAzimuth(0.1);
         azimuthConfig.motionAcceleration = Wheel.DPSToTicksPer100msAzimuth(7000); // 10_000;
         azimuthConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msAzimuth(700); // 800;
+
         driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
         driveConfig.slot0.kP = 0.35; //0.05
         driveConfig.slot0.kI = 0.0005;
@@ -86,14 +94,21 @@ public class Drivetrain extends Subsystem {
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
 
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
+            CANCoder cancoder = new CANCoder(RobotMap.AZIMUTH_CANCODER_ID[i]);
+            // cancoder.configFactoryDefault();
+            //hacky - don't clear settings so we can't preserve the locally calibrated zero position
+            cancoderConfig.sensorDirection = ABSOLUTE_ENCODER_INVERTED[i];
+            cancoder.configAllSettings(cancoderConfig);
+
             WPI_TalonFX azimuthTalon = new WPI_TalonFX(RobotMap.AZIMUTH_TALON_ID[i]);
             azimuthTalon.configFactoryDefault();
             azimuthTalon.setInverted(false);
             azimuthTalon.setSensorPhase(false);
+            azimuthConfig.remoteFilter0.remoteSensorDeviceID = RobotMap.AZIMUTH_CANCODER_ID[i];
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
             azimuthTalon.setNeutralMode(NeutralMode.Coast);
-            
+
             WPI_TalonFX driveTalon = new WPI_TalonFX(RobotMap.DRIVE_TALON_ID[i]);
             driveTalon.configFactoryDefault();
             driveTalon.setInverted(DRIVE_INVERTED[i]);
@@ -101,17 +116,16 @@ public class Drivetrain extends Subsystem {
             driveTalon.configSupplyCurrentLimit(talonCurrentLimit);
             driveTalon.setNeutralMode(NeutralMode.Coast);
 
-            Wheel wheel = new Wheel(azimuthTalon, driveTalon,
-                new AnalogInput(RobotMap.SWERVE_ENCODER_AI[i]), ABSOLUTE_ENCODER_INVERTED[i]);
+            Wheel wheel = new Wheel(azimuthTalon, driveTalon, cancoder);
             _wheels[i] = wheel;
 
             // set the value of the internal encoder's current position to that of the external encoder,
             // taking into account the gear ratio & difference in resolution, as well as the saved zero
-            Preferences prefs = Preferences.getInstance();
-            _wheels[i].setAzimuthZero(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
+            // Preferences prefs = Preferences.getInstance();
+            // _wheels[i].setAzimuthZero(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
 
-            SmartDashboard.putNumber("Abs position on init, module " + i, wheel.getAzimuthAbsolutePosition());
-            SmartDashboard.putNumber("Internal position on init, module " + i, wheel.getAzimuthPosition());
+            // SmartDashboard.putNumber("Abs position on init, module " + i, wheel.getAzimuthAbsolutePosition());
+            // SmartDashboard.putNumber("Internal position on init, module " + i, wheel.getAzimuthPosition());
         }
 
         SwerveDriveConfig config = new SwerveDriveConfig();
@@ -173,18 +187,6 @@ public class Drivetrain extends Subsystem {
     }
 
     /**
-     * Puts external and calculated internal encoder positions to the SmartDashboard
-     */
-    public void putEncoderPositions() {
-        Wheel[] wheels = _sd.getWheels();
-        for(int i = 0; i < SwerveDrive.getWheelCount(); i++) {
-            SmartDashboard.putNumber("External encoder pos " + i, wheels[i].getAzimuthAbsolutePosition());
-            SmartDashboard.putNumber("Calculated internal encoder pos " + i, Wheel.externalToInternalTicks(wheels[i].getAzimuthAbsolutePosition()));
-            _wheels[i].setAzimuthInternalEncoderPosition(_wheels[i].getAzimuthAbsolutePosition() - Preferences.getInstance().getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
-        }
-    }
-
-    /**
      * Save the wheels' azimuth current position as read by absolute encoder. These values are saved
      * persistently on the roboRIO and are normally used to calculate the relative encoder offset
      * during wheel initialization.
@@ -194,9 +196,9 @@ public class Drivetrain extends Subsystem {
      *
      * @see #zeroAzimuthEncoders()
      */
-    public void saveAzimuthPositions() {
-        _sd.saveAzimuthPositions();
-    }
+    // public void saveAzimuthPositions() {
+    //     _sd.saveAzimuthPositions();
+    // }
 
     /**
      * Stops all wheels' azimuth and drive movement. Calling this in the robots {@code teleopInit} and
@@ -217,7 +219,6 @@ public class Drivetrain extends Subsystem {
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
             position = _wheels[i].getAzimuthAbsolutePosition();
             _wheels[i].setAzimuthInternalEncoderPosition(position - prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
-            System.out.println(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
         }
     }
 

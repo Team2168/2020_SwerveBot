@@ -223,18 +223,18 @@ public class SwerveDrive {
    *
    * @see #zeroAzimuthEncoders()
    */
-  public void saveAzimuthPositions() {
-    saveAzimuthPositions(Preferences.getInstance());
-  }
+  // public void saveAzimuthPositions() {
+  //   saveAzimuthPositions(Preferences.getInstance());
+  // }
 
-  void saveAzimuthPositions(Preferences prefs) {
-    for (int i = 0; i < WHEEL_COUNT; i++) {
-      int position = wheels[i].getAzimuthAbsolutePosition();
-      prefs.putInt(getPreferenceKeyForWheel(i), position);
-      // logger.info("azimuth {}: saved zero = {}", i, position);
-      System.out.println("azimuth " + i + ": saved zero = " + position);
-    }
-  }
+  // void saveAzimuthPositions(Preferences prefs) {
+  //   for (int i = 0; i < WHEEL_COUNT; i++) {
+  //     int position = wheels[i].getAzimuthAbsolutePosition();
+  //     prefs.putInt(getPreferenceKeyForWheel(i), position);
+  //     // logger.info("azimuth {}: saved zero = {}", i, position);
+  //     System.out.println("azimuth " + i + ": saved zero = " + position);
+  //   }
+  // }
 
   /**
    * Set wheels' azimuth relative offset from zero based on the current absolute position. This uses
@@ -243,21 +243,21 @@ public class SwerveDrive {
    *
    * @see #saveAzimuthPositions()
    */
-  public void zeroAzimuthEncoders() {
-    zeroAzimuthEncoders(Preferences.getInstance());
-  }
+  // public void zeroAzimuthEncoders() {
+  //   zeroAzimuthEncoders(Preferences.getInstance());
+  // }
 
-  void zeroAzimuthEncoders(Preferences prefs) {
-    Errors.setCount(0);
-    for (int i = 0; i < WHEEL_COUNT; i++) {
-      int position = prefs.getInt(getPreferenceKeyForWheel(i), DEFAULT_ABSOLUTE_AZIMUTH_OFFSET);
-      wheels[i].setAzimuthZero(position);
-      // logger.info("azimuth {}: loaded zero = {}", i, position);
-      System.out.println("azimuth " + i + ": loaded zero = " + position);
-    }
-    int errorCount = Errors.getCount();
-    if (errorCount > 0) logger.error("TalonSRX set azimuth zero error count = {}", errorCount);
-  }
+  // void zeroAzimuthEncoders(Preferences prefs) {
+  //   Errors.setCount(0);
+  //   for (int i = 0; i < WHEEL_COUNT; i++) {
+  //     int position = prefs.getInt(getPreferenceKeyForWheel(i), DEFAULT_ABSOLUTE_AZIMUTH_OFFSET);
+  //     wheels[i].setAzimuthZero(position);
+  //     // logger.info("azimuth {}: loaded zero = {}", i, position);
+  //     System.out.println("azimuth " + i + ": loaded zero = " + position);
+  //   }
+  //   int errorCount = Errors.getCount();
+  //   if (errorCount > 0) logger.error("TalonSRX set azimuth zero error count = {}", errorCount);
+  // }
 
   /**
    * Returns the wheels of the swerve drive.

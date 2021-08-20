@@ -86,6 +86,11 @@ public class RobotMap {
 
   public static final int PCM_CAN_ID_BELLYPAN = 0;
 
+  public static final int MODULE_0_CANCODER_CAN_ID = 0;
+  public static final int MODULE_1_CANCODER_CAN_ID = 1;
+  public static final int MODULE_2_CANCODER_CAN_ID = 2;
+  public static final int MODULE_3_CANCODER_CAN_ID = 3;
+
 	/**
 	 * ORIENTATION OF SWERVE MODULES:
 	 * 		Front (shooter)
@@ -97,6 +102,8 @@ public class RobotMap {
                                                 AZIMUTH_2_CAN_ID, AZIMUTH_3_CAN_ID};
   public static final int[] DRIVE_TALON_ID   = {DRIVE_0_CAN_ID, DRIVE_1_CAN_ID,
                                                 DRIVE_2_CAN_ID, DRIVE_3_CAN_ID};
+  public static final int[] AZIMUTH_CANCODER_ID = {MODULE_0_CANCODER_CAN_ID, MODULE_1_CANCODER_CAN_ID,
+                                                   MODULE_2_CANCODER_CAN_ID, MODULE_3_CANCODER_CAN_ID};
 
 
 	// Relay Channels///////////////////////////////////////////////////////////
@@ -117,7 +124,7 @@ public class RobotMap {
 	 *                         PBOT DIFFERENCES  PARAMETERS                  *
 	 *************************************************************************/
 
-	 
+
 	/*************************************************************************
 	 *                      				   SPEEDS              							    *
 	 *************************************************************************/

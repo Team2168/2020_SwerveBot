@@ -137,16 +137,13 @@ public class Robot extends TimedRobot {
     for (int i = 0; i < dt.getWheels().length; i++) {
       SmartDashboard.putNumber("Abs position module " + i, dt.getWheels()[i].getAzimuthAbsolutePosition());
       SmartDashboard.putNumber("Int position module " + i, dt.getWheels()[i].getInternalEncoderPos());
-      SmartDashboard.putNumber("Probably incorrect module heading in degrees " + i, Wheel.ticksToDegreesAzimuth(dt.getWheels()[i].getAzimuthPosition()));
-      SmartDashboard.putNumber("Module heading in degrees " + i, Wheel.ticksToDegreesAzimuth(dt.getWheels()[i].getInternalEncoderPos()));
-      SmartDashboard.putNumber("Speed of wheel (FPS) " + i, Wheel.TicksPer100msToFPSDW(dt.getWheels()[i].getDWSpeed()));
       SmartDashboard.putData(Scheduler.getInstance());
     }
 
     // zeroing on test joystick
-    if (oi.testJoystick.isPressedButtonStart()) {
-      dt.saveAzimuthPositions();
-    }
+    // if (oi.testJoystick.isPressedButtonStart()) {
+    //   dt.saveAzimuthPositions();
+    // }
     if (oi.testJoystick.isPressedButtonBack()) {
       dt.zeroGyro();
     }

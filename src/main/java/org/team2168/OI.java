@@ -13,7 +13,6 @@ import org.team2168.commands.climber.ResetClimberPosition;
 import org.team2168.commands.drivetrain.DriveWithConstant;
 import org.team2168.commands.drivetrain.DriveWithFixedAzimuth;
 import org.team2168.commands.drivetrain.DriveWithJoystick;
-import org.team2168.commands.drivetrain.ZeroEncoders;
 import org.team2168.commands.drivetrain.ZeroGyro;
 import org.team2168.commands.flashlight.RunFlashlight;
 import org.team2168.commands.hood_adjust.MoveToBackTrench;
