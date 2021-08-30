@@ -2,10 +2,15 @@ package org.team2168.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.can.FilterConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Preferences;
@@ -19,6 +24,7 @@ public class Drivetrain extends Subsystem {
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
     private final boolean[] DRIVE_INVERTED = {false, false, false, false};
     private final boolean[] ABSOLUTE_ENCODER_INVERTED = {false, false, false, false};
+    private final double[] ABSOLUTE_ENCODER_OFFSET = {0.0, 0.0, 0.0, 0.0};
     private SwerveDrive _sd;
     private final boolean ENABLE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_CURRENT_LIMIT = 40; // amps
@@ -54,6 +60,7 @@ public class Drivetrain extends Subsystem {
     private SwerveDrive configSwerve() {
         TalonFXConfiguration azimuthConfig = new TalonFXConfiguration();
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
+        CANCoderConfiguration driveEncoderConfig = new CANCoderConfiguration();
         SupplyCurrentLimitConfiguration talonCurrentLimit;
 
         talonCurrentLimit = new SupplyCurrentLimitConfiguration(ENABLE_CURRENT_LIMIT,
@@ -71,7 +78,12 @@ public class Drivetrain extends Subsystem {
         azimuthConfig.slot0.allowableClosedloopError = 0; //Wheel.degreesToTicksAzimuth(0.1);
         azimuthConfig.motionAcceleration = Wheel.DPSToTicksPer100msAzimuth(7000); // 10_000;
         azimuthConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msAzimuth(700); // 800;
-        driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+        
+        FilterConfiguration fconfig = new FilterConfiguration();
+        fconfig.remoteSensorSource = RemoteSensorSource.CANCoder;
+        
+        driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
+        driveConfig.remoteFilter0 = fconfig;
         driveConfig.slot0.kP = 0.05;
         driveConfig.slot0.kI = 0.0005;
         driveConfig.slot0.kD = 0.0;
@@ -81,6 +93,8 @@ public class Drivetrain extends Subsystem {
         driveConfig.slot0.allowableClosedloopError = 0;
         driveConfig.motionAcceleration = Wheel.DPSToTicksPer100msDW(180); // 500;
         driveConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msDW(30); // 100;
+
+        driveEncoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
 
 
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
@@ -94,12 +108,21 @@ public class Drivetrain extends Subsystem {
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
             azimuthTalon.setNeutralMode(NeutralMode.Coast);
 
+            driveEncoderConfig.magnetOffsetDegrees = ABSOLUTE_ENCODER_OFFSET[i];
+
+            CANCoder driveEncoder = new CANCoder(RobotMap.CANCODER_ID[i]);
+            driveEncoder.configFactoryDefault();
+            driveEncoder.configAllSettings(driveEncoderConfig);
+            
+            fconfig.remoteSensorDeviceID = RobotMap.CANCODER_ID[i];
+
             TalonFX driveTalon = new TalonFX(RobotMap.DRIVE_TALON_ID[i]);
             driveTalon.configFactoryDefault();
             driveTalon.setInverted(DRIVE_INVERTED[i]);
             driveTalon.configAllSettings(driveConfig);
             driveTalon.configSupplyCurrentLimit(talonCurrentLimit);
             driveTalon.setNeutralMode(NeutralMode.Coast);
+            
 
             Wheel wheel = new Wheel(azimuthTalon, driveTalon,
                 new AnalogInput(RobotMap.SWERVE_ENCODER_AI[i]), ABSOLUTE_ENCODER_INVERTED[i]);
