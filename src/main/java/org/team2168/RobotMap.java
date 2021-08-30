@@ -83,10 +83,11 @@ public class RobotMap {
   public static final int DRIVE_2_CAN_ID = 14;
   public static final int DRIVE_0_CAN_ID = 15;
   public static final int PIGEON_IMU_CAN_ID = 17;
-  public static final int CANCODER_0_CAN_ID = 18;
-  public static final int CANCODER_1_CAN_ID = 19;
-  public static final int CANCODER_2_CAN_ID = 20;
-  public static final int CANCODER_3_CAN_ID = 21;
+
+  public static final int CANCODER_0_CAN_ID = 0;
+  public static final int CANCODER_1_CAN_ID = 1;
+  public static final int CANCODER_2_CAN_ID = 2;
+  public static final int CANCODER_3_CAN_ID = 3;
   
   public static final int PCM_CAN_ID_BELLYPAN = 0;
 
