@@ -69,7 +69,11 @@ public class Drivetrain extends Subsystem {
         // TODO: Set up gear ratios, at least for the driveTalon
         // TODO: Check if we need to set/configure any canifier settings
 
-        azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
+        FilterConfiguration azimuthFilterConfig = new FilterConfiguration();
+        azimuthFilterConfig.remoteSensorSource = RemoteSensorSource.CANCoder;
+
+        azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
+        azimuthConfig.remoteFilter0 = azimuthFilterConfig;
         azimuthConfig.slot0.kP = 0.5;
         azimuthConfig.slot0.kI = 0.0;
         azimuthConfig.slot0.kD = 0.0;
@@ -78,12 +82,8 @@ public class Drivetrain extends Subsystem {
         azimuthConfig.slot0.allowableClosedloopError = 0; //Wheel.degreesToTicksAzimuth(0.1);
         azimuthConfig.motionAcceleration = Wheel.DPSToTicksPer100msAzimuth(7000); // 10_000;
         azimuthConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msAzimuth(700); // 800;
-        
-        FilterConfiguration fconfig = new FilterConfiguration();
-        fconfig.remoteSensorSource = RemoteSensorSource.CANCoder;
-        
-        driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
-        driveConfig.remoteFilter0 = fconfig;
+
+        driveConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.IntegratedSensor;
         driveConfig.slot0.kP = 0.05;
         driveConfig.slot0.kI = 0.0005;
         driveConfig.slot0.kD = 0.0;
@@ -100,6 +100,13 @@ public class Drivetrain extends Subsystem {
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
 
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
+            driveEncoderConfig.magnetOffsetDegrees = ABSOLUTE_ENCODER_OFFSET[i];
+
+            CANCoder driveEncoder = new CANCoder(RobotMap.CANCODER_ID[i]);
+            driveEncoder.configAllSettings(driveEncoderConfig);
+            
+            azimuthFilterConfig.remoteSensorDeviceID = RobotMap.CANCODER_ID[i];
+
             TalonFX azimuthTalon = new TalonFX(RobotMap.AZIMUTH_TALON_ID[i]);
             azimuthTalon.configFactoryDefault();
             azimuthTalon.setInverted(false);
@@ -107,14 +114,6 @@ public class Drivetrain extends Subsystem {
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
             azimuthTalon.setNeutralMode(NeutralMode.Coast);
-
-            driveEncoderConfig.magnetOffsetDegrees = ABSOLUTE_ENCODER_OFFSET[i];
-
-            CANCoder driveEncoder = new CANCoder(RobotMap.CANCODER_ID[i]);
-            driveEncoder.configFactoryDefault();
-            driveEncoder.configAllSettings(driveEncoderConfig);
-            
-            fconfig.remoteSensorDeviceID = RobotMap.CANCODER_ID[i];
 
             TalonFX driveTalon = new TalonFX(RobotMap.DRIVE_TALON_ID[i]);
             driveTalon.configFactoryDefault();
