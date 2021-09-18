@@ -132,9 +132,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Gyro heading", dt.getHeading());
     for (int i = 0; i < dt.getWheels().length; i++) {
       SmartDashboard.putNumber("Abs position module " + i, dt.getWheels()[i].getAzimuthAbsolutePosition());
-      SmartDashboard.putNumber("Int position module " + i, dt.getWheels()[i].getInternalEncoderPos());
+      SmartDashboard.putNumber("Int position module " + i, dt.getWheels()[i].getPrimaryEncoderPos());
       SmartDashboard.putNumber("Probably incorrect module heading in degrees " + i, Wheel.ticksToDegreesAzimuth(dt.getWheels()[i].getAzimuthPosition()));
-      SmartDashboard.putNumber("Module heading in degrees " + i, Wheel.ticksToDegreesAzimuth(dt.getWheels()[i].getInternalEncoderPos()));
+      SmartDashboard.putNumber("Module heading in degrees " + i, Wheel.ticksToDegreesAzimuth(dt.getWheels()[i].getPrimaryEncoderPos()));
       SmartDashboard.putNumber("Speed of wheel (FPS) " + i, Wheel.TicksPer100msToFPSDW(dt.getWheels()[i].getDWSpeed()));
       SmartDashboard.putData(Scheduler.getInstance());
     }
