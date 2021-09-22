@@ -42,7 +42,7 @@ public class Wheel {
   private static final double DRIVE_CIRCUMFERENCE_FT = ((Math.PI * 4.0) / 12.0);
   private static final int INTERNAL_ENCODER_TICKS = 2048;
   private static final int EXTERNAL_ENCODER_TICKS = 4096;
-  private static final double TICKS_PER_DEGREE_AZIMUTH = ((1.0/360.0) * AZIMUTH_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
+  private static final double TICKS_PER_DEGREE_AZIMUTH = ((1.0/360.0) * AZIMUTH_GEAR_RATIO);
   private static final double TICKS_PER_DEGREE_DW = ((1.0/360.0) * DRIVE_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
   public static final double TICKS_PER_FOOT_DW = ((1.0/DRIVE_CIRCUMFERENCE_FT) * DRIVE_GEAR_RATIO *INTERNAL_ENCODER_TICKS); // TODO: check math?
   private static final double INTERNAL_ENCODER_TICKS_PER_REV = 360.0 * TICKS_PER_DEGREE_AZIMUTH;
@@ -186,7 +186,7 @@ public class Wheel {
     // Errors.check(err, logger);
     System.out.println("zero: " + zero);
     System.out.println("current pos: " + getAzimuthAbsolutePosition());
-    azimuthTalon.setSelectedSensorPosition(externalToInternalTicks(-azimuthSetpoint), PRIMARY_PID, 10);
+    azimuthTalon.setSelectedSensorPosition(-azimuthSetpoint, PRIMARY_PID, 10);
     azimuthTalon.set(MotionMagic, -azimuthSetpoint);
     System.out.println("SETPOINT: " + -azimuthSetpoint);
   }
@@ -197,9 +197,9 @@ public class Wheel {
    * @param externalTicks a number of ticks from the external encoder
    * @return a proportional number of estamated internal ticks
    */
-  public static int externalToInternalTicks(int externalTicks) {
-    return (int) Math.round((double) externalTicks*((double) INTERNAL_ENCODER_TICKS/(double) EXTERNAL_ENCODER_TICKS)*AZIMUTH_GEAR_RATIO);
-  }
+  // public static int externalToInternalTicks(int externalTicks) {
+  //   return (int) Math.round((double) externalTicks*((double) INTERNAL_ENCODER_TICKS/(double) EXTERNAL_ENCODER_TICKS)*AZIMUTH_GEAR_RATIO);
+  // }
 
   /**
    * Takes in a number of degrees that we want to rotate the azimuth motor by and converts it to the number of ticks
@@ -295,15 +295,6 @@ public class Wheel {
 
 
   /**
-   * Sets the azimuth internal encoder's current position to the given absolute encoder position,
-   * taking difference in resolution and gear ratio into account
-   * @param position position in absolute encoder ticks
-   */
-  public void setAzimuthInternalEncoderPosition(int position) {
-    azimuthTalon.setSelectedSensorPosition((int)((position * ((double)INTERNAL_ENCODER_TICKS/(double)EXTERNAL_ENCODER_TICKS)) * AZIMUTH_GEAR_RATIO), PRIMARY_PID, 0);
-  }
-
-  /**
    * Returns the wheel's azimuth absolute position in encoder ticks.
    * This method is primarily used for zeroing the modules
    *
@@ -361,7 +352,7 @@ public class Wheel {
    *
    * @return position in encoder ticks
    */
-  public int getInternalEncoderPos() {
+  public int getPrimaryEncoderPos() {
     return (int) azimuthTalon.getSelectedSensorPosition(PRIMARY_PID);
   }
 

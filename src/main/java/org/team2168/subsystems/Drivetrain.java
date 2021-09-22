@@ -133,7 +133,6 @@ public class Drivetrain extends Subsystem {
             _wheels[i].setAzimuthZero(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
 
             SmartDashboard.putNumber("Abs position on init, module " + i, wheel.getAzimuthAbsolutePosition());
-            SmartDashboard.putNumber("Internal position on init, module " + i, wheel.getAzimuthPosition());
         }
 
         SwerveDriveConfig config = new SwerveDriveConfig();
@@ -190,7 +189,7 @@ public class Drivetrain extends Subsystem {
     public void putAzimuthPositions() {
         Wheel[] wheels = _sd.getWheels();
         for(int i = 0; i < SwerveDrive.getWheelCount(); i++) {
-            SmartDashboard.putNumber("Azimuth angle " + i, Wheel.ticksToDegreesAzimuth(wheels[i].getInternalEncoderPos()));
+            SmartDashboard.putNumber("Azimuth angle " + i, Wheel.ticksToDegreesAzimuth(wheels[i].getPrimaryEncoderPos()));
         }
     }
 
@@ -201,8 +200,6 @@ public class Drivetrain extends Subsystem {
         Wheel[] wheels = _sd.getWheels();
         for(int i = 0; i < SwerveDrive.getWheelCount(); i++) {
             SmartDashboard.putNumber("External encoder pos " + i, wheels[i].getAzimuthAbsolutePosition());
-            SmartDashboard.putNumber("Calculated internal encoder pos " + i, Wheel.externalToInternalTicks(wheels[i].getAzimuthAbsolutePosition()));
-            _wheels[i].setAzimuthInternalEncoderPosition(_wheels[i].getAzimuthAbsolutePosition() - Preferences.getInstance().getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
         }
     }
 
@@ -229,19 +226,6 @@ public class Drivetrain extends Subsystem {
         _sd.stop();
     }
 
-    /**
-     * Sets all azimuth internal encoders' current positions to those of the corresponding external encoders,
-     * taking difference in resolution and gear ratio into account, and then factors in the saved zero
-     */
-    public void initializeAzimuthPosition() {
-        int position;
-        Preferences prefs = Preferences.getInstance();
-        for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
-            position = _wheels[i].getAzimuthAbsolutePosition();
-            _wheels[i].setAzimuthInternalEncoderPosition(position - prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
-            System.out.println(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
-        }
-    }
 
     public void setDriveMode(SwerveDrive.DriveMode mode) {
         _sd.setDriveMode(mode);
