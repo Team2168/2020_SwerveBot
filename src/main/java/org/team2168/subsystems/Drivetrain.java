@@ -110,7 +110,7 @@ public class Drivetrain extends Subsystem {
             TalonFX azimuthTalon = new TalonFX(RobotMap.AZIMUTH_TALON_ID[i]);
             azimuthTalon.configFactoryDefault();
             azimuthTalon.setInverted(false);
-            azimuthTalon.setSensorPhase(false);
+            azimuthTalon.setSensorPhase(ABSOLUTE_ENCODER_INVERTED[i]);
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
             azimuthTalon.setNeutralMode(NeutralMode.Coast);
@@ -123,8 +123,7 @@ public class Drivetrain extends Subsystem {
             driveTalon.setNeutralMode(NeutralMode.Coast);
             
 
-            Wheel wheel = new Wheel(azimuthTalon, driveTalon,
-                new AnalogInput(RobotMap.SWERVE_ENCODER_AI[i]), ABSOLUTE_ENCODER_INVERTED[i]);
+            Wheel wheel = new Wheel(azimuthTalon, driveTalon);
             _wheels[i] = wheel;
 
             // set the value of the internal encoder's current position to that of the external encoder,
@@ -132,7 +131,7 @@ public class Drivetrain extends Subsystem {
             Preferences prefs = Preferences.getInstance();
             _wheels[i].setAzimuthZero(prefs.getInt(SwerveDrive.getPreferenceKeyForWheel(i), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET));
 
-            SmartDashboard.putNumber("Abs position on init, module " + i, wheel.getAzimuthAbsolutePosition());
+            SmartDashboard.putNumber("Abs position on init, module " + i, wheel.getAzimuthPosition());
         }
 
         SwerveDriveConfig config = new SwerveDriveConfig();
@@ -189,7 +188,7 @@ public class Drivetrain extends Subsystem {
     public void putAzimuthPositions() {
         Wheel[] wheels = _sd.getWheels();
         for(int i = 0; i < SwerveDrive.getWheelCount(); i++) {
-            SmartDashboard.putNumber("Azimuth angle " + i, Wheel.ticksToDegreesAzimuth(wheels[i].getPrimaryEncoderPos()));
+            SmartDashboard.putNumber("Azimuth angle " + i, Wheel.ticksToDegreesAzimuth(wheels[i].getAzimuthEncoderPos()));
         }
     }
 
@@ -199,7 +198,7 @@ public class Drivetrain extends Subsystem {
     public void putEncoderPositions() {
         Wheel[] wheels = _sd.getWheels();
         for(int i = 0; i < SwerveDrive.getWheelCount(); i++) {
-            SmartDashboard.putNumber("External encoder pos " + i, wheels[i].getAzimuthAbsolutePosition());
+            SmartDashboard.putNumber("External encoder pos " + i, wheels[i].getAzimuthPosition());
         }
     }
 
