@@ -59,8 +59,8 @@ public class Drivetrain extends Subsystem {
      */
     private SwerveDrive configSwerve() {
         TalonFXConfiguration azimuthConfig = new TalonFXConfiguration();
+        CANCoderConfiguration azimuthEncoderConfig = new CANCoderConfiguration();
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
-        CANCoderConfiguration driveEncoderConfig = new CANCoderConfiguration();
         SupplyCurrentLimitConfiguration talonCurrentLimit;
 
         talonCurrentLimit = new SupplyCurrentLimitConfiguration(ENABLE_CURRENT_LIMIT,
@@ -94,16 +94,16 @@ public class Drivetrain extends Subsystem {
         driveConfig.motionAcceleration = Wheel.DPSToTicksPer100msDW(180); // 500;
         driveConfig.motionCruiseVelocity = Wheel.DPSToTicksPer100msDW(30); // 100;
 
-        driveEncoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
+        azimuthEncoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
 
 
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
 
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
-            driveEncoderConfig.magnetOffsetDegrees = ABSOLUTE_ENCODER_OFFSET[i];
+            azimuthEncoderConfig.magnetOffsetDegrees = ABSOLUTE_ENCODER_OFFSET[i];
 
-            CANCoder driveEncoder = new CANCoder(RobotMap.CANCODER_ID[i]);
-            driveEncoder.configAllSettings(driveEncoderConfig);
+            CANCoder azimuthEncoder = new CANCoder(RobotMap.CANCODER_ID[i]);
+            azimuthEncoder.configAllSettings(azimuthEncoderConfig);
             
             azimuthFilterConfig.remoteSensorDeviceID = RobotMap.CANCODER_ID[i];
 
