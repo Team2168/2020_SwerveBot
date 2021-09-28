@@ -255,6 +255,7 @@ public class OI {
 		operatorJoystick.ButtonLeftDPad().whenPressed(new MoveToFrontTrench());
 		operatorJoystick.ButtonRightDPad().whenPressed(new MoveToWhiteLine());
 		operatorJoystick.ButtonDownDPad().whenPressed(new MoveToWall());
+		operatorJoystick.ButtonY().whenPressed(new BackUpToScore());
 
 
     // operatorJoystick.ButtonY().whenPressed(new EngageColorWheel());
