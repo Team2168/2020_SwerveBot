@@ -45,6 +45,7 @@ public class Wheel {
   private static final double TICKS_PER_DEGREE_AZIMUTH = ((1.0/360.0) * AZIMUTH_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
   private static final double TICKS_PER_DEGREE_DW = ((1.0/360.0) * DRIVE_GEAR_RATIO * INTERNAL_ENCODER_TICKS);
   public static final double TICKS_PER_FOOT_DW = ((1.0/DRIVE_CIRCUMFERENCE_FT) * DRIVE_GEAR_RATIO *INTERNAL_ENCODER_TICKS); // TODO: check math?
+  public static final double FEET_PER_TICKS = DRIVE_CIRCUMFERENCE_FT/INTERNAL_ENCODER_TICKS *DRIVE_GEAR_RATIO;
   private static final double INTERNAL_ENCODER_TICKS_PER_REV = 360.0 * TICKS_PER_DEGREE_AZIMUTH;
   private static final double FREE_SPEED_RPM = 6380;
   private static final double FREE_SPEED_RPS = FREE_SPEED_RPM / 60.0;
