@@ -223,29 +223,6 @@ public class SwerveDrive {
 
 
   /**
-   * Set wheels' azimuth relative offset from zero based on the current absolute position. This uses
-   * the physical zero position as read by the absolute encoder and saved during the wheel alignment
-   * process.
-   *
-   * @see #saveAzimuthPositions()
-   */
-  public void zeroAzimuthEncoders() {
-    zeroAzimuthEncoders(Preferences.getInstance());
-  }
-
-  void zeroAzimuthEncoders(Preferences prefs) {
-    Errors.setCount(0);
-    for (int i = 0; i < WHEEL_COUNT; i++) {
-      int position = prefs.getInt(getPreferenceKeyForWheel(i), DEFAULT_ABSOLUTE_AZIMUTH_OFFSET);
-      wheels[i].setAzimuthZero(position);
-      // logger.info("azimuth {}: loaded zero = {}", i, position);
-      System.out.println("azimuth " + i + ": loaded zero = " + position);
-    }
-    int errorCount = Errors.getCount();
-    if (errorCount > 0) logger.error("TalonSRX set azimuth zero error count = {}", errorCount);
-  }
-
-  /**
    * Returns the wheels of the swerve drive.
    *
    * @return the Wheel array.

@@ -83,19 +83,19 @@ class SwerveDriveTest {
     //   }
     // }
 
-    @Test
-    void zeroAzimuthEncoders(@Mock Preferences prefs) {
-      SwerveDrive swerve = new SwerveDrive(config);
-      for (int i = 0; i < 4; i++) {
-        String key = SwerveDrive.getPreferenceKeyForWheel(i);
-        doReturn(i).when(prefs).getInt(key, SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET);
-      }
-      swerve.zeroAzimuthEncoders(prefs);
+    // @Test
+    // void zeroAzimuthEncoders(@Mock Preferences prefs) {
+    //   SwerveDrive swerve = new SwerveDrive(config);
+    //   for (int i = 0; i < 4; i++) {
+    //     String key = SwerveDrive.getPreferenceKeyForWheel(i);
+    //     doReturn(i).when(prefs).getInt(key, SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET);
+    //   }
+    //   swerve.zeroAzimuthEncoders(prefs);
 
-      for (int i = 0; i < 4; i++) {
-        verify(wheels[i]).setAzimuthZero(i);
-      }
-    }
+    //   for (int i = 0; i < 4; i++) {
+    //     verify(wheels[i]).setAzimuthZero(i);
+    //   }
+    // }
 
     @Test
     void getGyro() {
