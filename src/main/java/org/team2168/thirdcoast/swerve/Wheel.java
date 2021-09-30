@@ -296,7 +296,7 @@ public class Wheel {
    * @return position in motor ticks
    */
   public double getAzimuthPosition() {
-    return azimuthTalon.getSelectedSensorPosition(PRIMARY_PID) / AZIMUTH_GEAR_RATIO;
+    return azimuthTalon.getSelectedSensorPosition(PRIMARY_PID);
   }
 
   /**

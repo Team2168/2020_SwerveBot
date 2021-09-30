@@ -23,7 +23,7 @@ import org.team2168.thirdcoast.swerve.*;
 public class Drivetrain extends Subsystem {
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
     private final boolean[] DRIVE_INVERTED = {false , false, false, false};
-    private final boolean[] ABSOLUTE_ENCODER_INVERTED = {false, false, false, false};
+    private final boolean[] ABSOLUTE_ENCODER_INVERTED = {true, true, true, true};
     private final double[] ABSOLUTE_ENCODER_OFFSET = {0.0, 0.0, 0.0, 0.0};
     private SwerveDrive _sd;
     private final boolean ENABLE_CURRENT_LIMIT = true;
@@ -99,6 +99,7 @@ public class Drivetrain extends Subsystem {
 
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
             azimuthEncoderConfig.magnetOffsetDegrees = ABSOLUTE_ENCODER_OFFSET[i];
+            azimuthEncoderConfig.sensorDirection = ABSOLUTE_ENCODER_INVERTED[i];
 
             CANCoder azimuthEncoder = new CANCoder(RobotMap.CANCODER_ID[i]);
             azimuthEncoder.configAllSettings(azimuthEncoderConfig);
@@ -108,7 +109,7 @@ public class Drivetrain extends Subsystem {
             WPI_TalonFX azimuthTalon = new WPI_TalonFX(RobotMap.AZIMUTH_TALON_ID[i]);
             azimuthTalon.configFactoryDefault();
             azimuthTalon.setInverted(false);
-            azimuthTalon.setSensorPhase(ABSOLUTE_ENCODER_INVERTED[i]);
+            azimuthTalon.setSensorPhase(false);
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
             azimuthTalon.setNeutralMode(NeutralMode.Coast);
