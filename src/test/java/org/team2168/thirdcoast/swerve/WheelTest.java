@@ -44,7 +44,7 @@ class WheelTest {
   @ParameterizedTest
   @CsvFileSource(resources = "/wheel_set_cases.csv", numLinesToSkip = 1)
   void set(double startPosition, double setpoint, double endPosition, boolean isReversed) {
-    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
+    Wheel wheel = new Wheel(azimuthTalon, driveTalon);
     int encoderStartingPosition = (int) Math.round(startPosition * INTERNAL_ENCODER_TICKS_PER_REV);
     when(azimuthTalon.getSelectedSensorPosition(0)).thenReturn((double) encoderStartingPosition);
     wheel.set(setpoint, 1.0);
@@ -57,7 +57,7 @@ class WheelTest {
 
   @Test
   void zeroDriveLeavesAzimuthAlone() {
-    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
+    Wheel wheel = new Wheel(azimuthTalon, driveTalon);
     wheel.set(0d, 0d);
     // We are currently setting the control mode to velocity from the
     // `setDriveMode(DriveMode.AZIMUTH);`  call in the Wheel constructor,
@@ -68,14 +68,14 @@ class WheelTest {
 
   @Test
   void setAzimuthPosition() {
-    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
+    Wheel wheel = new Wheel(azimuthTalon, driveTalon);
     wheel.setAzimuthPosition(2767);
     verify(azimuthTalon).set(MotionMagic, 2767);
   }
 
   @Test
   void disableAzimuth() {
-    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
+    Wheel wheel = new Wheel(azimuthTalon, driveTalon);
     wheel.disableAzimuth();
     verify(azimuthTalon).neutralOutput();
   }
@@ -91,7 +91,7 @@ class WheelTest {
 
   @Test
   void stopOpenLoop() {
-    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
+    Wheel wheel = new Wheel(azimuthTalon, driveTalon);
     when(azimuthTalon.getSelectedSensorPosition(0)).thenReturn(2767.0);
     wheel.setDriveMode(OPEN_LOOP);
     wheel.stop();
@@ -107,7 +107,7 @@ class WheelTest {
   @CsvSource({"0, 2767, -2767"})
   void setAzimuthZero(
       int encoderPosition, int zero, int setpoint, @Mock TalonFXSensorCollection sensorCollection) {
-    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
+    Wheel wheel = new Wheel(azimuthTalon, driveTalon);
     when(azimuthTalon.getSelectedSensorPosition(1)).thenReturn((double) encoderPosition);
     when(azimuthTalon.getSensorCollection()).thenReturn(sensorCollection);
 
@@ -119,21 +119,21 @@ class WheelTest {
   @CsvSource({"2048, 2048", "6144, 2048", "63488, 2048", "-1045504, 3072"})
   void getAzimuthAbsolutePosition(
       int encoderPosition, int absolutePosition, @Mock TalonFXSensorCollection sensorCollection) {
-    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
+    Wheel wheel = new Wheel(azimuthTalon, driveTalon);
     when(azimuthTalon.getSelectedSensorPosition()).thenReturn((double) encoderPosition);
     when(azimuthTalon.getSensorCollection()).thenReturn(sensorCollection);
-    assertThat(wheel.getAzimuthAbsolutePosition()).isEqualTo(absolutePosition);
+    assertThat(wheel.getAzimuthPosition()).isEqualTo(absolutePosition);
   }
 
   @Test
   void getAzimuthTalon() {
-    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
+    Wheel wheel = new Wheel(azimuthTalon, driveTalon);
     assertThat(wheel.getAzimuthTalon()).isSameAs(azimuthTalon);
   }
 
   @Test
   void getDriveTalon() {
-    Wheel wheel = new Wheel(azimuthTalon, driveTalon, externalEncoder, false);
+    Wheel wheel = new Wheel(azimuthTalon, driveTalon);
     assertThat(wheel.getDriveTalon()).isSameAs(driveTalon);
   }
 

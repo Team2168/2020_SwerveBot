@@ -34,8 +34,7 @@ public class DriveAzimuthWithConstant extends Command {
   protected void execute() {
     double percent = SmartDashboard.getNumber("Azimuth 0", 0.0) / 360;
     dt.getWheels()[0].set(percent, 0.0);
-    SmartDashboard.putNumber("Desired position", Wheel.externalToInternalTicks(Preferences.getInstance().getInt(SwerveDrive.getPreferenceKeyForWheel(0), SwerveDrive.DEFAULT_ABSOLUTE_AZIMUTH_OFFSET)) + Wheel.degreesToTicksAzimuth(SmartDashboard.getNumber("Azimuth 0", 0.0)));
-  }
+    SmartDashboard.putNumber("Desired position", Wheel.degreesToTicksAzimuth(SmartDashboard.getNumber("Azimuth 0", 0.0)));  }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override

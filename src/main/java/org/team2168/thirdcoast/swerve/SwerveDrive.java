@@ -1,5 +1,6 @@
 package org.team2168.thirdcoast.swerve;
 
+import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import com.ctre.phoenix.sensors.PigeonIMU.PigeonState;
@@ -10,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.team2168.RobotMap;
 import org.team2168.thirdcoast.talon.Errors;
 import org.team2168.utils.consoleprinter.ConsolePrinter;
 
@@ -224,40 +226,14 @@ public class SwerveDrive {
    * @see #zeroAzimuthEncoders()
    */
   public void saveAzimuthPositions() {
-    saveAzimuthPositions(Preferences.getInstance());
-  }
-
-  void saveAzimuthPositions(Preferences prefs) {
-    for (int i = 0; i < WHEEL_COUNT; i++) {
-      int position = wheels[i].getAzimuthAbsolutePosition();
-      prefs.putInt(getPreferenceKeyForWheel(i), position);
-      // logger.info("azimuth {}: saved zero = {}", i, position);
-      System.out.println("azimuth " + i + ": saved zero = " + position);
+    for (int encoderID : RobotMap.AZIMUTH_TALON_ID) {
+    var canCoder = new CANCoder(encoderID);
+    var zeroPos = canCoder.getAbsolutePosition();
+    canCoder.configMagnetOffset(zeroPos);
+    System.out.println(String.format("azimuth id %s: saved zero %d", encoderID, zeroPos));
     }
   }
 
-  /**
-   * Set wheels' azimuth relative offset from zero based on the current absolute position. This uses
-   * the physical zero position as read by the absolute encoder and saved during the wheel alignment
-   * process.
-   *
-   * @see #saveAzimuthPositions()
-   */
-  public void zeroAzimuthEncoders() {
-    zeroAzimuthEncoders(Preferences.getInstance());
-  }
-
-  void zeroAzimuthEncoders(Preferences prefs) {
-    Errors.setCount(0);
-    for (int i = 0; i < WHEEL_COUNT; i++) {
-      int position = prefs.getInt(getPreferenceKeyForWheel(i), DEFAULT_ABSOLUTE_AZIMUTH_OFFSET);
-      wheels[i].setAzimuthZero(position);
-      // logger.info("azimuth {}: loaded zero = {}", i, position);
-      System.out.println("azimuth " + i + ": loaded zero = " + position);
-    }
-    int errorCount = Errors.getCount();
-    if (errorCount > 0) logger.error("TalonSRX set azimuth zero error count = {}", errorCount);
-  }
 
   /**
    * Returns the wheels of the swerve drive.

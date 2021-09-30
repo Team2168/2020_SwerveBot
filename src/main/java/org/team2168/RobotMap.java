@@ -84,6 +84,11 @@ public class RobotMap {
   public static final int DRIVE_0_CAN_ID = 15;
   public static final int PIGEON_IMU_CAN_ID = 17;
 
+  public static final int CANCODER_0_CAN_ID = 0;
+  public static final int CANCODER_1_CAN_ID = 1;
+  public static final int CANCODER_2_CAN_ID = 2;
+  public static final int CANCODER_3_CAN_ID = 3;
+
   public static final int PCM_CAN_ID_BELLYPAN = 0;
 
 	/**
@@ -98,6 +103,8 @@ public class RobotMap {
   public static final int[] DRIVE_TALON_ID   = {DRIVE_0_CAN_ID, DRIVE_1_CAN_ID,
                                                 DRIVE_2_CAN_ID, DRIVE_3_CAN_ID};
 
+  public static final int[] CANCODER_ID = {CANCODER_0_CAN_ID, CANCODER_1_CAN_ID,
+                                          CANCODER_2_CAN_ID, CANCODER_3_CAN_ID};
 
 	// Relay Channels///////////////////////////////////////////////////////////
   public static final int LED_RELAY_CHANNEL = 3;
