@@ -24,7 +24,6 @@ public class Drivetrain extends Subsystem {
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
     private final boolean[] DRIVE_INVERTED = {false , false, false, false};
     private final boolean[] ABSOLUTE_ENCODER_INVERTED = {true, true, true, true};
-    private final double[] ABSOLUTE_ENCODER_OFFSET = {0.0, 0.0, 0.0, 0.0};
     private SwerveDrive _sd;
     private final boolean ENABLE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_CURRENT_LIMIT = 40; // amps
@@ -98,7 +97,7 @@ public class Drivetrain extends Subsystem {
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
 
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
-            azimuthEncoderConfig.magnetOffsetDegrees = ABSOLUTE_ENCODER_OFFSET[i];
+            // azimuthEncoderConfig.magnetOffsetDegrees = ABSOLUTE_ENCODER_OFFSET[i];  // TODO hardcoded zeroes
             azimuthEncoderConfig.sensorDirection = ABSOLUTE_ENCODER_INVERTED[i];
 
             CANCoder azimuthEncoder = new CANCoder(RobotMap.CANCODER_ID[i]);

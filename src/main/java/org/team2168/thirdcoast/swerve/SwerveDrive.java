@@ -226,11 +226,11 @@ public class SwerveDrive {
    * @see #zeroAzimuthEncoders()
    */
   public void saveAzimuthPositions() {
-    for (int encoderID : RobotMap.AZIMUTH_TALON_ID) {
-    var canCoder = new CANCoder(encoderID);
-    var zeroPos = canCoder.getAbsolutePosition();
+    for (int encoderID : RobotMap.CANCODER_ID) {
+    CANCoder canCoder = new CANCoder(encoderID);
+    double zeroPos = canCoder.getAbsolutePosition();
     canCoder.configMagnetOffset(zeroPos);
-    System.out.println(String.format("azimuth id %s: saved zero %d", encoderID, zeroPos));
+    System.out.println(String.format("azimuth id %d: saved zero %f", encoderID, zeroPos));
     }
   }
 
