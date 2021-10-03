@@ -10,6 +10,7 @@ public class BackUpToScore extends CommandGroup {
   /** Add your docs here. */
   public BackUpToScore() {
     // Path moves backwards from shooter
-    addSequential(PathCommand("back_up_to_score", 0));
+    addSequential(PathCommand("back_up_to_score", 0),
+    DriveWithLimelight(lime.getPosition(), false));
   }
 }
