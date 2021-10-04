@@ -6,11 +6,11 @@ package org.team2168.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class BackUpToScore extends CommandGroup {
+public class GoalWallShotReverse extends CommandGroup {
   /** Add your docs here. */
-  public BackUpToScore() {
-    // Path moves backwards from shooter
-    addSequential(PathCommand("back_up_to_score", 0),
-    DriveWithLimelight(lime.getPosition(), false));
+  public GoalWallShotReverse() {
+    // Path moves backwards from scoring wall
+    addSequential(new PathCommand("goal_wall_shot_reverse", 0));
+    addSequential(new DriveWithLimelight());
   }
 }

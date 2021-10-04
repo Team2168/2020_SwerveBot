@@ -216,7 +216,8 @@ public class OI {
       buttonBox2.ButtonStart().whenPressed(new Climb());
 
       //cancel the drive hopper w/ constant command by starting the balancer one
-      buttonBox2.ButtonX().whenPressed(new DriveBalancerWithJoystick()); // pushing in on the balancer joystick
+	  buttonBox2.ButtonX().whenPressed(new DriveBalancerWithJoystick()); // pushing in on the balancer joystick
+	  buttonBox2.ButtonY().whenPressed(new GoalWallShotReverse()); // trigger button for BackUpToScore command
     }
 
     /*************************************************************************
@@ -255,7 +256,6 @@ public class OI {
 		operatorJoystick.ButtonLeftDPad().whenPressed(new MoveToFrontTrench());
 		operatorJoystick.ButtonRightDPad().whenPressed(new MoveToWhiteLine());
 		operatorJoystick.ButtonDownDPad().whenPressed(new MoveToWall());
-		operatorJoystick.ButtonY().whenPressed(new BackUpToScore());
 
 
     // operatorJoystick.ButtonY().whenPressed(new EngageColorWheel());
