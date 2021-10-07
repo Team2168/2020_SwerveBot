@@ -1,11 +1,25 @@
 # 2020_SwerveBot
 
-Repo for development of code for a field oriented swerve chassis.  
+Repo for development of code for a field oriented swerve chassis.
 This repo name is a bit of a misnomer - it's our [2020 Robot code](https://github.com/Team2168/2020_Main_Robot) + the code for a swerve chassis.
 
 ![image](https://user-images.githubusercontent.com/1295877/129284494-767e60de-8bb3-4bbc-adeb-453a15b0275b.png)
 
 Our swerve code was largely lifted [from 2767](https://github.com/strykeforce), don't consider it a reference implementation. We are still learning :)
+
+## Steps for zeroing cancoders
+
+Currently loading cancoder offset zeros from a hard coded array inside `Drivetrain.java`
+TODO: clean this up so it's more reliable/robust
+
+1. Set the zero offset for the cancoder to 0 in Phoenix Tuner and save
+2. Query the Absolute Position (in degrees) by performing a self test on the cancoder
+3. Copy the Absolute Position angle (not negated) into the `ABSOLUTE_ENCODER_OFFSET` array in `Drivetrain.java`
+4. Deploy the code to the robot.
+   _Note: This will set the zero offset on the cancoder, but will not yet cause the corrected zero position
+   to be reflected in the position reported to the TalonFX._
+5. Restart the robot.
+6. Enable the robot code and verify the module zero position is correct.
 
 ## Subsystems
 
