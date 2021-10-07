@@ -24,6 +24,7 @@ public class Drivetrain extends Subsystem {
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
     private final boolean[] DRIVE_INVERTED = {false , false, false, false};
     private final boolean[] ABSOLUTE_ENCODER_INVERTED = {true, true, true, true};
+    private final double[] ABSOLUTE_ENCODER_OFFSET = {236.777, 48.867, 265.693, 272.900};
     private SwerveDrive _sd;
     private final boolean ENABLE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_CURRENT_LIMIT = 40; // amps
@@ -70,7 +71,7 @@ public class Drivetrain extends Subsystem {
 
         FilterConfiguration azimuthFilterConfig = new FilterConfiguration();
         azimuthFilterConfig.remoteSensorSource = RemoteSensorSource.CANCoder;
-        
+
         azimuthConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.RemoteSensor0;
         azimuthConfig.remoteFilter0 = azimuthFilterConfig;
         azimuthConfig.slot0.kP = 0.5;
@@ -97,7 +98,7 @@ public class Drivetrain extends Subsystem {
         // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
 
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
-            // azimuthEncoderConfig.magnetOffsetDegrees = ABSOLUTE_ENCODER_OFFSET[i];  // TODO hardcoded zeroes
+            azimuthEncoderConfig.magnetOffsetDegrees = ABSOLUTE_ENCODER_OFFSET[i];
             azimuthEncoderConfig.sensorDirection = ABSOLUTE_ENCODER_INVERTED[i];
 
             CANCoder azimuthEncoder = new CANCoder(RobotMap.CANCODER_ID[i]);
@@ -112,7 +113,7 @@ public class Drivetrain extends Subsystem {
             azimuthTalon.configAllSettings(azimuthConfig);
             azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
             azimuthTalon.setNeutralMode(NeutralMode.Coast);
-            
+
             WPI_TalonFX driveTalon = new WPI_TalonFX(RobotMap.DRIVE_TALON_ID[i]);
             driveTalon.configFactoryDefault();
             driveTalon.setInverted(DRIVE_INVERTED[i]);
