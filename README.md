@@ -12,14 +12,15 @@ Our swerve code was largely lifted [from 2767](https://github.com/strykeforce), 
 Currently loading cancoder offset zeros from a hard coded array inside `Drivetrain.java`
 TODO: clean this up so it's more reliable/robust
 
-1. Set the zero offset for the cancoder to 0 in Phoenix Tuner and save
-2. Query the Absolute Position (in degrees) by performing a self test on the cancoder
-3. Copy the Absolute Position angle (not negated) into the `ABSOLUTE_ENCODER_OFFSET` array in `Drivetrain.java`
-4. Deploy the code to the robot.
+1. PHysically orient the swerve modules to their zero positions (_bevel to battery_)
+2. In Phoenix Tuner, set the zero offset for the cancoder to 0 and save
+3. Query the Absolute Position (in degrees) by performing a self test on the cancoder
+4. Copy the Absolute Position angle (not negated) into the `ABSOLUTE_ENCODER_OFFSET` array in `Drivetrain.java`
+5. Deploy the code to the robot.
    _Note: This will set the zero offset on the cancoder, but will not yet cause the corrected zero position
    to be reflected in the position reported to the TalonFX._
-5. Restart the robot.
-6. Enable the robot code and verify the module zero position is correct.
+6. Restart the robot.
+7. Enable the robot code and verify the module zero position is correct.
 
 ## Subsystems
 
