@@ -95,8 +95,6 @@ public class Drivetrain extends Subsystem {
 
         azimuthEncoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
 
-        // TODO: Add closed loop control parameters / configuration for the drive motor. Probably need it for auto modes at some point.
-
         for (int i = 0; i < SwerveDrive.getWheelCount(); i++) {
             azimuthEncoderConfig.magnetOffsetDegrees = ABSOLUTE_ENCODER_OFFSET[i];
             azimuthEncoderConfig.sensorDirection = ABSOLUTE_ENCODER_INVERTED[i];
