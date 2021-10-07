@@ -9,10 +9,10 @@ Our swerve code was largely lifted [from 2767](https://github.com/strykeforce), 
 
 ## Steps for zeroing cancoders
 
-Currently loading cancoder offset zeros from a hard coded array inside `Drivetrain.java`
-TODO: clean this up so it's more reliable/robust
+Currently loading cancoder offset zeros from a hard coded array inside `Drivetrain.java`  
+_TODO: clean this up so it's more reliable/robust_
 
-1. PHysically orient the swerve modules to their zero positions (_bevel to battery_)
+1. Physically orient the swerve modules to their zero positions (_bevel to battery_)
 2. In Phoenix Tuner, set the zero offset for the cancoder to 0 and save
 3. Query the Absolute Position (in degrees) by performing a self test on the cancoder
 4. Copy the Absolute Position angle (not negated) into the `ABSOLUTE_ENCODER_OFFSET` array in `Drivetrain.java`
