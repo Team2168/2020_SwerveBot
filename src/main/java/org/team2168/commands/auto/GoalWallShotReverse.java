@@ -9,6 +9,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class GoalWallShotReverse extends CommandGroup {
   /** Add your docs here. */
   public GoalWallShotReverse() {
-    addSequential(new PathCommand("goal_wall_shot_reverse"));
+    addSequential(new PathCommand("goal_wall_shot_reverse", 0));
   }
 }
