@@ -238,7 +238,7 @@ public class OI {
 
     //When the red button on the handle of the controller is pressed get ready to go under the trench. Lower everything.
 	// driverJoystick.ButtonLeftBumper().whileHeld(new DisengageColorWheel());
-	driverJoystick.ButtonDownDPad().whenPressed(new GoalWallShotReverse());
+	driverJoystick.ButtonDownDPad().whenPressed(new GoalWallShotReverse()); //trigger button for goalwallshotreverse
     driverJoystick.ButtonLeftBumper().whenPressed(new MoveToFiringLocation(Shooter.FiringLocation.WALL));
     driverJoystick.ButtonBack().whenPressed(new ZeroGyro()); //button 7 on flight stick, Back on F310
 
