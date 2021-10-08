@@ -4,6 +4,7 @@ package org.team2168;
 import org.team2168.commands.auto.robotFunctions.FinishFiring;
 import org.team2168.commands.auto.robotFunctions.FireBalls;
 import org.team2168.commands.auto.robotFunctions.FireSingleBall;
+import org.team2168.commands.auto.GoalWallShotReverse;
 import org.team2168.commands.climber.Climb;
 import org.team2168.commands.climber.DisengageRatchet;
 import org.team2168.commands.climber.DriveClimberWithTestJoystickUnSafe;
@@ -216,7 +217,8 @@ public class OI {
       buttonBox2.ButtonStart().whenPressed(new Climb());
 
       //cancel the drive hopper w/ constant command by starting the balancer one
-      buttonBox2.ButtonX().whenPressed(new DriveBalancerWithJoystick()); // pushing in on the balancer joystick
+	  buttonBox2.ButtonX().whenPressed(new DriveBalancerWithJoystick()); // pushing in on the balancer joystick
+	  buttonBox2.ButtonY().whenPressed(new GoalWallShotReverse()); // trigger button for GoalWallShotReverse
     }
 
     /*************************************************************************
