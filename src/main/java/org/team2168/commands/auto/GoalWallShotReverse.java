@@ -5,10 +5,11 @@
 package org.team2168.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.team2168.subsystems.Drivetrain;
 
 public class GoalWallShotReverse extends CommandGroup {
-  /** Add your docs here. */
+  Drivetrain drive = Drivetrain.getInstance();
   public GoalWallShotReverse() {
-    addSequential(new PathCommand("goal_wall_shot_reverse", 0));
+    addSequential(new PathCommand("goal_wall_shot_reverse", drive.getHeading()));
   }
 }
