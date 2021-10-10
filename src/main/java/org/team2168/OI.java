@@ -4,6 +4,7 @@ package org.team2168;
 import org.team2168.commands.auto.robotFunctions.FinishFiring;
 import org.team2168.commands.auto.robotFunctions.FireBalls;
 import org.team2168.commands.auto.robotFunctions.FireSingleBall;
+import org.team2168.commands.auto.GoalWallShotReverse;
 import org.team2168.commands.climber.Climb;
 import org.team2168.commands.climber.DisengageRatchet;
 import org.team2168.commands.climber.DriveClimberWithTestJoystickUnSafe;
@@ -216,7 +217,7 @@ public class OI {
       buttonBox2.ButtonStart().whenPressed(new Climb());
 
       //cancel the drive hopper w/ constant command by starting the balancer one
-      buttonBox2.ButtonX().whenPressed(new DriveBalancerWithJoystick()); // pushing in on the balancer joystick
+	  buttonBox2.ButtonX().whenPressed(new DriveBalancerWithJoystick()); // pushing in on the balancer joystick
     }
 
     /*************************************************************************
@@ -236,7 +237,8 @@ public class OI {
 		}
 
     //When the red button on the handle of the controller is pressed get ready to go under the trench. Lower everything.
-    // driverJoystick.ButtonLeftBumper().whileHeld(new DisengageColorWheel());
+	// driverJoystick.ButtonLeftBumper().whileHeld(new DisengageColorWheel());
+	driverJoystick.ButtonDownDPad().whenPressed(new GoalWallShotReverse()); //trigger button for goalwallshotreverse
     driverJoystick.ButtonLeftBumper().whenPressed(new MoveToFiringLocation(Shooter.FiringLocation.WALL));
     driverJoystick.ButtonBack().whenPressed(new ZeroGyro()); //button 7 on flight stick, Back on F310
 
