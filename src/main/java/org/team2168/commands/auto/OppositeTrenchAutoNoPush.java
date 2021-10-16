@@ -35,7 +35,7 @@ public class OppositeTrenchAutoNoPush extends CommandGroup {
     addSequential(new RetractIntakePneumatic());
 
     // drive to shooting location
-    addSequential(new PathCommand("opponents_trench.2", 20.0));
+    addSequential(new PathCommand("opponents_trench.2", 23.0));
     addSequential(new DriveWithLimelight(), 5.0);
 
     // stop intake and fire balls
