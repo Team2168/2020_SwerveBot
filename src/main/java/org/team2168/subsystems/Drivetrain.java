@@ -23,7 +23,7 @@ public class Drivetrain extends Subsystem {
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
     private final boolean[] DRIVE_INVERTED = {false , false, false, false};
     private final boolean[] ABSOLUTE_ENCODER_INVERTED = {true, true, true, true};
-    private final double[] ABSOLUTE_ENCODER_OFFSET = {325.547, 52.471, 266.572, 273.252};
+    private final double[] ABSOLUTE_ENCODER_OFFSET = {323.350, 48.428 , 235.723, 345.234};
     private SwerveDrive _sd;
     private final boolean ENABLE_DRIVE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_DRIVE_CURRENT_LIMIT = 40.0; // amps
@@ -31,8 +31,8 @@ public class Drivetrain extends Subsystem {
     private final double TRIGGER_DRIVE_THRESHOLD_TIME = 0.2; // seconds
 
     private final boolean ENABLE_AZIMUTH_CURRENT_LIMIT = true;
-    private final double CONTINUOUS_AZIMUTH_CURRENT_LIMIT = 8.0; // amps
-    private final double TRIGGER_AZIMUTH_THRESHOLD_LIMIT = 8.0; // amps
+    private final double CONTINUOUS_AZIMUTH_CURRENT_LIMIT = 10.0; // amps
+    private final double TRIGGER_AZIMUTH_THRESHOLD_LIMIT = 10.0; // amps
     private final double TRIGGER_AZIMUTH_THRESHOLD_TIME = 0.1; // seconds
 
     private static Drivetrain instance = null;
