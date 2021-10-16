@@ -158,6 +158,7 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("Opposite Trench (No Push)", new OppositeTrenchAutoNoPush());
     autoChooser.addOption("Opposite Trench Extended (No Push)", new OppositeTrenchAutoExtendedNoPush());
     autoChooser.addOption("Our Trench", new OurTrench());
+    autoChooser.addOption("Shoot And Drive", new ShootAndDrive());
   }
 
   /**
