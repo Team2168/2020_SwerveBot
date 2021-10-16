@@ -12,7 +12,6 @@ import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,10 +25,15 @@ public class Drivetrain extends Subsystem {
     private final boolean[] ABSOLUTE_ENCODER_INVERTED = {true, true, true, true};
     private final double[] ABSOLUTE_ENCODER_OFFSET = {323.350, 48.428 , 235.723, 345.234};
     private SwerveDrive _sd;
-    private final boolean ENABLE_CURRENT_LIMIT = true;
-    private final double CONTINUOUS_CURRENT_LIMIT = 40; // amps
-    private final double TRIGGER_THRESHOLD_LIMIT = 60; // amp
-    private final double TRIGGER_THRESHOLD_TIME = 0.2; // s
+    private final boolean ENABLE_DRIVE_CURRENT_LIMIT = true;
+    private final double CONTINUOUS_DRIVE_CURRENT_LIMIT = 40.0; // amps
+    private final double TRIGGER_DRIVE_THRESHOLD_LIMIT = 60.0; // amps
+    private final double TRIGGER_DRIVE_THRESHOLD_TIME = 0.2; // seconds
+
+    private final boolean ENABLE_AZIMUTH_CURRENT_LIMIT = true;
+    private final double CONTINUOUS_AZIMUTH_CURRENT_LIMIT = 10.0; // amps
+    private final double TRIGGER_AZIMUTH_THRESHOLD_LIMIT = 10.0; // amps
+    private final double TRIGGER_AZIMUTH_THRESHOLD_TIME = 0.1; // seconds
 
     private static Drivetrain instance = null;
 
@@ -61,13 +65,13 @@ public class Drivetrain extends Subsystem {
         TalonFXConfiguration azimuthConfig = new TalonFXConfiguration();
         CANCoderConfiguration azimuthEncoderConfig = new CANCoderConfiguration();
         TalonFXConfiguration driveConfig = new TalonFXConfiguration();
-        SupplyCurrentLimitConfiguration talonCurrentLimit;
+        SupplyCurrentLimitConfiguration driveTalonCurrentLimit, azimuthTalonCurrentLimit;
 
-        talonCurrentLimit = new SupplyCurrentLimitConfiguration(ENABLE_CURRENT_LIMIT,
-        CONTINUOUS_CURRENT_LIMIT, TRIGGER_THRESHOLD_LIMIT, TRIGGER_THRESHOLD_TIME);
+        driveTalonCurrentLimit = new SupplyCurrentLimitConfiguration(ENABLE_DRIVE_CURRENT_LIMIT,
+        CONTINUOUS_DRIVE_CURRENT_LIMIT, TRIGGER_DRIVE_THRESHOLD_LIMIT, TRIGGER_DRIVE_THRESHOLD_TIME);
 
-        // TODO: Set up gear ratios, at least for the driveTalon
-        // TODO: Check if we need to set/configure any canifier settings
+        azimuthTalonCurrentLimit = new SupplyCurrentLimitConfiguration(ENABLE_AZIMUTH_CURRENT_LIMIT,
+        CONTINUOUS_AZIMUTH_CURRENT_LIMIT, TRIGGER_AZIMUTH_THRESHOLD_LIMIT, TRIGGER_AZIMUTH_THRESHOLD_TIME);
 
         FilterConfiguration azimuthFilterConfig = new FilterConfiguration();
         azimuthFilterConfig.remoteSensorSource = RemoteSensorSource.CANCoder;
@@ -109,14 +113,14 @@ public class Drivetrain extends Subsystem {
             azimuthTalon.setInverted(false);
             azimuthTalon.setSensorPhase(false);
             azimuthTalon.configAllSettings(azimuthConfig);
-            azimuthTalon.configSupplyCurrentLimit(talonCurrentLimit);
+            azimuthTalon.configSupplyCurrentLimit(azimuthTalonCurrentLimit);
             azimuthTalon.setNeutralMode(NeutralMode.Coast);
 
             WPI_TalonFX driveTalon = new WPI_TalonFX(RobotMap.DRIVE_TALON_ID[i]);
             driveTalon.configFactoryDefault();
             driveTalon.setInverted(DRIVE_INVERTED[i]);
             driveTalon.configAllSettings(driveConfig);
-            driveTalon.configSupplyCurrentLimit(talonCurrentLimit);
+            driveTalon.configSupplyCurrentLimit(driveTalonCurrentLimit);
             driveTalon.setNeutralMode(NeutralMode.Coast);
 
             Wheel wheel = new Wheel(azimuthTalon, driveTalon);
