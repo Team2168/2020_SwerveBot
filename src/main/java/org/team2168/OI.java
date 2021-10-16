@@ -136,8 +136,8 @@ public class OI {
 	};
 	private double[][] driverJoystickZArray = {
 		{-1.0, -0.50},  //scale down turning to max 50%
-		{-0.05, 0.00},  //set neutral deadband to 5%
-		{+0.05, 0.00},
+		{-0.21, 0.00},  //set neutral deadband to 21%
+		{+0.09, 0.00},  
 		{+1.00,+0.50}
 	};
 	private double[][] driverFlightStickZArray = {
