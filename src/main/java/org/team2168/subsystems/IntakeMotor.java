@@ -10,12 +10,8 @@ package org.team2168.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.BaseTalon;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-// import com.revrobotics.CANSparkMax;
-// import com.revrobotics.CANSparkMax.IdleMode;
-// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-// import com.revrobotics.CANSparkMaxLowLevel.PeriodicFrame;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 
 import org.team2168.RobotMap;
 import org.team2168.commands.intakeMotor.DriveIntakeWithJoystick;
@@ -38,7 +34,6 @@ public class IntakeMotor extends Subsystem {
 
   private static IntakeMotor _instance = null;
 
-  private SupplyCurrentLimitConfiguration talonCurrentLimit;
   private final boolean ENABLE_CURRENT_LIMIT_SUPPLY = true;
   private final double CONTINUOUS_DRIVE_CURRENT_LIMIT = 40.0; // amps
   private final double TRIGGER_DRIVE_THRESHOLD_LIMIT = 60.0; // amps
@@ -49,23 +44,18 @@ public class IntakeMotor extends Subsystem {
    * Default constructors for Intake
    */
   private IntakeMotor() {
-    
-    intakeMotor = new TalonFX(RobotMap.INTAKE_CAN_ID);
-    //intakeMotor = new CANSparkMax(RobotMap.INTAKE_CAN_ID, MotorType.kBrushless);
+    SupplyCurrentLimitConfiguration talonCurrentLimit;
+    TalonFXConfiguration talonConfig = new TalonFXConfiguration();
 
-    //intakeMotor.setIdleMode(IdleMode.kBrake);
-    intakeMotor.setNeutralMode(NeutralMode.Brake);
-
-    
     talonCurrentLimit = new SupplyCurrentLimitConfiguration(ENABLE_CURRENT_LIMIT_SUPPLY,
     CONTINUOUS_DRIVE_CURRENT_LIMIT, TRIGGER_DRIVE_THRESHOLD_LIMIT, TRIGGER_DRIVE_THRESHOLD_TIME);
-    // intakeMotor.setSmartCurrentLimit(25); //TODO SET
-    // intakeMotor.setControlFramePeriodMs(20);
-    // intakeMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus0, 500);
-    // intakeMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus1, 500);
-    // intakeMotor.setPeriodicFramePeriod(PeriodicFrame.kStatus2, 500);
+    talonConfig.supplyCurrLimit = talonCurrentLimit;
+    
+    intakeMotor = new TalonFX(RobotMap.INTAKE_CAN_ID);
+    intakeMotor.configFactoryDefault();
+    intakeMotor.configAllSettings(talonConfig);
+    intakeMotor.setNeutralMode(NeutralMode.Brake);
     intakeMotor.setInverted(INTAKE_MOTOR_REVERSE);
-    //TODO is there a way/need to set neutral deadband
   }
 
   /**
@@ -73,9 +63,7 @@ public class IntakeMotor extends Subsystem {
    */
   public static IntakeMotor getInstance() {
     if (_instance == null)
-    {
       _instance = new IntakeMotor();
-    }
     return _instance;
   }
 
@@ -83,8 +71,7 @@ public class IntakeMotor extends Subsystem {
    * sets motor speed to input, postive is towards the robot
    * @param speed -1.0 to 1.0. negative is away from the robot, 0 is stationary, positive is towards the robot
    */
-  public void driveMotor(double speed)
-  {
+  public void driveMotor(double speed) {
     //intakeMotor.set(speed);
     intakeMotor.set(ControlMode.PercentOutput,speed);
   }
