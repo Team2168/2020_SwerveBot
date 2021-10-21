@@ -23,7 +23,7 @@ public class Drivetrain extends Subsystem {
     private Wheel[] _wheels = new Wheel[SwerveDrive.getWheelCount()];
     private final boolean[] DRIVE_INVERTED = {false , false, false, false};
     private final boolean[] ABSOLUTE_ENCODER_INVERTED = {true, true, true, true};
-    private final double[] ABSOLUTE_ENCODER_OFFSET = {316.934, 325.459, 235.020, 347.695};
+    private final double[] ABSOLUTE_ENCODER_OFFSET = {209.443, 195.029, 80.332, 314.736};
     private SwerveDrive _sd;
     private final boolean ENABLE_DRIVE_CURRENT_LIMIT = true;
     private final double CONTINUOUS_DRIVE_CURRENT_LIMIT = 40.0; // amps
