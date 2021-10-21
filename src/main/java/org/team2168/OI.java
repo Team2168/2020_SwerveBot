@@ -203,7 +203,7 @@ public class OI {
       buttonBox2.ButtonB().whenReleased(new FinishFiring());
 
       //spit button
-      buttonBox2.ButtonLeftBumper().whenPressed(new DriveIntakeWithConstant(-1.0));
+      buttonBox2.ButtonLeftBumper().whenPressed(new DriveIntakeWithConstant(-RobotMap.INTAKE_SPEED));
       buttonBox2.ButtonLeftBumper().whenPressed(new ExtendIntakePneumatic());
       buttonBox2.ButtonLeftBumper().whenReleased(new DriveIntakeWithConstant(0.0));
       buttonBox2.ButtonLeftBumper().whenReleased(new RetractIntakePneumatic()); //DO WE WANT THIS
