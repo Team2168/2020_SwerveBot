@@ -5,6 +5,7 @@
 package org.team2168.commands.auto;
 
 import org.team2168.RobotMap;
+import org.team2168.commands.auto.robotFunctions.FinishFiring;
 import org.team2168.commands.auto.robotFunctions.FireBalls;
 import org.team2168.commands.auto.robotFunctions.FireBallsAuto;
 import org.team2168.commands.drivetrain.DriveWithFixedAzimuth;
@@ -60,5 +61,17 @@ public class OurTrench extends CommandGroup {
 
     
   
+  }
+
+  @Override
+  protected void end() {
+    addSequential(new FinishFiring());
+    super.end();
+  }
+
+  @Override
+  protected void interrupted() {
+    end();
+    super.interrupted();
   }
 }
