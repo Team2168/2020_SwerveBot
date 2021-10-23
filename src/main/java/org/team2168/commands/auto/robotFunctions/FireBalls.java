@@ -38,10 +38,10 @@ public class FireBalls extends CommandGroup {
     // a CommandGroup containing them would require both the chassis and the
     // arm.
 
-    addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
     addSequential(new WaitForShooterAtSpeed());
     addSequential(new DriveIndexerWithConstantNoStop(RobotMap.INDEXER_SPEED), 0.5);
     addParallel(new DriveIndexerWithConstant(RobotMap.INDEXER_SPEED));
+    addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
     addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED_SLOW));
   }
 }
