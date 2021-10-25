@@ -130,7 +130,7 @@ public class RobotMap {
 	 *************************************************************************/
 	public static final double HOPPER_SPEED = 0.8;
 	public static final double INDEXER_SPEED = 1.0;
-	public static final double INTAKE_SPEED = 0.95;  // needs to be >0.88 to be faster than the NEO
+	public static final double INTAKE_SPEED = 0.93;  // needs to be >0.88 to be faster than the NEO
 	public static final double INTAKE_SPEED_SLOW = 0.2;
 	public static final double SHOOTER_SPEED = 1.0;
 
