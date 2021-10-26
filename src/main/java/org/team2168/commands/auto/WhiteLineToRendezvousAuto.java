@@ -64,16 +64,28 @@ public class WhiteLineToRendezvousAuto extends CommandGroup {
     addSequential(new DriveWithLimelight(), 1.0);
     addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
     addParallel(new DriveIntakeWithConstant(0.3));
-    addParallel(new RetractIntakePneumatic());
+    addParallel(new RetractIntakeWithDelay(1.0));
     addSequential(new FireBallsAuto(5), 5.0);
-    
-  }
-  
+  }  
 }
+
+/**
+ * Extend intake and run motor after a specified fixed delay (sec)
+ */
 class ExtendIntakeWithDelay extends CommandGroup {
   public ExtendIntakeWithDelay(double delay) {
-    addSequential(new Sleep(),delay);
+    addSequential(new Sleep(), delay);
     addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED));
     addSequential(new ExtendIntakePneumatic());
+  }
+}
+
+/**
+ * Retract intake after a specified fixed delay (sec)
+ */
+class RetractIntakeWithDelay extends CommandGroup {
+  public RetractIntakeWithDelay(double delay) {
+    addSequential(new Sleep(), delay);
+    addSequential(new RetractIntakePneumatic());
   }
 }
