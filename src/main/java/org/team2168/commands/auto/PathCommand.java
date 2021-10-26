@@ -29,6 +29,11 @@ public class PathCommand extends Command {
   }
 
   @Override
+  protected void end() {
+    DRIVE.drive(0.0, 0.0, 0.0);
+  }
+
+  @Override
   protected void interrupted() {
     pathController.interrupt();
   }
