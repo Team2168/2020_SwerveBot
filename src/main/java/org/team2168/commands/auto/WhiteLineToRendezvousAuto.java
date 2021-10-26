@@ -41,18 +41,18 @@ public class WhiteLineToRendezvousAuto extends CommandGroup {
     // arm.
 
     // start shooter
+    addParallel(new ExtendIntakePneumatic()); // move off stow
     addParallel(new MoveToFrontTrench());
 
     // start intake and drive to 5 feet from white line
-    addParallel(new DriveIntakeWithConstant(0.3));
     addSequential(new PathCommand("white_line_to_rendezvous1", 0));
+    addSequential(new RetractIntakePneumatic(), 0.1);
 
     // stop intake and fire balls
     addSequential(new WaitForShooterAtSpeed());
     addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
     addSequential(new FireBallsAuto(3), 2);
 
-    addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED));
     addParallel(new ExtendIntakeWithDelay(1));
     addSequential(new PathCommand("white_line_to_rendezvous2", 80));
 
@@ -63,6 +63,7 @@ public class WhiteLineToRendezvousAuto extends CommandGroup {
     addSequential(new PathCommand("white_line_to_rendezvous4", 0.0));
     addSequential(new DriveWithLimelight(), 1.0);
     addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
+    addParallel(new DriveIntakeWithConstant(0.3));
     addParallel(new RetractIntakePneumatic());
     addSequential(new FireBallsAuto(5), 5.0);
     
@@ -72,6 +73,7 @@ public class WhiteLineToRendezvousAuto extends CommandGroup {
 class ExtendIntakeWithDelay extends CommandGroup {
   public ExtendIntakeWithDelay(double delay) {
     addSequential(new Sleep(),delay);
+    addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED));
     addSequential(new ExtendIntakePneumatic());
   }
 }
