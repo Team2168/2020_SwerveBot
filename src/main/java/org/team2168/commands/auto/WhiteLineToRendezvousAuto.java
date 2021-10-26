@@ -54,7 +54,7 @@ public class WhiteLineToRendezvousAuto extends CommandGroup {
 
     addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED));
     addParallel(new ExtendIntakeWithDelay(1));
-    addSequential(new PathCommand("white_line_to_rendezvous2", 90));
+    addSequential(new PathCommand("white_line_to_rendezvous2", 80));
 
     //drive into rendezvous to pick up balls
     addSequential(new PathCommand("white_line_to_rendezvous3", 90.0));
