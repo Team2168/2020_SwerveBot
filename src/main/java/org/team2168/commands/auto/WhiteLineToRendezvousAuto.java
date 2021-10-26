@@ -50,7 +50,7 @@ public class WhiteLineToRendezvousAuto extends CommandGroup {
     // stop intake and fire balls
     addSequential(new WaitForShooterAtSpeed());
     addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
-    addSequential(new FireBallsAuto(3), 1.2);
+    addSequential(new FireBallsAuto(3), 2);
 
     addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED));
     addParallel(new ExtendIntakeWithDelay(1));
