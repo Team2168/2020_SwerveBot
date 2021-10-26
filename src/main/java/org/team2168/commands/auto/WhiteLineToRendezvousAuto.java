@@ -50,17 +50,17 @@ public class WhiteLineToRendezvousAuto extends CommandGroup {
     // stop intake and fire balls
     addSequential(new WaitForShooterAtSpeed());
     addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
-    addSequential(new FireBallsAuto(3), 2.0);
+    addSequential(new FireBallsAuto(3), 1.2);
 
     addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED));
     addParallel(new ExtendIntakeWithDelay(1));
-    addSequential(new PathCommand("drive_back", 75));
+    addSequential(new PathCommand("white_line_to_rendezvous2", 75));
 
     //drive into rendezvous to pick up balls
-    addSequential(new PathCommand("white_line_to_rendezvous2", 90.0));
+    addSequential(new PathCommand("white_line_to_rendezvous3", 90.0));
 
     // back up, turn, and shoot
-    addSequential(new PathCommand("white_line_to_rendezvous3", 0.0));
+    addSequential(new PathCommand("white_line_to_rendezvous4", 0.0));
     addSequential(new DriveWithLimelight(), 1.0);
     addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
     addParallel(new RetractIntakePneumatic());
