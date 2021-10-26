@@ -156,10 +156,10 @@ public class Robot extends TimedRobot {
   public void autoSelectInit() {
     autoChooser.setDefaultOption("Do Nothing", new DoNothing());
     autoChooser.addOption("Opposite Trench (No Push)", new OppositeTrenchAutoNoPush());
-    autoChooser.addOption("Opposite Trench Extended (No Push)", new OppositeTrenchAutoExtendedNoPush());
+    // autoChooser.addOption("Opposite Trench Extended (No Push)", new OppositeTrenchAutoExtendedNoPush());
     autoChooser.addOption("Our Trench", new OurTrench());
     autoChooser.addOption("Shoot And Drive", new ShootAndDrive());
-    autoChooser.addOption("White Line to Rendezvous 1", new WhiteLineToRendezvousAuto());
+    autoChooser.addOption("White Line to Rendezvous", new WhiteLineToRendezvousAuto());
 
   }
 
