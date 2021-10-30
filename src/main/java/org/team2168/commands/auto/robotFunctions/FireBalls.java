@@ -13,8 +13,6 @@ import org.team2168.commands.indexer.DriveIndexerWithConstant;
 import org.team2168.commands.indexer.DriveIndexerWithConstantNoStop;
 import org.team2168.commands.intakeMotor.DriveIntakeWithConstant;
 import org.team2168.commands.shooter.WaitForShooterAtSpeed;
-import org.team2168.subsystems.Shooter;
-import org.team2168.subsystems.Shooter.FiringLocation;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -39,17 +37,12 @@ public class FireBalls extends CommandGroup {
     // e.g. if Command1 requires chassis, and Command2 requires arm,
     // a CommandGroup containing them would require both the chassis and the
     // arm.
-    FiringLocation fl = Shooter.getInstance().getFiringLocation();
 
     addSequential(new WaitForShooterAtSpeed());
     addSequential(new DriveIndexerWithConstantNoStop(RobotMap.INDEXER_SPEED), 0.5);
-    if (fl == FiringLocation.WALL) {
-      addParallel(new DriveIndexerWithConstant(0.75));
-      addParallel(new DriveHopperWithConstant(0.6));
-    } else {
-      addParallel(new DriveIndexerWithConstant(RobotMap.INDEXER_SPEED));
-      addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
-    }
+
+    addParallel(new DriveIndexerWithConstant(RobotMap.INDEXER_SPEED));
+    addParallel(new DriveHopperWithConstant(RobotMap.HOPPER_SPEED));
     addParallel(new DriveIntakeWithConstant(RobotMap.INTAKE_SPEED_SLOW));
   }
 }
