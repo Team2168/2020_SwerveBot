@@ -62,16 +62,4 @@ public class OurTrench extends CommandGroup {
     
   
   }
-
-  @Override
-  protected void end() {
-    addSequential(new FinishFiring());
-    super.end();
-  }
-
-  @Override
-  protected void interrupted() {
-    end();
-    super.interrupted();
-  }
 }
