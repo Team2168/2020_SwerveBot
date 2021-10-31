@@ -52,8 +52,7 @@ public class OurTrench extends CommandGroup {
     addSequential(new DriveWithLimelight());
 
     addSequential(new Sleep(), 0.5);
-    // addSequential(new FireBallsAuto(5));
-    addSequential(new FireBalls());  // number fired doesn't particularly matter when this is the last command in sequence
+    addSequential(new FireBallsAuto(5));
     
     // addSequential(new MoveToFrontTrench());
     // addSequential(new DriveWithLimelight(), 5.0);
@@ -61,17 +60,5 @@ public class OurTrench extends CommandGroup {
 
     
   
-  }
-
-  @Override
-  protected void end() {
-    addSequential(new FinishFiring());
-    super.end();
-  }
-
-  @Override
-  protected void interrupted() {
-    end();
-    super.interrupted();
   }
 }
